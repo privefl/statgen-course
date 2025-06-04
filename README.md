@@ -1,2 +1,1 @@
-# statgen-course
-Statistical Human Genetics course using R
+# Statistical Human Genetics course using R

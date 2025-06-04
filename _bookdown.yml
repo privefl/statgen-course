@@ -1,0 +1,6 @@
+rmd_files: ["index.Rmd", "references.Rmd"]
+output_dir: docs
+new_session: yes
+language:
+  ui:
+    chapter_name: "Chapter "

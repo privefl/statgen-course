@@ -1,0 +1,47 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+
+
+/* INFO BOXES */
+
+.infobox {
+  padding: 0.5em 0.5em 0em 4.5em;
+  margin-bottom: 1em;
+  border: 2px solid chartreuse;
+  border-radius: 10px;
+  background: #f5f5f5 1em center/2.5em no-repeat;
+}
+
+.caution {
+  background-image: url("images/caution.svg");
+}
+
+.info {
+  background-image: url("images/information-icon.png");
+}
+
+.exo {
+  background-image: url("images/homework.png");
+}
+
+/* CITATIONS */
+
+div.csl-entry:before {
+    content: "-";
+}
+
+div.csl-entry {
+    margin-bottom: 0.5em;
+}

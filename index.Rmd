@@ -1,0 +1,74 @@
+--- 
+title: "Statistical Human Genetics course using R"
+subtitle: "Originally a SMARTbiomed Summer course"
+author: "Florian Privé"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: refs.bib
+biblio-style: apalike
+link-citations: yes
+csl: apa-modified.csl
+github-repo: privefl/statgen-course
+url: https\://privefl.github.io/statgen-course/
+# cover-image: images/bigstatsr.png
+---
+
+
+# About {-}
+
+```{r setup, include=FALSE}
+WORDS_TO_IGNORE <- c("ShareAlike", "Florian", "Privé", "cpp", "RStudio", "Bluesky", "SMARTbiomed")
+source("knitr-options.R")
+source("spelling-check.R")
+```
+
+## Prerequisites {-}
+
+- Have at least a basic knowledge of R,
+
+- Install R (>= 3.4) and RStudio (>= 1.2),
+
+- Install recent versions of {bigstatsr} and {bigsnpr} (e.g. from CRAN),
+
+- Download the data used in the tutorials:
+    ```{r, results='hold'}
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38019072",
+      dir = "tmp-data", fname = "GWAS_data.zip")  # 109 MB
+    
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38019027", 
+      dir = "tmp-data", fname = "ref_freqs.csv.gz")  # 46 MB
+    
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38019024",
+      dir = "tmp-data", fname = "projection.csv.gz")  # 44 MB
+    
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38077323",
+      dir = "tmp-data", fname = "sumstats_CAD_tuto.csv.gz")  # 16 MB
+    
+    runonce::download_file(
+      "https://figshare.com/ndownloader/files/38247288",
+      dir = "tmp-data", fname = "gen_pos_tuto.rds")  # 2.5 MB
+    
+    bigsnpr::download_plink("tmp-data")   # 6.3 MB
+    bigsnpr::download_plink2("tmp-data")  # 6.6 MB
+    ```
+
+## License {-}
+
+This material is licensed under the [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 
+
+## Author {-}
+
+[Florian Privé](https://privefl.github.io/) is a senior researcher in statistical human genetics, fond of Data Science and an R(cpp) enthusiast. You can find him on [Bluesky](https://bsky.app/profile/privefl.bsky.social) and [GitHub](https://github.com/privefl) as \@privefl.
+
+## Contact {-}
+
+If you want me to add or clarify some content in this documentation, please open [an issue on the GitHub repository of this documentation](https://github.com/privefl/statgen-course/issues).
+
+If you have bug reports or questions specifically on functions of the packages, please open an issue on the corresponding package's repository.
+
+I will always redirect you to GitHub issues if you email me about the packages, so that others can benefit from our discussion.
