@@ -8,3 +8,12 @@ similar-accessor-as-r-matrices
 split-parapply-combine-strategy
 similar-accessor-as-rcpp-matrices
 some-summary-functions-are-already-implemented
+preprocessing
+PLINK
+imputation
+exo-preprocessing
+population-structure
+principal-component-analysis-pca
+exo-pca
+genome-wide-association-study-gwas
+exo-gwas

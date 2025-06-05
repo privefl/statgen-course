@@ -1,4 +1,4 @@
-rmd_files: ["index.Rmd", "input.Rmd", "references.Rmd"]
+rmd_files: ["index.Rmd", "input.Rmd", "preprocessing.Rmd", "popstruct.Rmd", "GWAS.Rmd", "references.Rmd"]
 output_dir: docs
 new_session: yes
 language:
