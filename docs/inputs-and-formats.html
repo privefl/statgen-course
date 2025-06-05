@@ -198,6 +198,32 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>4.1</b> Example</a></li>
 </ul></li>
+<li class="chapter" data-level="5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html"><i class="fa fa-check"></i><b>5</b> Fine-mapping with SuSiE</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#objective"><i class="fa fa-check"></i><b>5.1</b> Objective</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#requirements"><i class="fa fa-check"></i><b>5.1.1</b> Requirements:</a></li>
+<li class="chapter" data-level="5.1.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-libraries"><i class="fa fa-check"></i><b>5.1.2</b> Load libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#simulated-example"><i class="fa fa-check"></i><b>5.2</b> Simulated Example</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-data"><i class="fa fa-check"></i><b>5.2.1</b> Load data</a></li>
+<li class="chapter" data-level="5.2.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#fit-susie-to-the-data"><i class="fa fa-check"></i><b>5.2.2</b> Fit SuSiE to the data</a></li>
+<li class="chapter" data-level="5.2.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#plot-the-susie-results"><i class="fa fa-check"></i><b>5.2.3</b> Plot the SuSiE results</a></li>
+<li class="chapter" data-level="5.2.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#lets-take-a-closer-look-at-which-variants-are-in-the-credible-sets"><i class="fa fa-check"></i><b>5.2.4</b> Let’s take a closer look at which variants are in the credible sets</a></li>
+<li class="chapter" data-level="5.2.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#how-correlated-are-the-variants-in-the-credible-sets"><i class="fa fa-check"></i><b>5.2.5</b> How correlated are the variants in the credible sets?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#real-data"><i class="fa fa-check"></i><b>5.3</b> Real data</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#import-gwas-data"><i class="fa fa-check"></i><b>5.3.1</b> Import GWAS data</a></li>
+<li class="chapter" data-level="5.3.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#find-window-around-loci-of-interest"><i class="fa fa-check"></i><b>5.3.2</b> Find window around loci of interest</a></li>
+<li class="chapter" data-level="5.3.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#create-ld-matrix"><i class="fa fa-check"></i><b>5.3.3</b> Create LD matrix</a></li>
+<li class="chapter" data-level="5.3.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#read-in-data-and-fit-susie"><i class="fa fa-check"></i><b>5.3.4</b> Read in data and fit SuSiE</a></li>
+<li class="chapter" data-level="5.3.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#examine-results"><i class="fa fa-check"></i><b>5.3.5</b> Examine results</a></li>
+<li class="chapter" data-level="5.3.6" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#locus-2"><i class="fa fa-check"></i><b>5.3.6</b> Locus 2</a></li>
+<li class="chapter" data-level="5.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>5.3.7</b> Reflections</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -273,7 +299,7 @@ Package {bigsnpr} also provides functions for directly working on bed files with
 <pre><code>#&gt; Loading required package: bigstatsr</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="inputs-and-formats.html#cb7-1" tabindex="-1"></a>bedfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example.bed&quot;</span>, <span class="at">package =</span> <span class="st">&quot;bigsnpr&quot;</span>)</span>
 <span id="cb7-2"><a href="inputs-and-formats.html#cb7-2" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBed2</span>(bedfile, <span class="at">backingfile =</span> <span class="fu">tempfile</span>()))</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmp42OuNN\\file545c31852bfe.rds&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmp0koADw\\file45984b6321e5.rds&quot;</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="inputs-and-formats.html#cb9-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
 <span id="cb9-2"><a href="inputs-and-formats.html#cb9-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 517 rows and 4542 columns.</code></pre>
@@ -355,7 +381,7 @@ Package {bigsnpr} also provides functions for directly working on bed files with
 #&gt; # ℹ 2 more variables: file_start_position &lt;dbl&gt;, size_in_bytes &lt;int&gt;</code></pre>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="inputs-and-formats.html#cb28-1" tabindex="-1"></a>snp_id <span class="ot">&lt;-</span> <span class="fu">with</span>(var_info[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ], <span class="fu">paste</span>(chromosome, position, allele1, allele2, <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>))</span>
 <span id="cb28-2"><a href="inputs-and-formats.html#cb28-2" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBGEN</span>(bgen, <span class="at">backingfile =</span> <span class="fu">tempfile</span>(), <span class="at">list_snp_id =</span> <span class="fu">list</span>(snp_id)))</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmp42OuNN\\file545c6c265d98.rds&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmp0koADw\\file4598404116bc.rds&quot;</code></pre>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="inputs-and-formats.html#cb30-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
 <span id="cb30-2"><a href="inputs-and-formats.html#cb30-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 500 rows and 10 columns.</code></pre>
