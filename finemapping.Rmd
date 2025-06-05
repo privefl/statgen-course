@@ -1,0 +1,282 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Fine-mapping with SuSiE
+
+## Objective 
+
+SuSiE is a fine-mapping method used to determine which variants are most likely to be causal for a trait. It uses a Bayesian iterative approach to create "credible sets" of SNPs that are likely to each contain a causal variant.
+
+In this tutorial we will first use SuSiE on simulated data where we know the true causal effects. We will then apply it to real data from [@ruth2020using]. 
+
+### Requirements:
+
+- 1000 Genomes European reference panel in plink format (.bim .bed. fam)  
+- GWAS summary statistics from [@ruth2020using] (GWAS catalog accession: GCST90012102)
+- PLINK 1.9
+- R packages susieR, data.table, dplyr, ggplot2, ggrepel, bigsnpr.  
+
+
+<!-- ```{r setup, include=FALSE} -->
+<!-- knitr::opts_chunk$set(eval = FALSE) -->
+<!-- ``` -->
+
+### Load libraries
+```{r}
+library(susieR)
+# library(data.table)
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+library(bigsnpr)
+library(bigreadr)
+set.seed(7236)
+```
+
+# Simulated Example 
+This example uses simulated data to illustrate the use of SuSiE for fine-mapping over stage-wise selection.
+
+
+### Load data
+```{r}
+# This data is included in the susieR package
+dat <- N2finemapping
+str(dat)
+#This simulated data-set has two replicates. Let's focus on the first replicate:
+y <- dat$Y[, 1]
+```
+
+### Fit SuSiE to the data 
+
+Also perform univariate regression so that PIPs can be compared with p-values 
+```{r}
+# Fit SuSiE with L=5 (maximum number of causal variants per replicate) and maximum 10 iterations
+fitted <- susie(dat$X, y, L = 5, max_iter = 10,
+                estimate_residual_variance = TRUE,
+                scaled_prior_variance = 0.2,
+                tol = 1e-3, track_fit = TRUE,
+                compute_univariate_zscore = TRUE,
+                coverage = 0.95, min_abs_corr = 0.1)
+str(fitted)
+
+# Let's have a look at the first iteration (by setting max_iter=1 this will give us the first iteration of fitted)
+fitted.one.iter <- susie(dat$X, y, L = 5, max_iter = 1,
+                         estimate_residual_variance = TRUE,
+                         scaled_prior_variance = 0.2,
+                         tol = 1e-3,
+                         coverage = 0.95, min_abs_corr = 0.1)
+str(fitted.one.iter)
+```
+
+
+### Plot the SuSiE results
+Plot both PIPs from SuSiE as well as the p-values from the regressions.
+```{r}
+b <- dat$true_coef[, 1]
+b[which(b != 0)] <- 1
+
+# Run this code all at once to get side-by-side plots
+par(mfrow = c(1, 3), cex.axis = 0.9)
+# Plot the marginal associations 
+susie_plot(fitted, y = "z", b = b, max_cs = 1, main = "Marginal associations", xlab = "variable (SNP)", col = "#767676")
+# Plot PIPs after the first iteration
+susie_plot(fitted.one.iter, y = "PIP", b = b, max_cs = 0.4, main = "IBSS after 1 iteration", add_legend = FALSE, ylim = c(0, 1), xlab = "variable (SNP)", col = "#767676") 
+# Plot PIPs after convergence 
+susie_plot(fitted, y = "PIP", b = b, max_cs = 0.4, main = "IBSS after 10 iterations", add_legend = FALSE, ylim = c(0, 1), xlab = "variable (SNP)", col = "#767676")
+```
+
+The "true" effects are highlighted in red. The strongest signal by p-value does not contain the causal variant, but is being tagged by two causal variants. The first iteration of SuSiE identifies the strongest signal by p-value, but by the 10th iteration the true causal variants are identified within two credible sets.
+
+### Let's take a closer look at which variants are in the credible sets 
+```{r}
+fitted.one.iter$sets$cs
+fitted$sets$cs
+```
+
+### How correlated are the variants in the credible sets?
+```{r}
+fitted$sets$purity
+```
+
+
+# Real data
+
+In the simulation we used individual level data (genotypes and phenotypes). Often this is not available due to data access restrictions. Here we will use GWAS summary statistics and an LD reference panel. 
+Let's look at bioavailable testosterone in females from [@ruth2020using].
+
+### Import GWAS data
+First, download the GWAS summary statistics from [GWAS catalog](https://www.ebi.ac.uk/gwas/studies/GCST90012102). The accession for this study is GCST90012102. 
+
+```{r}
+tgz <- runonce::download_file(
+  "https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST90012001-GCST90013000/GCST90012102/GCST90012102_buildGRCh37.tsv.gz",
+  dir = "tmp-data")
+readLines(tgz, n = 3)
+```
+
+```{r}
+# import bioavailable testosterone in females
+FT <- fread2(tgz)
+head(FT)
+
+# reference panel to compute LD from
+g1000_bim<-fread("/Users/isabellemcgrath/Library/CloudStorage/OneDrive-Nexus365/Presentations/FineMappingData/g1000_eur/g1000_eur.bim")
+colnames(g1000_bim)<-c("chr", "rsid", "cm_position", "pos", "a1", "a0") 
+
+FT_cleaned <- FT %>%
+  # QC on MAF >= 0.01
+  filter(effect_allele_frequency >= 0.01 & effect_allele_frequency <= 0.99) %>%
+  # rename some columns for compatibility with bigsnpr::snp_match()
+  rename(rsid = variant_id, chr = chromosome, pos = base_pair_location, 
+         a1 = effect_allele, a0 = other_allele) %>%
+  # align alleles to reference panel
+  snp_match(g1000_bim)  # match on chr/pos but can also match on chr/rsid
+```
+
+### Find window around loci of interest
+Let's look at two loci:  
+Locus 1: rs1989147  
+Locus 2: rs34954997, rs11879227, rs34255979  
+These variants in locus 2 are nearby so will be considered as  one locus for the purpose of running SuSiE.  
+```{r}
+## Locus 1 ##
+# find coordinates
+filter(FT_cleaned, rsid=="rs1989147") 
+
+# Extract 1 Mb locus surrounding rs1989147
+locus1 <- filter(FT_cleaned, chr==1, pos > 7909373-5e5, pos < 7909373+5e5) 
+
+# Plot locus
+ggplot(locus1, aes(x=pos, y=-log10(p_value))) +
+  geom_point(alpha=0.8, size=1.3) +
+  geom_label_repel(data=subset(locus1, locus1$rsid=="rs1989147"), 
+                   aes(label=rsid), size=4, max.overlaps = 20) +
+  geom_point(data=subset(locus1, locus1$rsid=="rs1989147"), aes(x=pos, y=-log10(p_value)), color="red", size=2) 
+
+
+## Locus 2 ##
+# Find coordinates
+filter(FT_cleaned, rsid=="rs34954997") 
+filter(FT_cleaned, rsid=="rs11879227") 
+filter(FT_cleaned, rsid=="rs34255979") 
+
+# Extract 1 Mb locus surrounding all of rs34954997, rs11879227, rs34255979
+locus2 <- filter(FT_cleaned, chr==19, pos >45417638-5e5, pos < 46384830+5e5) 
+
+# Plot locus
+ggplot(locus2, aes(x=pos, y=-log10(p_value))) +
+  geom_point(alpha=0.8, size=1.3) +
+  geom_label_repel(data=subset(locus2, locus2$rsid=="rs11879227" | locus2$rsid=="rs34954997" | locus2$rsid=="rs34255979"), 
+                   aes(label=rsid), size=4, max.overlaps = 20) 
+
+
+# Export the SNPs in this locus
+write.table(locus1$rsid, file="/Users/isabellemcgrath/OneDrive - Nexus365/Presentations/FineMappingData/locus1_snps.txt", col.names=F, row.names=F, quote=F)
+write.table(locus2$rsid, file="/Users/isabellemcgrath/OneDrive - Nexus365/Presentations/FineMappingData/locus2_snps.txt", col.names=F, row.names=F, quote=F)
+
+# Export the summary stats for the locus
+write.table(locus1, file="/Users/isabellemcgrath/OneDrive - Nexus365/Presentations/FineMappingData/locus1_sumstats.txt", col.names=T, row.names=F, quote=F)
+write.table(locus2, file="/Users/isabellemcgrath/OneDrive - Nexus365/Presentations/FineMappingData/locus2_sumstats.txt", col.names=T, row.names=F, quote=F)
+
+```
+
+
+### Create LD matrix
+As we are using GWAS summary statistics, we need information of the correlation between variants. Here we are using 1000 Genomes European for convenience. If you are performing this analysis yourself, it is advised to use a larger sample. 
+This requires plink to be installed and the 1000 Genomes European reference panel to be downloaded.
+Note we are calculating "r" not "r2".
+```{bash}
+# Edit as appropriate for your filepaths
+cd /Users/isabellemcgrath/OneDrive\ -\ Nexus365/Presentations/FineMappingData
+./plink --bfile g1000_eur/g1000_eur \
+    --extract locus1_snps.txt \
+    --keep-allele-order \
+    --r square \
+    --out locus1_1000G
+    
+./plink --bfile g1000_eur/g1000_eur \
+    --extract locus2_snps.txt \
+    --keep-allele-order \
+    --r square \
+    --out locus2_1000G    
+```
+
+## Locus 1
+### Read in data and fit SuSiE
+susie_rss() is the function to fit SuSiE using summary statistics. Earlier we used susie() function which requires individual level data.
+```{r}
+# Read in sumstats
+locus1_sumstats<-fread("/Users/isabellemcgrath/OneDrive - Nexus365/Presentations/FineMappingData/locus1_sumstats.txt")
+
+# Read in LD matrix
+locus1_ld<-fread("/Users/isabellemcgrath/OneDrive - Nexus365/Presentations/FineMappingData/locus1_1000G.ld")
+ld.mat = matrix(as.vector(data.matrix(locus1_ld)), nrow=nrow(locus1_sumstats), ncol=nrow(locus1_sumstats))
+
+# Fit SuSiE using sample size from publication (n=188507)
+fitted_rss_1 = susie_rss(bhat = locus1_sumstats$beta, shat = locus1_sumstats$standard_error, R = ld.mat, n=188507)
+```
+
+### Examine results
+```{r}
+# Examine results
+summary(fitted_rss_1)
+
+# Plot
+locus1_sumstats$variable = as.numeric(rownames(locus1_sumstats))
+locus1_susie = merge(x=locus1_sumstats, y=summary(fitted_rss_1)$vars, 
+             by="variable", all.x=TRUE)
+
+ggplot(locus1_susie, aes(x=pos, y=-log10(p_value))) +
+  geom_point(alpha=0.8, size=1.3) +
+  geom_point(data=subset(locus1_susie, locus1_susie$cs!=-1), aes(color=as.factor(cs)), size=4) +
+  geom_label_repel( data=subset(locus1_susie, locus1_susie$cs!=-1), aes(label=rsid), size=2, max.overlaps = 45) 
+
+```
+
+**Challenge 1** *How does the PIP compare to the p-value? Generate a plot to show this.*
+
+
+## Locus 2
+### Read in data and fit SuSiE
+```{r}
+locus2_sumstats<-fread("/Users/isabellemcgrath/OneDrive - Nexus365/Presentations/FineMappingData/locus2_sumstats.txt")
+locus2_ld<-fread("/Users/isabellemcgrath/OneDrive - Nexus365/Presentations/FineMappingData/locus2_1000G.ld")
+ld.mat2 = matrix(as.vector(data.matrix(locus2_ld)), nrow=nrow(locus2_sumstats), ncol=nrow(locus2_sumstats))
+
+fitted_rss_2 = susie_rss(bhat = locus2_sumstats$beta, shat = locus2_sumstats$standard_error, R = ld.mat2, n=188507)
+```
+
+### Examine Results
+```{r}
+# Examine results
+summary(fitted_rss_2)
+
+# Plot results
+locus2_sumstats$variable = as.numeric(rownames(locus2_sumstats))
+locus2_susie = merge(x=locus2_sumstats, y=summary(fitted_rss_2)$vars, 
+             by="variable", all.x=TRUE)
+
+ggplot(locus2_susie, aes(x=pos, y=-log10(p_value))) +
+  geom_point(alpha=0.8, size=1.3) +
+  geom_point(data=subset(locus2_susie, locus2_susie$cs!=-1), aes(color=as.factor(cs)), size=4) +
+  geom_label_repel( data=subset(locus2_susie, locus2_susie$cs!=-1), aes(label=rsid), size=2, max.overlaps = 40) 
+```
+**Challenge 2** *How does the PIP compare to the p-value? Generate a plot to show this.*  
+
+**Challenge 3** *Why might there be no result in fitted_rss_2 for L=2?*  
+
+**Challenge 4** *What if we changed to a 75% credible set for locus 2? Write code to do this and plot. Can we trust this result?*  
+
+### Reflections
+- What can you do next with these results?
+- What is the advantages of using SuSiE over conditional approaches?
+- What assumptions are we making when using SuSiE?
+
+
+## References
+This tutorial was created largely by modifying pre-existing tutorials written by Alesha Hatton (https://cnsgenomics.com/data/teaching/GNGWS23/module1/11_fine-mapping.html) and Gao Wang (https://stephenslab.github.io/susie-paper/manuscript_results/pedagogical_example.html). Thank you Alesha and Gao for your excellent tutorials! 
+
+

@@ -1,7 +1,7 @@
 --- 
 title: "Statistical Human Genetics course using R"
 subtitle: "Originally a SMARTbiomed Summer course"
-author: "Florian Privé"
+author: "Florian Privé & Isabelle McGrath"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
@@ -29,7 +29,7 @@ source("spelling-check.R")
 
 - Install R (>= 3.4) and RStudio (>= 1.2),
 
-- Install recent versions of {bigstatsr} and {bigsnpr} (e.g. from CRAN),
+- Install recent versions of {bigstatsr}, {bigsnpr}, and {susieR} (e.g. from CRAN),
 
 - Download the data used in the tutorials:
     ```{r, results='hold'}
@@ -67,7 +67,7 @@ This material is licensed under the [Creative Commons Attribution-ShareAlike 3.0
 
 ## Contact {-}
 
-If you want me to add or clarify some content in this documentation, please open [an issue on the GitHub repository of this documentation](https://github.com/privefl/statgen-course/issues).
+If you want me to add or clarify some content in this course, please open [an issue on the GitHub repository of this course](https://github.com/privefl/statgen-course/issues).
 
 If you have bug reports or questions specifically on functions of the packages, please open an issue on the corresponding package's repository.
 
