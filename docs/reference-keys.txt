@@ -8,6 +8,7 @@ similar-accessor-as-r-matrices
 split-parapply-combine-strategy
 similar-accessor-as-rcpp-matrices
 some-summary-functions-are-already-implemented
+exercise
 preprocessing
 PLINK
 imputation
