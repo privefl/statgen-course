@@ -301,7 +301,7 @@ div.csl-indent {
 <pre><code>#&gt; Loading required package: bigstatsr</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="inputs-and-formats.html#cb7-1" tabindex="-1"></a>bedfile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example.bed&quot;</span>, <span class="at">package =</span> <span class="st">&quot;bigsnpr&quot;</span>)</span>
 <span id="cb7-2"><a href="inputs-and-formats.html#cb7-2" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBed2</span>(bedfile, <span class="at">backingfile =</span> <span class="fu">tempfile</span>()))  <span class="co"># get path to new file</span></span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpEFjk25\\file6df477b143a0.rds&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpMLAoDu\\file4e44c6f70bb.rds&quot;</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="inputs-and-formats.html#cb9-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)  <span class="co"># can then read in the bigSNP object in any R session</span></span>
 <span id="cb9-2"><a href="inputs-and-formats.html#cb9-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 517 rows and 4542 columns.</code></pre>
@@ -387,7 +387,7 @@ div.csl-indent {
 <pre><code>#&gt;  [1] &quot;01_1001_A_G&quot; &quot;01_2000_A_G&quot; &quot;01_2001_A_G&quot; &quot;01_3000_A_G&quot; &quot;01_3001_A_G&quot;
 #&gt;  [6] &quot;01_4000_A_G&quot; &quot;01_4001_A_G&quot; &quot;01_5000_A_G&quot; &quot;01_5001_A_G&quot; &quot;01_6000_A_G&quot;</code></pre>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="inputs-and-formats.html#cb30-1" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBGEN</span>(bgen, <span class="at">backingfile =</span> <span class="fu">tempfile</span>(), <span class="at">list_snp_id =</span> <span class="fu">list</span>(snp_id)))</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpEFjk25\\file6df41a5f73d7.rds&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpMLAoDu\\file4e4c6963e.rds&quot;</code></pre>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="inputs-and-formats.html#cb32-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
 <span id="cb32-2"><a href="inputs-and-formats.html#cb32-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 500 rows and 10 columns.</code></pre>

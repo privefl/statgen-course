@@ -7,7 +7,7 @@ editor_options:
 # Preprocessing
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("monozygotic", "XGBoost")
+WORDS_TO_IGNORE <- c("monozygotic", "XGBoost", "QCed")
 source("knitr-options.R")
 source("spelling-check.R")
 library(bigsnpr)
@@ -17,7 +17,7 @@ In this section, I talk about conversion, quality control and imputation. Conver
 
 ## Conversion and quality control of PLINK files {#PLINK}
 
-PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in {bigsnpr}, for ease of use directly from `r FA_ICON_R`:
+PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in {bigsnpr}, for ease of use directly from R:
 
 - `download_plink()` and `download_plink2()` for downloading the latest stable versions of PLINK 1.9 and 2.0 [@chang2015second].
 
@@ -29,14 +29,14 @@ PLINK is very efficient for conversion and quality control of multiple formats, 
 	
 - `snp_plinkRmSamples()` for producing new PLINK files after having removed some individuals.
 
-- For any other PLINK function, I recommend calling PLINK directly from `r FA_ICON_R` thanks to system calls and package {glue}, e.g.
+- For any other PLINK function, I prefer calling PLINK directly from R thanks to system calls and package {glue}, e.g.
     ```{r}
     plink <- download_plink("tmp-data")
     system(glue::glue(
       "{plink} --version"
     ))
     ```
-
+    
 
 ## Imputation
 
@@ -72,6 +72,19 @@ system(glue::glue(
 
 As you can see from PLINK output, this data contains 1401 individuals and 500,000 variants, with a small percentage of missing values (2.2%).
 
+***
+
+:::: {.infobox .exo}
+Perform some QC with PLINK then read the QCed data as a bigSNP object in R.
+::::
+
+:::: {.infobox .caution}
+Make sure to look at the documentation of functions before using them.
+::::
+
+<details>
+<summary>Click to see solution</summary>
+
 We can then perform some quality control using
 ```{r, include=FALSE}
 file.remove(paste0("tmp-data/GWAS_data_sorted_QC", 
@@ -80,16 +93,29 @@ file.remove(paste0("tmp-data/GWAS_data_sorted_QC",
 ```{r}
 bedfile2 <- snp_plinkQC(plink, "tmp-data/GWAS_data_sorted")
 ```
-404,663 variants are remaining after this quality control; we can then read this data into an R object called `bigSNP` using
+404,663 variants are remaining after this quality control.
+
+:::: {.infobox .question}
+How to control the amount of memory and number of threads used by PLINK?
+
+Have a search at https://www.cog-genomics.org/plink/1.9/ using the quick index search at the bottom of the sidebar on the left.
+::::
+
+We can then read this data into an R object called `bigSNP` using
 ```{r}
 (rds <- snp_readBed2(bedfile2, ncores = nb_cores()))
 obj.bigsnp <- snp_attach(rds)
 str(obj.bigsnp, max.level = 2)
 ```
 
+</details>
+
+***
+
 We can read and store some extra information on the individuals (e.g. some phenotypes):
 ```{r}
 clinical <- bigreadr::fread2("tmp-data/GWAS_clinical.csv")
+str(clinical)
 # Get the same order as for the genotypes
 # (to match over multiple columns, use `vctrs::vec_match()`)
 ord <- match(obj.bigsnp$fam$family.ID, clinical$FamID)
@@ -100,10 +126,19 @@ stopifnot(all.equal(obj.bigsnp$fam$sex, pheno$sex))
 obj.bigsnp$fam <- cbind(obj.bigsnp$fam, pheno[-c(1, 3)])
 ```
 
-Recall that this data contains some missing values; you can get some counts per variant using
+***
+
+Recall that this data contains some missing values.
+
+:::: {.infobox .exo}
+Look at the number of missing values per variant using `big_counts()` and impute the data using `snp_fastImputeSimple()`.
+::::
+
+<details>
+<summary>Click to see solution</summary>
 ```{r}
 G <- obj.bigsnp$genotypes
-counts <- big_counts(G)
+counts <- big_counts(G)  # counts per variant
 counts[, 1:8]
 hist(nbNA <- counts[4, ])
 ```
@@ -115,13 +150,20 @@ big_counts(G2, ind.col = 1:8)
 big_counts(G, ind.col = 1:8)
 ```
 
+:::: {.infobox .caution}
 `G` still has missing values, but `G2` does not. Note that both use the same underlying data (the same binary file `.bk` on disk), the difference is that they use a different code to decode the underlying data:
+::::
+
 ```{r}
 G$code256
 G2$code256
 ```
 
-To always use `G2` (with the new `code256`) and the extended `obj.bigsnp$fam`, you need to save `obj.bigsnp` again using
+</details>
+
+***
+
+To always use `G2` (with the new `code256`) and the extended `obj.bigsnp$fam`, you need to save the new `obj.bigsnp` using
 ```{r}
 obj.bigsnp$genotypes <- G2
 snp_save(obj.bigsnp)
