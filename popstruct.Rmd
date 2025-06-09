@@ -18,8 +18,11 @@ PCA on the genotype matrix can be used to capture population structure.
 However, PCA can actually capture different kinds of structure [@prive2020efficient]:
 
 - population structure (what we want),
-- LD structure, when there are two many correlated variants (e.g. within long-range LD regions) and not enough population structure (see [this vignette](https://privefl.github.io/bigsnpr/articles/how-to-PCA.html)),
+
+- Linkage Disequilibrium (LD) structure, when there are two many correlated variants (e.g. within long-range LD regions) and not enough population structure (see [this vignette](https://privefl.github.io/bigsnpr/articles/how-to-PCA.html)),
+
 - relatedness structure, when there are related individuals who usually cluster together in later PCs,
+
 - noise, basically just circles when looking at PC scores.
 
 Population structure is the second main topic of my research work (after polygenic scores).
@@ -32,13 +35,75 @@ Population structure is the second main topic of my research work (after polygen
 
 - In @prive2021high and @prive2021using, I showed how to use PCA for ancestry inference, including grouping individuals in homogeneous ancestry groups, and inferring ancestry proportions from genotype data but also from allele frequencies only (see [this vignette](https://privefl.github.io/bigsnpr/articles/ancestry.html)).
 
-
-## Example {#exo-pca}
-
-There can be many steps to properly perform a PCA, which I try to showcase in the following example.
-**You can find another detailed example of how to conduct a PCA in [this vignette](https://privefl.github.io/bigsnpr/articles/bedpca.html).**
+## The problem with LD
 
 Let us reuse the data prepared in \@ref(exo-preprocessing).
+
+```{r, warning=FALSE}
+library(ggplot2)
+library(bigsnpr)
+
+bigsnp <- snp_attach("tmp-data/GWAS_data_sorted_QC.rds")
+G <- bigsnp$genotypes
+NCORES <- nb_cores()
+```
+
+:::: {.infobox .exo}
+Use `big_randomSVD()` to perform a SVD/PCA on `G`. Do not forget to use some scaling (at least some centering). Look at PC scores and PC loadings with `plot()`. What do you see for PC4?
+::::
+
+<details>
+<summary>Click to see solution</summary>
+
+```{r}
+svd <- runonce::save_run(
+  big_randomSVD(G, fun.scaling = big_scale(), ncores = NCORES),
+  file = "tmp-data/svd_with_ld.rds")
+plot(svd)
+plot(svd, type = "scores")
+plot(svd, type = "scores", scores = 3:4)
+plot(svd, type = "loadings", loadings = 1:10, coef = 0.4)
+```
+
+What is going on with PC4?
+
+```{r}
+the_max <- which.max(abs(svd$v[, 4]))
+plot(svd, type = "scores", scores = 3:4) +
+  aes(color = as.factor(G[, the_max])) + labs(color = "One geno")
+```
+
+PC4 is basically capturing variation in a block of LD and is then very correlated to genetic variants in this region. You really want to avoid using this type of PCs e.g. as covariates in GWAS because it will cause some collider bias.
+
+</details>
+
+***
+
+To avoid capturing LD in PCA, it has been recommended to perform some pruning (removing variants too correlated with one another) AND remove some known list of long-range LD regions (that can be captured by PCA, even after a stringent pruning step). But this is not enough... This is exactly what the UK Biobank did, and this how the PC loadings of the 40 PCs they provide look like:
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/loadings-ukbb.jpeg?raw=true")
+```
+
+**I recommend using only the first 16 PCs provided by the UK Biobank [@prive2020efficient].**
+
+
+## Best practices for PCA of genetic data
+
+There can be many steps to properly perform a PCA; you can find more about this in @prive2020efficient.
+Let's have a look at [the corresponding tutorial from the bigsnpr website](https://privefl.github.io/bigsnpr/articles/bedpca.html).
+
+
+## Exercise {#exo-pca}
+
+:::: {.infobox .exo}
+Let us reuse the data prepared in \@ref(exo-preprocessing).
+
+Follow the previous tutorial to perform a PCA for this data, either using `snp_*` functions on the bigSNP object or `bed_*` functions on the bed file mapped.
+::::
+
+<details>
+<summary>Click to see solution</summary>
 
 First, let us get an idea of the relatedness in the data using
 ```{r, results='hide'}
@@ -66,12 +131,9 @@ All the code that follows could be run on the bigSNP object we made before. Neve
 ```{r}
 # Memory-map a bed file directly
 obj.bed <- bed("tmp-data/GWAS_data_sorted_QC.bed")
-str(obj.bed, max.level = 2)
 ```
 
 ```{r}
-# If you expect individuals to all come from the same continent,
-# use e.g. k=10, otherwise you can try k=25.
 obj.svd <- runonce::save_run(
   bed_autoSVD(obj.bed, k = 12, ncores = NCORES),
   file = "tmp-data/PCA_GWAS_data.rds")
@@ -113,6 +175,10 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
 }), nrow = 2, legend_ratio = 0.2, title_ratio = 0)
 ```
 
+</details>
+
+## Ancestry inference
+
 It would be nice if we could get a better sense of the ancestry of these individuals.
 To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using.
 
@@ -139,7 +205,7 @@ correction <- c(1, 1, 1, 1.008, 1.021, 1.034, 1.052, 1.074, 1.099,
 # match variants between the two datasets
 library(dplyr)
 matched <- obj.bed$map %>%
-  transmute(chr = chromosome, pos = physical.pos, a1 = allele1, a0 = allele2) %>% 
+  transmute(chr = chromosome, pos = physical.pos, a1 = allele1, a0 = allele2) %>%
   mutate(beta = 1) %>%
   snp_match(all_freq[1:5]) %>%
   print()
@@ -147,7 +213,7 @@ matched <- obj.bed$map %>%
 # further subsetting on missing values
 counts <- bed_counts(obj.bed, ind.col = matched$`_NUM_ID_.ss`, ncores = NCORES)
 # hist(nb_na <- counts[4, ])
-ind <- which(counts[4, ] < (nrow(obj.bed) * 0.05))        
+ind <- which(counts[4, ] < (nrow(obj.bed) * 0.05))
 
 # project individuals (divided by 2) onto the PC space
 PROJ <- as.matrix(projection[matched$`_NUM_ID_`[ind], -(1:5)])
@@ -193,9 +259,4 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
 ```
 
 These are mostly European individuals.
-PC4-PC6 are definitively a bit odd. 
-
-
-:::: {.infobox .exo}
-Adapt all the previous code to rerun it on the bigSNP object we made before (instead of the bed object we have used here).
-::::
+PC4-PC6 are definitively a bit odd.

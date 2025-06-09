@@ -15,7 +15,10 @@ imputation
 exo-preprocessing
 population-structure
 principal-component-analysis-pca
+the-problem-with-ld
+best-practices-for-pca-of-genetic-data
 exo-pca
+ancestry-inference
 genome-wide-association-study-gwas
 exo-gwas
 fine-mapping-with-susie
