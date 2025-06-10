@@ -281,7 +281,8 @@ Function <code>big_univLinReg()</code> should be very fast, while <code>big_univ
 <span id="cb123-3"><a href="genome-wide-association-study-gwas.html#cb123-3" tabindex="-1"></a>                 <span class="at">covar.train =</span> covar[ind.gwas, ], <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
 <span id="cb123-4"><a href="genome-wide-association-study-gwas.html#cb123-4" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/GWAS_CAD.rds&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;    user  system elapsed 
-#&gt;    0.14    0.12  155.30</code></pre>
+#&gt;    0.17    0.14  157.05 
+#&gt; Code finished running at 2025-06-10 13:44:27 CEST</code></pre>
 <div class="infobox info">
 <p>This takes about two minutes with 4 cores on my laptop. Note that <code>big_univLinReg()</code> takes two seconds only, and should give very similar p-values, if you just need something quick.</p>
 </div>

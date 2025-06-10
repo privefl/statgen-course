@@ -123,19 +123,34 @@ Let's look at bioavailable testosterone in females from [@ruth2020using].
 First, download the GWAS summary statistics from [GWAS catalog](https://www.ebi.ac.uk/gwas/studies/GCST90012102). The accession for this study is GCST90012102. 
 
 ```{r}
+## real data
+# tgz <- runonce::download_file(
+#   "https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST90012001-GCST90013000/GCST90012102/GCST90012102_buildGRCh37.tsv.gz",
+#   dir = "tmp-data")  # 419 MB
+
+## small subset, for the tutorial
 tgz <- runonce::download_file(
-  "https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST90012001-GCST90013000/GCST90012102/GCST90012102_buildGRCh37.tsv.gz",
-  dir = "tmp-data")
+  "https://figshare.com/ndownloader/files/55262768", 
+  dir = "tmp-data", fname = "FT_sumstats_small.tsv.gz")
+
 readLines(tgz, n = 3)
 ```
 
+And some reference panel to compute LD from:
+
 ```{r, warning=FALSE}
-# reference panel to compute LD from
+## real data
+# gzip <- runonce::download_file(
+#   "https://vu.data.surfsara.nl/index.php/s/VZNByNwpD8qqINe/download",
+#   fname = "g1000_eur.zip", dir = "tmp-data")  # 488 MB
+
+## small subset, for the tutorial
 gzip <- runonce::download_file(
-  "https://vu.data.surfsara.nl/index.php/s/VZNByNwpD8qqINe/download",
-  fname = "g1000_eur.zip", dir = "tmp-data")  # 488 MB
+  "https://figshare.com/ndownloader/files/55263098",
+  fname = "g1000_eur_small.zip", dir = "tmp-data")
+
 unzip(gzip, exdir = "tmp-data", overwrite = FALSE)
-g1000_map <- fread2("tmp-data/g1000_eur.bim", select = c(1:2, 4:6),
+g1000_map <- fread2("tmp-data/g1000_eur_small.bim", select = c(1:2, 4:6),
                     col.names = c("chr", "rsid", "pos", "a1", "a0"))
 ```
 
@@ -195,7 +210,7 @@ write(locus1$rsid, file = locus1_snps_txt)
 # Compute correlation matrix (LD) with PLINK
 plink <- download_plink("tmp-data")
 system(glue::glue(
-  "{plink} --bfile tmp-data/g1000_eur",
+  "{plink} --bfile tmp-data/g1000_eur_small",
   " --extract {locus1_snps_txt}",
   " --keep-allele-order",
   " --r square",  # correlations as a square matrix, not squared correlations
