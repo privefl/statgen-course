@@ -18,7 +18,7 @@ This tutorial was created largely by modifying pre-existing tutorials written by
 
 ## Objective 
 
-SuSiE is a fine-mapping method used to determine which variants are most likely to be causal for a trait. It uses a Bayesian iterative approach to create "credible sets" of SNPs that are likely to each contain a causal variant.
+SuSiE [@wang2020simple; @zou2022fine] is a fine-mapping method used to determine which variants are most likely to be causal for a trait. It uses a Bayesian iterative approach to create "credible sets" of SNPs that are likely to each contain a causal variant.
 
 In this tutorial we will first use SuSiE on simulated data where we know the true causal effects. We will then apply it to real data from [@ruth2020using]. 
 

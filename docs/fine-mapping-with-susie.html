@@ -253,7 +253,7 @@ div.csl-indent {
 <p>This tutorial was created largely by modifying pre-existing tutorials written by Alesha Hatton (<a href="https://cnsgenomics.com/data/teaching/GNGWS23/module1/11_fine-mapping.html" class="uri">https://cnsgenomics.com/data/teaching/GNGWS23/module1/11_fine-mapping.html</a>) and Gao Wang (<a href="https://stephenslab.github.io/susie-paper/manuscript_results/pedagogical_example.html" class="uri">https://stephenslab.github.io/susie-paper/manuscript_results/pedagogical_example.html</a>). Thank you Alesha and Gao for your excellent tutorials!</p>
 <div id="objective" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> Objective<a href="fine-mapping-with-susie.html#objective" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>SuSiE is a fine-mapping method used to determine which variants are most likely to be causal for a trait. It uses a Bayesian iterative approach to create “credible sets” of SNPs that are likely to each contain a causal variant.</p>
+<p>SuSiE <span class="citation">(<a href="#ref-wang2020simple">Wang, Sarkar, Carbonetto, &amp; Stephens, 2020</a>; <a href="#ref-zou2022fine">Zou, Carbonetto, Wang, &amp; Stephens, 2022</a>)</span> is a fine-mapping method used to determine which variants are most likely to be causal for a trait. It uses a Bayesian iterative approach to create “credible sets” of SNPs that are likely to each contain a causal variant.</p>
 <p>In this tutorial we will first use SuSiE on simulated data where we know the true causal effects. We will then apply it to real data from <span class="citation">(<a href="#ref-ruth2020using">Ruth et al., 2020</a>)</span>.</p>
 <div id="requirements" class="section level3 hasAnchor" number="5.1.1">
 <h3><span class="header-section-number">5.1.1</span> Requirements:<a href="fine-mapping-with-susie.html#requirements" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -293,7 +293,7 @@ div.csl-indent {
 #&gt;  $ Y                : num [1:574, 1:2] 1.0446 -1.3656 -0.0235 -0.4344 0.4681 ...
 #&gt;  $ allele_freq      : num [1:1002, 1] 0.1483 0.0209 0.1368 0.2134 0.5627 ...
 #&gt;  $ V                : num [1:2, 1:2] 1.344 -0.0336 -0.0336 1.2541</code></pre>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="fine-mapping-with-susie.html#cb131-1" tabindex="-1"></a><span class="co">#This simulated data-set has two replicates. Let&#39;s focus on the first replicate:</span></span>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="fine-mapping-with-susie.html#cb131-1" tabindex="-1"></a><span class="co"># This simulated data-set has two replicates. Let&#39;s focus on the first replicate:</span></span>
 <span id="cb131-2"><a href="fine-mapping-with-susie.html#cb131-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> dat<span class="sc">$</span>Y[, <span class="dv">1</span>]</span></code></pre></div>
 </div>
 <div id="fit-susie-to-the-data" class="section level3 hasAnchor" number="5.2.2">
@@ -423,12 +423,12 @@ Let’s look at bioavailable testosterone in females from <span class="citation"
 <div id="import-gwas-data" class="section level3 hasAnchor" number="5.3.1">
 <h3><span class="header-section-number">5.3.1</span> Import GWAS data<a href="fine-mapping-with-susie.html#import-gwas-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, download the GWAS summary statistics from <a href="https://www.ebi.ac.uk/gwas/studies/GCST90012102">GWAS catalog</a>. The accession for this study is GCST90012102.</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="fine-mapping-with-susie.html#cb146-1" tabindex="-1"></a><span class="do">## real data</span></span>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="fine-mapping-with-susie.html#cb146-1" tabindex="-1"></a><span class="co"># real data</span></span>
 <span id="cb146-2"><a href="fine-mapping-with-susie.html#cb146-2" tabindex="-1"></a><span class="co"># tgz &lt;- runonce::download_file(</span></span>
 <span id="cb146-3"><a href="fine-mapping-with-susie.html#cb146-3" tabindex="-1"></a><span class="co">#   &quot;https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST90012001-GCST90013000/GCST90012102/GCST90012102_buildGRCh37.tsv.gz&quot;,</span></span>
 <span id="cb146-4"><a href="fine-mapping-with-susie.html#cb146-4" tabindex="-1"></a><span class="co">#   dir = &quot;tmp-data&quot;)  # 419 MB</span></span>
 <span id="cb146-5"><a href="fine-mapping-with-susie.html#cb146-5" tabindex="-1"></a></span>
-<span id="cb146-6"><a href="fine-mapping-with-susie.html#cb146-6" tabindex="-1"></a><span class="do">## small subset, for the tutorial</span></span>
+<span id="cb146-6"><a href="fine-mapping-with-susie.html#cb146-6" tabindex="-1"></a><span class="co"># small subset, for the tutorial</span></span>
 <span id="cb146-7"><a href="fine-mapping-with-susie.html#cb146-7" tabindex="-1"></a>tgz <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
 <span id="cb146-8"><a href="fine-mapping-with-susie.html#cb146-8" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/55262768&quot;</span>, </span>
 <span id="cb146-9"><a href="fine-mapping-with-susie.html#cb146-9" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;FT_sumstats_small.tsv.gz&quot;</span>)</span>
@@ -438,12 +438,12 @@ Let’s look at bioavailable testosterone in females from <span class="citation"
 #&gt; [2] &quot;rs72858371\t1\t6409383\tT\tC\t0.986224\t0.977552\t-0.00615364\t0.0108886\t0.64&quot;                                                                     
 #&gt; [3] &quot;rs72633437\t1\t6409494\tC\tT\t0.906138\t0.988959\t0.00289667\t0.00434703\t0.39&quot;</code></pre>
 <p>And some reference panel to compute LD from:</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="fine-mapping-with-susie.html#cb148-1" tabindex="-1"></a><span class="do">## real data</span></span>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="fine-mapping-with-susie.html#cb148-1" tabindex="-1"></a><span class="co"># real data</span></span>
 <span id="cb148-2"><a href="fine-mapping-with-susie.html#cb148-2" tabindex="-1"></a><span class="co"># gzip &lt;- runonce::download_file(</span></span>
 <span id="cb148-3"><a href="fine-mapping-with-susie.html#cb148-3" tabindex="-1"></a><span class="co">#   &quot;https://vu.data.surfsara.nl/index.php/s/VZNByNwpD8qqINe/download&quot;,</span></span>
 <span id="cb148-4"><a href="fine-mapping-with-susie.html#cb148-4" tabindex="-1"></a><span class="co">#   fname = &quot;g1000_eur.zip&quot;, dir = &quot;tmp-data&quot;)  # 488 MB</span></span>
 <span id="cb148-5"><a href="fine-mapping-with-susie.html#cb148-5" tabindex="-1"></a></span>
-<span id="cb148-6"><a href="fine-mapping-with-susie.html#cb148-6" tabindex="-1"></a><span class="do">## small subset, for the tutorial</span></span>
+<span id="cb148-6"><a href="fine-mapping-with-susie.html#cb148-6" tabindex="-1"></a><span class="co"># small subset, for the tutorial</span></span>
 <span id="cb148-7"><a href="fine-mapping-with-susie.html#cb148-7" tabindex="-1"></a>gzip <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
 <span id="cb148-8"><a href="fine-mapping-with-susie.html#cb148-8" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/55263098&quot;</span>,</span>
 <span id="cb148-9"><a href="fine-mapping-with-susie.html#cb148-9" tabindex="-1"></a>  <span class="at">fname =</span> <span class="st">&quot;g1000_eur_small.zip&quot;</span>, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span>
@@ -492,9 +492,8 @@ Let’s look at bioavailable testosterone in females from <span class="citation"
 <li><p>Locus 1: rs1989147.</p></li>
 <li><p>Locus 2: rs34954997, rs11879227, rs34255979. These variants in locus 2 are nearby so will be considered as one locus for the purpose of running SuSiE.</p></li>
 </ul>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="fine-mapping-with-susie.html#cb155-1" tabindex="-1"></a><span class="do">## Locus 1 ##</span></span>
-<span id="cb155-2"><a href="fine-mapping-with-susie.html#cb155-2" tabindex="-1"></a><span class="co"># find coordinates</span></span>
-<span id="cb155-3"><a href="fine-mapping-with-susie.html#cb155-3" tabindex="-1"></a><span class="fu">filter</span>(FT_cleaned, rsid <span class="sc">==</span> <span class="st">&quot;rs1989147&quot;</span>)  <span class="co"># on chr1</span></span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="fine-mapping-with-susie.html#cb155-1" tabindex="-1"></a><span class="co"># find coordinates</span></span>
+<span id="cb155-2"><a href="fine-mapping-with-susie.html#cb155-2" tabindex="-1"></a><span class="fu">filter</span>(FT_cleaned, rsid <span class="sc">==</span> <span class="st">&quot;rs1989147&quot;</span>)  <span class="co"># on chr1</span></span></code></pre></div>
 <pre><code>#&gt;   chr     pos a0 a1 variant_id effect_allele_frequency imputation_quality
 #&gt; 1   1 7909373  C  T  rs1989147                0.806791            0.97999
 #&gt;         beta standard_error p_value _NUM_ID_.ss      rsid _NUM_ID_
@@ -536,7 +535,7 @@ Note we are calculating “r” not “r2”.</p>
 #&gt; Logging to tmp-data/ld_locus1.log.
 #&gt; Options in effect:
 #&gt;   --bfile tmp-data/g1000_eur_small
-#&gt;   --extract C:\Users\au639593\AppData\Local\Temp\Rtmps999SB\file7dc47c92190f.txt
+#&gt;   --extract C:\Users\au639593\AppData\Local\Temp\RtmpuYruXg\file81a446c45e94.txt
 #&gt;   --keep-allele-order
 #&gt;   --out tmp-data/ld_locus1
 #&gt;   --r square
@@ -631,6 +630,12 @@ Note we are calculating “r” not “r2”.</p>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-ruth2020using" class="csl-entry">
 Ruth, K.S., Day, F.R., Tyrrell, J., Thompson, D.J., Wood, A.R., Mahajan, A., et al. (2020). Using human genetics to understand the disease impacts of testosterone in men and women. <em>Nature Medicine</em>, <em>26</em>, 252–258.
+</div>
+<div id="ref-wang2020simple" class="csl-entry">
+Wang, G., Sarkar, A., Carbonetto, P., &amp; Stephens, M. (2020). A simple new approach to variable selection in regression, with application to genetic fine mapping. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em>, <em>82</em>, 1273–1300.
+</div>
+<div id="ref-zou2022fine" class="csl-entry">
+Zou, Y., Carbonetto, P., Wang, G., &amp; Stephens, M. (2022). Fine-mapping from summary data with the <span>“sum of single effects”</span> model. <em>PLoS Genetics</em>, <em>18</em>, e1010299.
 </div>
 </div>
             </section>

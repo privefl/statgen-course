@@ -345,26 +345,7 @@ Click to see solution
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="population-structure.html#cb100-1" tabindex="-1"></a>obj.svd <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
 <span id="cb100-2"><a href="population-structure.html#cb100-2" tabindex="-1"></a>  <span class="fu">bed_autoSVD</span>(obj.bed, <span class="at">k =</span> <span class="dv">12</span>, <span class="at">ncores =</span> NCORES),</span>
 <span id="cb100-3"><a href="population-structure.html#cb100-3" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>)</span></code></pre></div>
-<pre><code>#&gt; Discarding 11041 variants with MAC &lt; 10 or MAF &lt; 0.02.
-#&gt; 
-#&gt; Phase of clumping (on MAC) at r^2 &gt; 0.2.. keep 109328 variants.
-#&gt; 
-#&gt; Iteration 1:
-#&gt; Computing SVD..
-#&gt; 399 outlier variants detected..
-#&gt; 3 long-range LD regions detected..
-#&gt; 
-#&gt; Iteration 2:
-#&gt; Computing SVD..
-#&gt; 10 outlier variants detected..
-#&gt; 0 long-range LD region detected..
-#&gt; 
-#&gt; Iteration 3:
-#&gt; Computing SVD..
-#&gt; 0 outlier variant detected..
-#&gt; 
-#&gt; Converged!
-#&gt;    user  system elapsed 
+<pre><code>#&gt;    user  system elapsed 
 #&gt;   80.42    1.28  392.85 
 #&gt; Code finished running at 2025-06-10 13:41:05 CEST</code></pre>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="population-structure.html#cb102-1" tabindex="-1"></a><span class="fu">plot</span>(obj.svd)</span></code></pre></div>
