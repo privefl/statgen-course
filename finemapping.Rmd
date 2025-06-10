@@ -50,7 +50,7 @@ This example uses simulated data to illustrate the use of SuSiE for fine-mapping
 # This data is included in the susieR package
 dat <- N2finemapping
 str(dat)
-#This simulated data-set has two replicates. Let's focus on the first replicate:
+# This simulated data-set has two replicates. Let's focus on the first replicate:
 y <- dat$Y[, 1]
 ```
 
@@ -123,12 +123,12 @@ Let's look at bioavailable testosterone in females from [@ruth2020using].
 First, download the GWAS summary statistics from [GWAS catalog](https://www.ebi.ac.uk/gwas/studies/GCST90012102). The accession for this study is GCST90012102. 
 
 ```{r}
-## real data
+# real data
 # tgz <- runonce::download_file(
 #   "https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST90012001-GCST90013000/GCST90012102/GCST90012102_buildGRCh37.tsv.gz",
 #   dir = "tmp-data")  # 419 MB
 
-## small subset, for the tutorial
+# small subset, for the tutorial
 tgz <- runonce::download_file(
   "https://figshare.com/ndownloader/files/55262768", 
   dir = "tmp-data", fname = "FT_sumstats_small.tsv.gz")
@@ -139,12 +139,12 @@ readLines(tgz, n = 3)
 And some reference panel to compute LD from:
 
 ```{r, warning=FALSE}
-## real data
+# real data
 # gzip <- runonce::download_file(
 #   "https://vu.data.surfsara.nl/index.php/s/VZNByNwpD8qqINe/download",
 #   fname = "g1000_eur.zip", dir = "tmp-data")  # 488 MB
 
-## small subset, for the tutorial
+# small subset, for the tutorial
 gzip <- runonce::download_file(
   "https://figshare.com/ndownloader/files/55263098",
   fname = "g1000_eur_small.zip", dir = "tmp-data")
@@ -179,7 +179,6 @@ Let's look at two loci:
 - Locus 2: rs34954997, rs11879227, rs34255979. These variants in locus 2 are nearby so will be considered as one locus for the purpose of running SuSiE.
 
 ```{r}
-## Locus 1 ##
 # find coordinates
 filter(FT_cleaned, rsid == "rs1989147")  # on chr1
 
