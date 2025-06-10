@@ -201,6 +201,7 @@ div.csl-indent {
 <li class="chapter" data-level="4" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html"><i class="fa fa-check"></i><b>4</b> Genome-Wide Association Study (GWAS)</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>4.1</b> Example</a></li>
+<li class="chapter" data-level="4.2" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#regenie"><i class="fa fa-check"></i><b>4.2</b> REGENIE</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html"><i class="fa fa-check"></i><b>5</b> Fine-mapping with SuSiE</a>
 <ul>
@@ -260,14 +261,15 @@ Function <code>big_univLinReg()</code> should be very fast, while <code>big_univ
 <p>Let us reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">2.3</a> and the PCs in <a href="population-structure.html#exo-pca">3.4</a>.</p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="genome-wide-association-study-gwas.html#cb117-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
 <pre><code>#&gt; Loading required package: bigstatsr</code></pre>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="genome-wide-association-study-gwas.html#cb119-1" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="genome-wide-association-study-gwas.html#cb119-1" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
+<span id="cb119-2"><a href="genome-wide-association-study-gwas.html#cb119-2" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
 <div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="genome-wide-association-study-gwas.html#cb120-1" tabindex="-1"></a>obj.svd <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>)</span>
 <span id="cb120-2"><a href="genome-wide-association-study-gwas.html#cb120-2" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">predict</span>(obj.svd)</span></code></pre></div>
 <p>The clinical data includes age, sex, high-density lipoprotein (HDL)-cholesterol (<code>hdl</code>), low-density lipoprotein (LDL)-cholesterol (<code>ldl</code>), triglycerides (<code>tg</code>) and coronary artery disease status (<code>CAD</code>).</p>
 <p>For the set of covariates, we will use sex, age, and the first 6 PCs:</p>
 <div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="genome-wide-association-study-gwas.html#cb121-1" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">as.matrix</span>(obj.bigsnp<span class="sc">$</span>fam[<span class="fu">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>)]), PC[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>])</span></code></pre></div>
 <div class="infobox caution">
-<p>You probably should not account for other information such as cholesterol as they are heritable covariates <span class="citation">(<a href="#ref-aschard2015adjusting">Aschard, Vilhjálmsson, Joshi, Price, &amp; Kraft, 2015</a>; <a href="#ref-day2016robust">Day, Loh, Scott, Ong, &amp; Perry, 2016</a>)</span>.</p>
+<p>You probably should not account for other information such as cholesterol as they are heritable covariates, which can lead to collider bias <span class="citation">(<a href="#ref-aschard2015adjusting">Aschard, Vilhjálmsson, Joshi, Price, &amp; Kraft, 2015</a>; <a href="#ref-day2016robust">Day, Loh, Scott, Ong, &amp; Perry, 2016</a>)</span>.</p>
 </div>
 <div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="genome-wide-association-study-gwas.html#cb122-1" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
 <span id="cb122-2"><a href="genome-wide-association-study-gwas.html#cb122-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD</span>
@@ -278,7 +280,7 @@ Function <code>big_univLinReg()</code> should be very fast, while <code>big_univ
 <p>Let us perform a case-control GWAS for CAD:</p>
 <div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="genome-wide-association-study-gwas.html#cb123-1" tabindex="-1"></a>gwas <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>(</span>
 <span id="cb123-2"><a href="genome-wide-association-study-gwas.html#cb123-2" tabindex="-1"></a>  <span class="fu">big_univLogReg</span>(G, y[ind.gwas], <span class="at">ind.train =</span> ind.gwas,</span>
-<span id="cb123-3"><a href="genome-wide-association-study-gwas.html#cb123-3" tabindex="-1"></a>                 <span class="at">covar.train =</span> covar[ind.gwas, ], <span class="at">ncores =</span> <span class="fu">nb_cores</span>()),</span>
+<span id="cb123-3"><a href="genome-wide-association-study-gwas.html#cb123-3" tabindex="-1"></a>                 <span class="at">covar.train =</span> covar[ind.gwas, ], <span class="at">ncores =</span> NCORES),</span>
 <span id="cb123-4"><a href="genome-wide-association-study-gwas.html#cb123-4" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;tmp-data/GWAS_CAD.rds&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;    user  system elapsed 
 #&gt;    0.17    0.14  157.05 
@@ -294,19 +296,46 @@ Function <code>big_univLinReg()</code> should be very fast, while <code>big_univ
 <span id="cb126-4"><a href="genome-wide-association-study-gwas.html#cb126-4" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">5e-8</span>), <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="GWAS_files/figure-html/unnamed-chunk-6-2.png" width="95%" style="display: block; margin: auto;" />
 Here, nothing is genome-wide significant because of the small sample size.</p>
+<div class="infobox exo">
+<p>Perform a GWAS for the other phenotypes, and look at the histogram, Q-Q plot and Manhattan plot.</p>
+</div>
+<details>
+<summary>
+Click to see solution
+</summary>
 <div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="genome-wide-association-study-gwas.html#cb127-1" tabindex="-1"></a>y2 <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>hdl</span>
 <span id="cb127-2"><a href="genome-wide-association-study-gwas.html#cb127-2" tabindex="-1"></a>ind.gwas2 <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(y2) <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(covar))</span>
 <span id="cb127-3"><a href="genome-wide-association-study-gwas.html#cb127-3" tabindex="-1"></a>gwas2 <span class="ot">&lt;-</span> <span class="fu">big_univLinReg</span>(G, y2[ind.gwas2], <span class="at">ind.train =</span> ind.gwas2,</span>
-<span id="cb127-4"><a href="genome-wide-association-study-gwas.html#cb127-4" tabindex="-1"></a>                        <span class="at">covar.train =</span> covar[ind.gwas2, ], <span class="at">ncores =</span> <span class="fu">nb_cores</span>())</span>
+<span id="cb127-4"><a href="genome-wide-association-study-gwas.html#cb127-4" tabindex="-1"></a>                        <span class="at">covar.train =</span> covar[ind.gwas2, ], <span class="at">ncores =</span> NCORES)</span>
 <span id="cb127-5"><a href="genome-wide-association-study-gwas.html#cb127-5" tabindex="-1"></a><span class="fu">snp_manhattan</span>(gwas2, CHR, POS, <span class="at">npoints =</span> <span class="fl">50e3</span>) <span class="sc">+</span></span>
 <span id="cb127-6"><a href="genome-wide-association-study-gwas.html#cb127-6" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">5e-8</span>), <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="GWAS_files/figure-html/unnamed-chunk-7-1.png" width="95%" style="display: block; margin: auto;" /></p>
+<details>
 <hr />
 <p>Some other example code:</p>
 <ul>
 <li><a href="https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/3-GWAS.R">GWAS in iPSYCH</a>; you can perform the GWAS on multiple nodes in parallel that would each process a chunk of the variants only</li>
 <li><a href="https://github.com/privefl/UKBB-PGS/blob/main/code/run-GWAS-large.R">GWAS for very large data and multiple phenotypes</a>; you should perform the GWAS for all phenotypes for a “small” chunk of columns to avoid repeated access from disk, and can process these chunks on multiple nodes in parallel</li>
 <li><a href="https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/batchtools.slurm.tmpl">some template for {future.batchtools} when using Slurm</a></li>
+</ul>
+</div>
+<div id="regenie" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> REGENIE<a href="genome-wide-association-study-gwas.html#regenie" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://rgcgithub.github.io/regenie/">regenie</a> <span class="citation">(<a href="#ref-mbatchou2021computationally">Mbatchou et al., 2021</a>)</span> is a C++ program for whole genome regression modeling of large genome-wide association studies.</p>
+<p>It is developed and supported by a team of scientists at the Regeneron Genetics Center.</p>
+<p>The method has the following properties:</p>
+<ul>
+<li><p>It works on quantitative and binary traits, including binary traits with unbalanced case-control ratios</p></li>
+<li><p>It can handle population structure and relatedness</p></li>
+<li><p>It can process multiple phenotypes at once efficiently</p></li>
+<li><p>For binary traits, it supports Firth logistic regression and an SPA test</p></li>
+<li><p>It can perform gene/region-based tests (Burden, SBAT, SKAT/SKATO, ACATV/ACATO)</p></li>
+<li><p>It can perform interaction tests (GxE, GxG) as well as conditional analyses</p></li>
+<li><p>Meta-analysis of REGENIE summary statistics can be performed using REMETA</p></li>
+<li><p>It is fast and memory efficient 🔥</p></li>
+<li><p>It can provide some power boost</p></li>
+<li><p>It supports the BGEN, PLINK bed/bim/fam and PLINK2 pgen/pvar/psam genetic data formats</p></li>
+<li><p>It can be installed with Conda</p></li>
 </ul>
 
 </div>
@@ -318,6 +347,9 @@ Aschard, H., Vilhjálmsson, B.J., Joshi, A.D., Price, A.L., &amp; Kraft, P. (201
 </div>
 <div id="ref-day2016robust" class="csl-entry">
 Day, F.R., Loh, P.-R., Scott, R.A., Ong, K.K., &amp; Perry, J.R. (2016). <a href="https://doi.org/10.1016/j.ajhg.2015.12.019">A robust example of collider bias in a genetic association study</a>. <em>The American Journal of Human Genetics</em>, <em>98</em>, 392–393.
+</div>
+<div id="ref-mbatchou2021computationally" class="csl-entry">
+Mbatchou, J., Barnard, L., Backman, J., Marcketta, A., Kosmicki, J.A., Ziyatdinov, A., et al. (2021). <a href="https://doi.org/10.1038/s41588-021-00870-7">Computationally efficient whole-genome regression for quantitative and binary traits</a>. <em>Nature Genetics</em>, <em>53</em>, 1097–1103.
 </div>
 </div>
             </section>

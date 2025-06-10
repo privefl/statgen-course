@@ -21,6 +21,7 @@ exo-pca
 ancestry-inference
 genome-wide-association-study-gwas
 exo-gwas
+regenie
 fine-mapping-with-susie
 objective
 requirements

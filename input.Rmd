@@ -7,7 +7,7 @@ editor_options:
 # Inputs and formats
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("nd", "bgen", "bgi", "pgen", "Rcpp")
+WORDS_TO_IGNORE <- c("nd", "bgen", "bgi", "Rcpp")
 source("knitr-options.R")
 source("spelling-check.R")
 rm(X); gc(); file.remove(c("tmp-data/test.bk", "tmp-data/test.rds"))
@@ -21,7 +21,7 @@ There exist many different data formats for genetic data:
 
 - *bgen* files (usually one per chromosome) that can store imputed probabilities (P(0), P(1), P(2)) that are often transformed to dosage information (expected values: P(1) + 2 P(2)). Each variant is stored compressed, which is very efficient, especially for low-frequency variants. They are accompanied by *bgen.bgi* files that store information on the genetic variants and the position of their corresponding data in the *bgen* files, and by a *sample* file that stores information on the individual IDs.
 
-- *pgen* files (also called PLINK2 files) that can store imputed data as well, and seem a bit more compressed than *bgen* files. PLINK2 provides many functions to work with this format.
+- *pgen*/*pvar*/*psam* files (also called PLINK2 files) that can store imputed data as well, and *pgen* files seem more compressed than *bgen* files. PLINK2 provides many functions to work with this format.
 
 - Many other formats that you can usually convert from using PLINK.
 

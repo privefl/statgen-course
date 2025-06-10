@@ -1,7 +1,7 @@
 # Genome-Wide Association Study (GWAS)
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", "batchtools", "Slurm")
+WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", "batchtools", "Slurm", "ACATO", "ACATV", "Conda", "GxE", "GxG", "Regeneron", "regenie", "REGENIE", "REMETA", "SBAT", "SKAT", "SKATO")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -21,6 +21,7 @@ Let us reuse the data prepared in \@ref(exo-preprocessing) and the PCs in \@ref(
 ```{r}
 library(bigsnpr)
 obj.bigsnp <- snp_attach("tmp-data/GWAS_data_sorted_QC.rds")
+NCORES <- nb_cores()
 ```
 
 
@@ -38,7 +39,7 @@ covar <- cbind(as.matrix(obj.bigsnp$fam[c("sex", "age")]), PC[, 1:6])
 ```
 
 :::: {.infobox .caution}
-You probably should not account for other information such as cholesterol as they are heritable covariates [@aschard2015adjusting; @day2016robust].
+You probably should not account for other information such as cholesterol as they are heritable covariates, which can lead to collider bias [@aschard2015adjusting; @day2016robust].
 ::::
 
 ```{r}
@@ -56,7 +57,7 @@ Let us perform a case-control GWAS for CAD:
 ```{r}
 gwas <- runonce::save_run(
   big_univLogReg(G, y[ind.gwas], ind.train = ind.gwas,
-                 covar.train = covar[ind.gwas, ], ncores = nb_cores()),
+                 covar.train = covar[ind.gwas, ], ncores = NCORES),
   file = "tmp-data/GWAS_CAD.rds")
 ```
 
@@ -73,14 +74,24 @@ snp_manhattan(gwas, CHR, POS, npoints = 50e3) +
 ```
 Here, nothing is genome-wide significant because of the small sample size.
 
+
+:::: {.infobox .exo}
+Perform a GWAS for the other phenotypes, and look at the histogram, Q-Q plot and Manhattan plot.
+::::
+
+<details>
+<summary>Click to see solution</summary>
+
 ```{r, out.width="95%", fig.asp=0.5, fig.width=10, dev='png'}
 y2 <- obj.bigsnp$fam$hdl
 ind.gwas2 <- which(!is.na(y2) & complete.cases(covar))
 gwas2 <- big_univLinReg(G, y2[ind.gwas2], ind.train = ind.gwas2,
-                        covar.train = covar[ind.gwas2, ], ncores = nb_cores())
+                        covar.train = covar[ind.gwas2, ], ncores = NCORES)
 snp_manhattan(gwas2, CHR, POS, npoints = 50e3) +
   ggplot2::geom_hline(yintercept = -log10(5e-8), linetype = 2, color = "red")
 ```
+
+<details>
 
 ***
 
@@ -89,3 +100,34 @@ Some other example code:
 - [GWAS in iPSYCH](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/3-GWAS.R); you can perform the GWAS on multiple nodes in parallel that would each process a chunk of the variants only
 - [GWAS for very large data and multiple phenotypes](https://github.com/privefl/UKBB-PGS/blob/main/code/run-GWAS-large.R); you should perform the GWAS for all phenotypes for a "small" chunk of columns to avoid repeated access from disk, and can process these chunks on multiple nodes in parallel
 - [some template for {future.batchtools} when using Slurm](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/batchtools.slurm.tmpl)
+
+
+## REGENIE 
+
+[regenie](https://rgcgithub.github.io/regenie/) [@mbatchou2021computationally] is a C++ program for whole genome regression modeling of large genome-wide association studies.
+
+It is developed and supported by a team of scientists at the Regeneron Genetics Center.
+
+The method has the following properties:
+
+- It works on quantitative and binary traits, including binary traits with unbalanced case-control ratios
+
+- It can handle population structure and relatedness
+
+- It can process multiple phenotypes at once efficiently
+
+- For binary traits, it supports Firth logistic regression and an SPA test
+
+- It can perform gene/region-based tests (Burden, SBAT, SKAT/SKATO, ACATV/ACATO)
+
+- It can perform interaction tests (GxE, GxG) as well as conditional analyses
+
+- Meta-analysis of REGENIE summary statistics can be performed using REMETA
+    
+- It is fast and memory efficient 🔥
+
+- It can provide some power boost
+    
+- It supports the BGEN, PLINK bed/bim/fam and PLINK2 pgen/pvar/psam genetic data formats
+
+- It can be installed with Conda
