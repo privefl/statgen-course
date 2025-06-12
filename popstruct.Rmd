@@ -181,7 +181,7 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
 
 </details>
 
-## Ancestry inference
+## Ancestry inference {#ancestry}
 
 It would be nice if we could get a better sense of the ancestry of these individuals.
 To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using (using the UK Biobank and some individuals from the 1000 Genomes).

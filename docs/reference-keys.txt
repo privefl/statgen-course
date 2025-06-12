@@ -1,3 +1,4 @@
+fig:overview-misspec
 course-information
 prerequisites
 license
@@ -23,10 +24,14 @@ principal-component-analysis-pca
 the-problem-with-ld
 best-practices-for-pca-of-genetic-data
 exo-pca
-ancestry-inference
+ancestry
 genome-wide-association-study-gwas
 exo-gwas
 regenie
+gwas-summary-statistics
+format
+quality-control
+ancestry-inference
 fine-mapping-with-susie
 objective
 requirements
