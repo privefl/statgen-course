@@ -70,7 +70,11 @@ What is going on with PC4?
 ```{r}
 the_max <- which.max(abs(svd$v[, 4]))
 plot(svd, type = "scores", scores = 3:4) +
-  aes(color = as.factor(G[, the_max])) + labs(color = "One geno")
+  aes(color = as.factor(G[, the_max])) + 
+  labs(color = "Genotype at most influential SNP") +
+  guides(color = guide_legend(override.aes = list(size = 3))) +
+  theme(legend.position = "bottom",
+        legend.text = element_text(margin = margin(r = 6)))
 ```
 
 PC4 is basically capturing variation in a block of LD and is then very correlated to genetic variants in this region. You really want to avoid using this type of PCs e.g. as covariates in GWAS because it will cause some collider bias.
@@ -150,7 +154,7 @@ There is some population structure (maybe up to 6 PCs). You should also check lo
 plot(obj.svd, type = "loadings", loadings = 1:6, coeff = 0.5)
 ```
 
-No peaks, but loadings of PC4 and PC5 are a bit odd.
+No peaks, but loadings of PC4 are a bit odd.
 
 If you expect the individuals to mostly come from one population (e.g. in a national biobank), you can simply use a robust distance to identify a homogeneous subset of individuals, then look at the histogram of log-distances to choose a threshold based on visual inspection (here I would probably choose 4.5).
 
@@ -180,18 +184,18 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
 ## Ancestry inference
 
 It would be nice if we could get a better sense of the ancestry of these individuals.
-To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using.
+To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using (using the UK Biobank and some individuals from the 1000 Genomes).
 
 ```{r}
 all_freq <- bigreadr::fread2(
   runonce::download_file(
-    "https://figshare.com/ndownloader/files/38019027",  # for the tutorial (46 MB)
+    "https://figshare.com/ndownloader/files/38019027",  # subset for the tutorial (46 MB)
     # "https://figshare.com/ndownloader/files/31620968",  # for real analyses (849 MB)
     dir = "tmp-data", fname = "ref_freqs.csv.gz"))
 
 projection <- bigreadr::fread2(
   runonce::download_file(
-    "https://figshare.com/ndownloader/files/38019024",  # for the tutorial (44 MB)
+    "https://figshare.com/ndownloader/files/38019024",  # subset for the tutorial (44 MB)
     # "https://figshare.com/ndownloader/files/31620953",  # for real analyses (847 MB)
     dir = "tmp-data", fname = "projection.csv.gz"))
 
@@ -212,12 +216,12 @@ matched <- obj.bed$map %>%
 
 # further subsetting on missing values
 counts <- bed_counts(obj.bed, ind.col = matched$`_NUM_ID_.ss`, ncores = NCORES)
-# hist(nb_na <- counts[4, ])
-ind <- which(counts[4, ] < (nrow(obj.bed) * 0.05))
+hist(counts[4, ])
+ind <- which((counts[4, ] / nrow(obj.bed)) < 0.05)
 
-# project individuals (divided by 2) onto the PC space
-PROJ <- as.matrix(projection[matched$`_NUM_ID_`[ind], -(1:5)])
-all_proj <- apply(sweep(PROJ, 2, correction / 2, '*'), 2, function(x) {
+# project individuals (divided by 2 -> as AF) onto the PC space
+proj_mat <- as.matrix(projection[matched$`_NUM_ID_`[ind], -(1:5)])
+all_proj <- apply(sweep(proj_mat, 2, correction / 2, '*'), 2, function(x) {
   bed_prodVec(obj.bed, x, ind.col = matched$`_NUM_ID_.ss`[ind], ncores = NCORES,
               # scaling to get G if beta = 1 and (2 - G) if beta = -1
               center = 1 - matched$beta[ind],
@@ -227,7 +231,9 @@ all_proj <- apply(sweep(PROJ, 2, correction / 2, '*'), 2, function(x) {
 
 We can then assign individuals to the closest center:
 ```{r}
-all_centers <- crossprod(as.matrix(all_freq[matched$`_NUM_ID_`[ind], -(1:5)]), PROJ)
+# centers of reference populations in the PCA
+all_centers <- crossprod(as.matrix(all_freq[matched$`_NUM_ID_`[ind], -(1:5)]), proj_mat)
+# distance of individuals from each reference population (the center)
 all_sq_dist <- apply(all_centers, 1, function(one_center) {
   rowSums(sweep(all_proj, 2, one_center, '-')^2)
 })
@@ -235,10 +241,12 @@ all_sq_dist <- apply(all_centers, 1, function(one_center) {
 THR <- 0.002  # you can adjust this threshold
 thr_sq_dist <- max(dist(all_centers)^2) * THR / 0.16
 
+# gather some groups
 group <- colnames(all_freq)[-(1:5)]
 group[group %in% c("Scandinavia", "United Kingdom", "Ireland")]   <- "Europe (North West)"
 group[group %in% c("Europe (South East)", "Europe (North East)")] <- "Europe (East)"
 
+# assign to closest cluster, when close enough
 cluster <- apply(all_sq_dist, 1, function(sq_dist) {
   ind <- which.min(sq_dist)
   if (sq_dist[ind] < thr_sq_dist) group[ind] else NA
@@ -259,4 +267,4 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
 ```
 
 These are mostly European individuals.
-PC4-PC6 are definitively a bit odd.
+PC4 is definitively a bit odd.
