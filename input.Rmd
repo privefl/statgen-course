@@ -17,7 +17,7 @@ rm(X); gc(); file.remove(c("tmp-data/test.bk", "tmp-data/test.rds"))
 
 There exist many different data formats for genetic data:
 
-- *bed*/*bim*/*fam* files (also called PLINK1 files) that respectively store genotype calls only (0, 1, 2, or NA) in a very condensed way (one byte only for 4 genotypes), information on the genetic variants, and information on the individuals. PLINK 1.9 and 2.0 provide many functions to work with this format.
+- *bed*/*bim*/*fam* files (also called PLINK1 files) that respectively store genotype calls only (0, 1, 2, or NA) in a very condensed way (one byte only for 4 genotypes), information on the genetic variants, and information on the individuals. PLINK 1.9 and 2.0 [@chang2015second] provide many functions to work with this format.
 
 - *bgen* files (usually one per chromosome) that can store imputed probabilities (P(0), P(1), P(2)) that are often transformed to dosage information (expected values: P(1) + 2 P(2)). Each variant is stored compressed, which is very efficient, especially for low-frequency variants. They are accompanied by *bgen.bgi* files that store information on the genetic variants and the position of their corresponding data in the *bgen* files, and by a *sample* file that stores information on the individual IDs.
 
@@ -28,7 +28,7 @@ There exist many different data formats for genetic data:
 
 ## The bigSNP format from {bigsnpr}
 
-Package {bigsnpr} [@prive2017efficient] uses a class called `bigSNP` for representing SNP data. A `bigSNP` object is merely a list with the three following elements:
+R package {bigsnpr} [@prive2017efficient] uses a class called `bigSNP` for representing SNP data. A `bigSNP` object is merely a list with the three following elements:
 
 - `$genotypes`: A [`FBM.code256`](https://privefl.github.io/bigstatsr/reference/FBM.code256-class.html). Rows are samples and columns are genetic variants. This stores genotype calls or *dosages* (rounded to 2 decimal places). More about this format below.
 - `$fam`: A `data.frame` with some information on the samples.

@@ -31,7 +31,10 @@ regenie
 gwas-summary-statistics
 format
 quality-control
-ancestry-inference
+ssancestry
+linkage-disequilibrium-ld
+derivation-of-an-ld-matrix
+subtleties-about-ld-matrices
 fine-mapping-with-susie
 objective
 requirements
@@ -45,7 +48,7 @@ how-correlated-are-the-variants-in-the-credible-sets
 real-data
 import-gwas-data
 find-window-around-loci-of-interest
-create-ld-matrix
+ldplink
 read-in-data-and-fit-susie
 examine-results
 locus-2

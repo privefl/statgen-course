@@ -19,6 +19,8 @@ Collaboration among researchers in large consortia has facilitated meta-analyses
 
 ## Format
 
+This an example of GWAS summary statistics (a subset of it at least), but fields included and their specific names in the header can change very much.
+
 ```{r}
 tgz <- runonce::download_file(
   "https://figshare.com/ndownloader/files/55262768", 
@@ -46,6 +48,10 @@ but they more rarely include
 - $f_j$ &mdash; the allele frequency of variant $j$,
 
 - $\text{INFO}_j$ &mdash; the imputation INFO score (imputation quality) of variant $j$
+
+:::: {.infobox .exo}
+Read-in these GWAS summary statistics and derive the p-values again, using the other columns.
+::::
 
 
 ## Quality control
@@ -125,7 +131,7 @@ I provide some example R script in [the LDpred2 tutorial](https://privefl.github
 I am currently working on implementing a method that performs a complementary QC, as well as imputation of GWAS summary statistics (i.e. GWAS results for more variants).
 
 
-## Ancestry inference
+## Ancestry inference {#ssancestry}
 
 In \@ref(ancestry), we've seen how to infer ancestry for individual-level data using reference data provided in @prive2021using; we can also use this to infer the ancestry composition of a GWAS dataset using only allele frequencies from the GWAS summary statistics. The tutorial accompanying @prive2021using is [here](https://privefl.github.io/bigsnpr/articles/ancestry.html).
 

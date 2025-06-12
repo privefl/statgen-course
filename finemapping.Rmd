@@ -195,7 +195,7 @@ ggplot(locus1, aes(x = pos, y = -log10(p_value))) +
 ```
 
 
-### Create LD matrix
+### Create LD matrix {#ldplink}
 
 As we are using GWAS summary statistics, we need information of the correlation between variants. Here we are using 1000 Genomes European for convenience. If you are performing this analysis yourself, it is advised to use a larger sample. 
 This requires PLINK to be installed and the 1000 Genomes European reference panel to be downloaded.
