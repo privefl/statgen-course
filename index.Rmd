@@ -15,7 +15,7 @@ url: https\://privefl.github.io/statgen-course/
 ---
 
 
-# About {-}
+# Course information
 
 ```{r setup, include=FALSE}
 WORDS_TO_IGNORE <- c("ShareAlike", "Florian", "Privé", "cpp", "RStudio", "Bluesky", "SMARTbiomed")
@@ -23,7 +23,7 @@ source("knitr-options.R")
 source("spelling-check.R")
 ```
 
-## Prerequisites {-}
+## Prerequisites
 
 - Have at least a basic knowledge of R,
 
@@ -57,15 +57,15 @@ source("spelling-check.R")
     bigsnpr::download_plink2("tmp-data")  # 6.6 MB
     ```
 
-## License {-}
+## License
 
 This material is licensed under the [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 
 
-## Author {-}
+## Author
 
 [Florian Privé](https://privefl.github.io/) is a senior researcher in statistical human genetics, fond of Data Science and an R(cpp) enthusiast. You can find him on [Bluesky](https://bsky.app/profile/privefl.bsky.social) and [GitHub](https://github.com/privefl) as \@privefl.
 
-## Contact {-}
+## Contact
 
 If you want me to add or clarify some content in this course, please open [an issue on the GitHub repository of this course](https://github.com/privefl/statgen-course/issues).
 

@@ -1,3 +1,8 @@
+course-information
+prerequisites
+license
+author
+contact
 inputs-and-formats
 formats-of-genetic-data
 the-bigsnp-format-from-bigsnpr
