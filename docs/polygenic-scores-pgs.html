@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Polygenic scores (PGS) | Statistical Human Genetics course using R</title>
+  <meta name="description" content="Chapter 8 Polygenic scores (PGS) | Statistical Human Genetics course using R" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Polygenic scores (PGS) | Statistical Human Genetics course using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="privefl/statgen-course" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Polygenic scores (PGS) | Statistical Human Genetics course using R" />
+  
+  
+  
+
+<meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
+
+
+<meta name="date" content="2025-06-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="linkage-disequilibrium-ld.html"/>
+<link rel="next" href="fine-mapping-with-susie.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">Statistical Human Genetics course using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Course information</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.2</b> License</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i><b>1.3</b> Author</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.4</b> Contact</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#formats-of-genetic-data"><i class="fa fa-check"></i><b>2.1</b> Formats of genetic data</a></li>
+<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> The bigSNP format from {bigsnpr}</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-bigsnp"><i class="fa fa-check"></i><b>2.3</b> Getting a bigSNP object</a></li>
+<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.4</b> The FBM format from {bigstatsr}</a></li>
+<li class="chapter" data-level="2.5" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#working-with-an-fbm"><i class="fa fa-check"></i><b>2.5</b> Working with an FBM</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>2.5.1</b> Similar accessor as R matrices</a></li>
+<li class="chapter" data-level="2.5.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>2.5.2</b> Split-(par)Apply-Combine Strategy</a></li>
+<li class="chapter" data-level="2.5.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>2.5.3</b> Similar accessor as Rcpp matrices</a></li>
+<li class="chapter" data-level="2.5.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>2.5.4</b> Some summary functions are already implemented</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#exercise"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>3</b> Preprocessing</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocessing.html"><a href="preprocessing.html#PLINK"><i class="fa fa-check"></i><b>3.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>3.2</b> Imputation</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="population-structure.html"><a href="population-structure.html"><i class="fa fa-check"></i><b>4</b> Population structure</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="population-structure.html"><a href="population-structure.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis (PCA)</a></li>
+<li class="chapter" data-level="4.2" data-path="population-structure.html"><a href="population-structure.html#the-problem-with-ld"><i class="fa fa-check"></i><b>4.2</b> The problem with LD</a></li>
+<li class="chapter" data-level="4.3" data-path="population-structure.html"><a href="population-structure.html#best-practices-for-pca-of-genetic-data"><i class="fa fa-check"></i><b>4.3</b> Best practices for PCA of genetic data</a></li>
+<li class="chapter" data-level="4.4" data-path="population-structure.html"><a href="population-structure.html#exo-pca"><i class="fa fa-check"></i><b>4.4</b> Exercise</a></li>
+<li class="chapter" data-level="4.5" data-path="population-structure.html"><a href="population-structure.html#ancestry"><i class="fa fa-check"></i><b>4.5</b> Ancestry inference</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html"><i class="fa fa-check"></i><b>5</b> Genome-Wide Association Study (GWAS)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Example</a></li>
+<li class="chapter" data-level="5.2" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#regenie"><i class="fa fa-check"></i><b>5.2</b> REGENIE</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html"><i class="fa fa-check"></i><b>6</b> GWAS summary statistics</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html#format"><i class="fa fa-check"></i><b>6.1</b> Format</a></li>
+<li class="chapter" data-level="6.2" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html#quality-control"><i class="fa fa-check"></i><b>6.2</b> Quality control</a></li>
+<li class="chapter" data-level="6.3" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html#ssancestry"><i class="fa fa-check"></i><b>6.3</b> Ancestry inference</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html"><i class="fa fa-check"></i><b>7</b> Linkage Disequilibrium (LD)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html#derivation-of-an-ld-matrix"><i class="fa fa-check"></i><b>7.1</b> Derivation of an LD matrix</a></li>
+<li class="chapter" data-level="7.2" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html#subtleties-about-ld-matrices"><i class="fa fa-check"></i><b>7.2</b> Subtleties about LD matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html"><i class="fa fa-check"></i><b>8</b> Polygenic scores (PGS)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#pgs-from-individual-level-data"><i class="fa fa-check"></i><b>8.1</b> PGS from individual-level data</a></li>
+<li class="chapter" data-level="8.2" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#pgs-from-gwas-summary-statistics"><i class="fa fa-check"></i><b>8.2</b> PGS from GWAS summary statistics</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="polygenic-scores-pgs.html"><a href="polygenic-scores-pgs.html#clumping-thresholding-ct-or-pt-restricting-predictors"><i class="fa fa-check"></i><b>8.2.1</b> <span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span> (C+T, or P+T): restricting predictors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html"><i class="fa fa-check"></i><b>9</b> Fine-mapping with SuSiE</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#objective"><i class="fa fa-check"></i><b>9.1</b> Objective</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#requirements"><i class="fa fa-check"></i><b>9.1.1</b> Requirements:</a></li>
+<li class="chapter" data-level="9.1.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-libraries"><i class="fa fa-check"></i><b>9.1.2</b> Load libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#simulated-example"><i class="fa fa-check"></i><b>9.2</b> Simulated Example</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-data"><i class="fa fa-check"></i><b>9.2.1</b> Load data</a></li>
+<li class="chapter" data-level="9.2.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#fit-susie-to-the-data"><i class="fa fa-check"></i><b>9.2.2</b> Fit SuSiE to the data</a></li>
+<li class="chapter" data-level="9.2.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#plot-the-susie-results"><i class="fa fa-check"></i><b>9.2.3</b> Plot the SuSiE results</a></li>
+<li class="chapter" data-level="9.2.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#lets-take-a-closer-look-at-which-variants-are-in-the-credible-sets"><i class="fa fa-check"></i><b>9.2.4</b> Let’s take a closer look at which variants are in the credible sets</a></li>
+<li class="chapter" data-level="9.2.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#how-correlated-are-the-variants-in-the-credible-sets"><i class="fa fa-check"></i><b>9.2.5</b> How correlated are the variants in the credible sets?</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#real-data"><i class="fa fa-check"></i><b>9.3</b> Real data</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#import-gwas-data"><i class="fa fa-check"></i><b>9.3.1</b> Import GWAS data</a></li>
+<li class="chapter" data-level="9.3.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#find-window-around-loci-of-interest"><i class="fa fa-check"></i><b>9.3.2</b> Find window around loci of interest</a></li>
+<li class="chapter" data-level="9.3.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#ldplink"><i class="fa fa-check"></i><b>9.3.3</b> Create LD matrix</a></li>
+<li class="chapter" data-level="9.3.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#read-in-data-and-fit-susie"><i class="fa fa-check"></i><b>9.3.4</b> Read in data and fit SuSiE</a></li>
+<li class="chapter" data-level="9.3.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#examine-results"><i class="fa fa-check"></i><b>9.3.5</b> Examine results</a></li>
+<li class="chapter" data-level="9.3.6" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#locus-2"><i class="fa fa-check"></i><b>9.3.6</b> Locus 2</a></li>
+<li class="chapter" data-level="9.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>9.3.7</b> Reflections</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Human Genetics course using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="polygenic-scores-pgs" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Polygenic scores (PGS)<a href="polygenic-scores-pgs.html#polygenic-scores-pgs" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Improving PGS methods is the main topic of my research work. These are the main methods currently available in my packages:</p>
+<ul>
+<li><p>efficient penalized regressions, with individual-level data (<span class="citation">Privé, Aschard, &amp; Blum (<a href="#ref-prive2019efficient">2019</a>)</span> + <a href="https://privefl.github.io/bigstatsr/articles/penalized-regressions.html">tutorial</a>)</p></li>
+<li><p>Clumping and Thresholding (C+T) and Stacked C+T (SCT), with GWAS summary statistics and individual level data (<span class="citation">Privé, Vilhjálmsson, Aschard, &amp; Blum (<a href="#ref-prive2019making">2019</a>)</span> + <a href="https://privefl.github.io/bigsnpr/articles/SCT.html">tutorial</a>)</p></li>
+<li><p>LDpred2, with summary statistics (<span class="citation">Privé, Arbel, &amp; Vilhjálmsson (<a href="#ref-prive2020ldpred2">2020</a>)</span> + <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html">tutorial</a>)</p></li>
+<li><p>lassosum2, with the same input data as LDpred2 (<span class="citation">Privé, Arbel, Aschard, &amp; Vilhjálmsson (<a href="#ref-prive2021identifying">2022</a>)</span> + <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html#lassosum2-grid-of-models">tutorial</a>)</p></li>
+</ul>
+<div class="infobox info">
+<p>You can now use LDpred2-auto for inference (<span class="citation">Privé, Albiñana, Arbel, Pasaniuc, &amp; Vilhjálmsson (<a href="#ref-prive2022inferring">2023</a>)</span> + <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html#inference-with-ldpred2-auto">tutorial</a>).</p>
+</div>
+<div id="pgs-from-individual-level-data" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> PGS from individual-level data<a href="polygenic-scores-pgs.html#pgs-from-individual-level-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you have individual-level data (i.e. genotypes and phenotypes), you can basically use any supervised learning (machine learning) method to build PGS.
+However, because of the size of the genetic data, you will quickly have scalability issues with these models.
+Moreover, it has been shown that effects for most diseases and traits are small and essentially additive, and that fancy methods such as deep learning are not much effective at constructing PGS <span class="citation">(<a href="#ref-kelemen2025performance">Kelemen et al., 2025</a>)</span>.</p>
+<p>Therefore, using penalized linear/logistic regression (PLR) can be a very efficient and effective method to train PGS. In my R package bigstatsr, I have developed a very fast implementation with automatic choice of the two hyper-parameters <span class="citation">(<a href="#ref-prive2019efficient">Privé, Aschard, et al., 2019</a>)</span>.</p>
+<p>This is an example of using PLR for predicting height from genotypes in the UK Biobank</p>
+<ul>
+<li><p>training on 350K individuals x 656K variants in less than 24H</p></li>
+<li><p>within both males and females, PGS achieved 65.5% of correlation (<span class="math inline">\(r^2\)</span> of 42.9%) between genetically predicted and true height</p></li>
+</ul>
+<p><img src="https://privefl.github.io/blog/images/UKB-final-pred.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="pgs-from-gwas-summary-statistics" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> PGS from GWAS summary statistics<a href="polygenic-scores-pgs.html#pgs-from-gwas-summary-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="infobox question">
+<p>Why is it suboptimal to derive a PGS like this: <span class="math inline">\(PGS_i = \sum_j \hat\beta_j \cdot G_{i,j}\)</span>, with <span class="math inline">\(\hat\beta\)</span> as the GWAS effects?</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="https://github.com/privefl/thesis-docs/blob/master/figures/fig-LD.png?raw=true" alt="Local correlation between variants causes redundant GWAS signals." width="100%" />
+<p class="caption">
+Figure 8.1: Local correlation between variants causes redundant GWAS signals.
+</p>
+</div>
+<div id="clumping-thresholding-ct-or-pt-restricting-predictors" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> <span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span> (C+T, or P+T): restricting predictors<a href="polygenic-scores-pgs.html#clumping-thresholding-ct-or-pt-restricting-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- ## Example: LDpred2 and lassosum2 -->
+<!-- You should also check [the other tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html) mentioned before. -->
+<!-- ### Preparing the data -->
+<!-- Let us first read the data produced in \@ref(exo-preprocessing): -->
+<!-- ```{r} -->
+<!-- library(bigsnpr) -->
+<!-- obj.bigsnp <- snp_attach("tmp-data/GWAS_data_sorted_QC.rds") -->
+<!-- G <- obj.bigsnp$genotypes -->
+<!-- NCORES <- nb_cores() -->
+<!-- map <- dplyr::transmute(obj.bigsnp$map, -->
+<!--                         chr = chromosome, pos = physical.pos, -->
+<!--                         a0 = allele2, a1 = allele1) -->
+<!-- ``` -->
+<!-- Download some GWAS summary statistics for CAD that I derived from the UK Biobank [@bycroft2018uk], and prepare them in the format required by LDpred2: -->
+<!-- ```{r} -->
+<!-- gz <- runonce::download_file( -->
+<!--   "https://figshare.com/ndownloader/files/38077323", -->
+<!--   dir = "tmp-data", fname = "sumstats_CAD_tuto.csv.gz") -->
+<!-- readLines(gz, n = 3) -->
+<!-- sumstats <- bigreadr::fread2( -->
+<!--   gz, -->
+<!--   select    = c("chr", "pos", "allele2", "allele1", "beta", "se", "freq", "info"), -->
+<!--   col.names = c("chr", "pos", "a0", "a1", "beta", "beta_se", "freq", "info")) -->
+<!-- # GWAS effective sample size for binary traits (4 / (1 / n_case + 1 / n_control)) -->
+<!-- # For quantitative traits, just use the total sample size for `n_eff`. -->
+<!-- sumstats$n_eff <- 4 / (1 / 20791 + 1 / 323124)  -->
+<!-- ``` -->
+<!-- Note that we recommend to use imputed HapMap3+ variants when available, for which you can download some precomputed LD reference for European individuals based on the UK Biobank. -->
+<!-- Otherwise use the genotyped variants as I am doing here. -->
+<!-- Try to use an LD reference with at least 2000 individuals (I have only 1401 in this example). -->
+<!-- Please see [this other tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html) for more information. -->
+<!-- Let us now match the variants in the GWAS summary statistics with the internal data we have: -->
+<!-- ```{r, warning=FALSE, message=FALSE} -->
+<!-- library(dplyr) -->
+<!-- info_snp <- snp_match(sumstats, map, return_flip_and_rev = TRUE) %>%  -->
+<!--   mutate(freq = ifelse(`_REV_`, 1 - freq, freq),  -->
+<!--          `_REV_` = NULL, `_FLIP_`= NULL) %>%  -->
+<!--   print() -->
+<!-- ``` -->
+<!-- Check the summary statistics; some quality control may be needed: -->
+<!-- ```{r} -->
+<!-- hist(info_snp$n_eff)    # all the same values, otherwise filter at 70% of max -->
+<!-- hist(info_snp$info)     # very good imputation; filter e.g. at 0.7 or 0.8 -->
+<!-- summary(info_snp$freq) -->
+<!-- ``` -->
+<!-- Then we can perform some quality control on the summary statistics by checking whether standard deviations (of genotypes) inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have: -->
+<!-- ```{r} -->
+<!-- af_ref <- big_colstats(G, ind.col = info_snp$`_NUM_ID_`, ncores = NCORES)$sum / (2 * nrow(G)) -->
+<!-- sd_ref <- sqrt(2 * af_ref * (1 - af_ref)) -->
+<!-- sd_ss <- with(info_snp, 2 / sqrt(n_eff * beta_se^2 + beta^2)) -->
+<!-- is_bad <- -->
+<!--   sd_ss < (0.5 * sd_ref) | sd_ss > (sd_ref + 0.1) |  -->
+<!--   sd_ss < 0.05 | sd_ref < 0.05  # basically filtering small MAF -->
+<!-- library(ggplot2) -->
+<!-- ggplot(slice_sample(data.frame(sd_ref, sd_ss, is_bad), n = 50e3)) + -->
+<!--   geom_point(aes(sd_ref, sd_ss, color = is_bad), alpha = 0.5) + -->
+<!--   theme_bigstatsr(0.9) + -->
+<!--   scale_color_viridis_d(direction = -1) + -->
+<!--   geom_abline(linetype = 2) + -->
+<!--   labs(x = "Standard deviations in the reference set", -->
+<!--        y = "Standard deviations derived from the summary statistics", -->
+<!--        color = "To remove?") -->
+<!-- ``` -->
+<!-- :::: {.infobox .caution} -->
+<!-- When using quantitative traits (linear regression instead of logistic regression for the GWAS), you need to replace `2` by `sd(y)` when computing `sd_ss` (equations 1 and 2 of @prive2021identifying). -->
+<!-- :::: -->
+<!-- When allele frequencies are available in the GWAS summary statistics, you can use them (along with INFO scores) to get an even better match: -->
+<!-- ```{r} -->
+<!-- sd_af <- with(info_snp, sqrt(2 * freq * (1 - freq) * info)) -->
+<!-- ggplot(slice_sample(data.frame(sd_af, sd_ss), n = 50e3)) + -->
+<!--   geom_point(aes(sd_af, sd_ss), alpha = 0.5) + -->
+<!--   theme_bigstatsr(0.9) + -->
+<!--   geom_abline(linetype = 2, color = "red") + -->
+<!--   labs(x = "Standard deviations derived from allele frequencies", -->
+<!--        y = "Standard deviations derived from the summary statistics") -->
+<!-- ``` -->
+<!-- You can still use the reference panel to do some quality control by comparing allele frequencies: -->
+<!-- ```{r} -->
+<!-- af_diff <- af_ref - info_snp$freq -->
+<!-- hist(af_diff, "FD", xlim = c(-0.1, 0.1)) -->
+<!-- ``` -->
+<!-- Then you can filter -->
+<!-- ```{r} -->
+<!-- is_bad2 <- -->
+<!--   sd_ss < (0.7 * sd_af) | sd_ss > (sd_af + 0.1) |  -->
+<!--   sd_ss < 0.05 | sd_af < 0.05 | -->
+<!--   info_snp$info < 0.7 | abs(af_diff) > 0.07 -->
+<!-- mean(is_bad2) -->
+<!-- df_beta <- info_snp[!is_bad2, ] -->
+<!-- ``` -->
+<!-- Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes here, for faster running of this tutorial): -->
+<!-- ```{r, include=FALSE} -->
+<!-- file.remove("tmp-data/corr.sbk") -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- # Precomputed genetic positions (in cM) to avoid downloading large files in this tuto -->
+<!-- gen_pos <- readRDS(runonce::download_file( -->
+<!--   "https://figshare.com/ndownloader/files/38247288", -->
+<!--   dir = "tmp-data", fname = "gen_pos_tuto.rds")) -->
+<!-- df_beta <- dplyr::filter(df_beta, chr %in% 1:4)  # TO REMOVE (for speed here) -->
+<!-- for (chr in 1:4) {  # REPLACE BY 1:22 -->
+<!--   print(chr) -->
+<!--   corr0 <- runonce::save_run({ -->
+<!--     ## indices in 'sumstats' -->
+<!--     ind.chr <- which(df_beta$chr == chr) -->
+<!--     ## indices in 'G' -->
+<!--     ind.chr2 <- df_beta$`_NUM_ID_`[ind.chr] -->
+<!--     # genetic positions (in cM) -->
+<!--     # POS2 <- snp_asGeneticPos(map$chr[ind.chr2], map$pos[ind.chr2], dir = "tmp-data") -->
+<!--     POS2 <- gen_pos[ind.chr2]  # PRECOMPUTED HERE; USE snp_asGeneticPos() IN REAL CODE -->
+<!--     # compute the banded correlation matrix in sparse matrix format -->
+<!--     snp_cor(G, ind.col = ind.chr2, size = 3 / 1000, infos.pos = POS2,  -->
+<!--             ncores = NCORES) -->
+<!--   }, file = paste0("tmp-data/corr_chr", chr, ".rds")) -->
+<!--   # transform to SFBM (on-disk format) on the fly -->
+<!--   if (chr == 1) { -->
+<!--     ld <- Matrix::colSums(corr0^2) -->
+<!--     corr <- as_SFBM(corr0, "tmp-data/corr", compact = TRUE) -->
+<!--   } else { -->
+<!--     ld <- c(ld, Matrix::colSums(corr0^2)) -->
+<!--     corr$add_columns(corr0, nrow(corr)) -->
+<!--   } -->
+<!-- } -->
+<!-- ``` -->
+<!-- <!-- :::: {.infobox .caution} -->
+<p>–&gt;
+<!-- <!-- To use the "compact" format for SFBMs, you need `packageVersion("bigsparser") >= package_version("0.5")`.  --> –&gt;
+<!-- <!-- Make sure to reinstall {bigsnpr} when updating {bigsparser} to this new version (to avoid crashes). --> –&gt;
+<!-- <!-- :::: --> –&gt;</p>
+<!-- ```{r} -->
+<!-- file.size(corr$sbk) / 1024^3  # file size in GB -->
+<!-- ``` -->
+<!-- :::: {.infobox .caution} -->
+<!-- Note that you will need at least the same memory as this file size (to keep it cached for faster processing) + some other memory for all the results returned. If you do not have enough memory, processing will be very slow (because you would read the data from disk all the time). If using HapMap3 variants, requesting 60 GB should be enough. For this small example, 8 GB of RAM on a laptop should be enough. -->
+<!-- :::: -->
+<!-- ### LDpred2 -->
+<!-- We can now run LD score regression: -->
+<!-- ```{r} -->
+<!-- (ldsc <- with(df_beta, snp_ldsc(ld, length(ld), chi2 = (beta / beta_se)^2, -->
+<!--                                  sample_size = n_eff, blocks = NULL))) -->
+<!-- ldsc_h2_est <- ldsc[["h2"]] -->
+<!-- ``` -->
+<!-- We can now run LDpred2-inf very easily: -->
+<!-- ```{r} -->
+<!-- # LDpred2-inf -->
+<!-- beta_inf <- snp_ldpred2_inf(corr, df_beta, ldsc_h2_est) -->
+<!-- pred_inf <- big_prodVec(G, beta_inf, ind.col = df_beta$`_NUM_ID_`) -->
+<!-- AUCBoot(pred_inf, obj.bigsnp$fam$CAD) -->
+<!-- ``` -->
+<!-- For LDpred2(-grid), this is the grid we recommend to use: -->
+<!-- ```{r} -->
+<!-- # LDpred2-grid -->
+<!-- (h2_seq <- round(ldsc_h2_est * c(0.3, 0.7, 1, 1.4), 4)) -->
+<!-- (p_seq <- signif(seq_log(1e-5, 1, length.out = 21), 2)) -->
+<!-- params <- expand.grid(p = p_seq, h2 = h2_seq, sparse = c(FALSE, TRUE)) -->
+<!-- dim(params) -->
+<!-- ``` -->
+<!-- Here, we will be using this smaller grid instead (for speed in this tutorial): -->
+<!-- ```{r} -->
+<!-- # smaller grid for tutorial only (USE PREVIOUS ONE IN REAL CODE) -->
+<!-- (params <- expand.grid(p = signif(seq_log(1e-4, 0.5, length.out = 16), 2), -->
+<!--                        h2 = round(ldsc_h2_est, 4), sparse = TRUE)) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- beta_grid <- snp_ldpred2_grid(corr, df_beta, params, ncores = NCORES) -->
+<!-- params$sparsity <- colMeans(beta_grid == 0) -->
+<!-- ``` -->
+<!-- Then, we can compute the corresponding PGS for all these models, and visualize their performance: -->
+<!-- ```{r} -->
+<!-- pred_grid <- big_prodMat(G, beta_grid, ind.col = df_beta[["_NUM_ID_"]], -->
+<!--                          ncores = NCORES) -->
+<!-- params$score <- apply(pred_grid, 2, function(.x) { -->
+<!--   if (all(is.na(.x))) return(NA)  # models that diverged substantially -->
+<!--   summary(glm(  # simply use `lm()` for quantitative traits -->
+<!--     CAD ~ .x + sex + age, data = obj.bigsnp$fam, family = "binomial" -->
+<!--   ))$coef[".x", 3] -->
+<!-- }) -->
+<!-- ggplot(params, aes(x = p, y = score, color = as.factor(h2))) + -->
+<!--   theme_bigstatsr() + -->
+<!--   geom_point() + -->
+<!--   geom_line() + -->
+<!--   scale_x_log10(breaks = 10^(-5:0), minor_breaks = params$p) + -->
+<!--   facet_wrap(~ sparse, labeller = label_both) + -->
+<!--   labs(y = "GLM Z-Score", color = "h2") + -->
+<!--   theme(legend.position = "top", panel.spacing = unit(1, "lines")) -->
+<!-- ``` -->
+<!-- Then you can use the best-performing model here. -->
+<!-- Note that, in practice, you should use only individuals from the validation set to compute the `$score` and then evaluate the best model for the individuals in the test set (unrelated to those in the validation set). -->
+<!-- ```{r, message=FALSE} -->
+<!-- library(dplyr) -->
+<!-- best_beta_grid <- params %>% -->
+<!--   mutate(id = row_number()) %>% -->
+<!--   arrange(desc(score)) %>% -->
+<!--   print() %>%  -->
+<!--   slice(1) %>% -->
+<!--   pull(id) %>% -->
+<!--   beta_grid[, .] -->
+<!-- ``` -->
+<!-- To run LDpred2-auto, you can use: -->
+<!-- ```{r} -->
+<!-- # LDpred2-auto -->
+<!-- multi_auto <- snp_ldpred2_auto( -->
+<!--   corr, df_beta, h2_init = ldsc_h2_est, -->
+<!--   vec_p_init = seq_log(1e-4, 0.2, 30), -->
+<!--   burn_in = 100, num_iter = 100,         # TO REMOVE, for speed here -->
+<!--   allow_jump_sign = FALSE, -->
+<!--   use_MLE = FALSE,         # USE `TRUE` ONLY FOR GWAS WITH LARGE N AND M -->
+<!--   shrink_corr = 0.95, -->
+<!--   ncores = NCORES) -->
+<!-- ``` -->
+<!-- Perform some quality control on the chains: -->
+<!-- ```{r} -->
+<!-- # `range` should be between 0 and 2 -->
+<!-- (range <- sapply(multi_auto, function(auto) diff(range(auto$corr_est)))) -->
+<!-- (keep <- which(range > (0.95 * quantile(range, 0.95, na.rm = TRUE)))) -->
+<!-- ``` -->
+<!-- To get the final effects / predictions, **you should only use chains that pass this filtering**: -->
+<!-- ```{r} -->
+<!-- final_beta_auto <-  -->
+<!--   rowMeans(sapply(multi_auto[keep], function(auto) auto$beta_est)) -->
+<!-- ``` -->
+<!-- We can finally test the final prediction -->
+<!-- ```{r} -->
+<!-- final_pred_auto <- big_prodVec(G, final_beta_auto, -->
+<!--                                ind.col = df_beta[["_NUM_ID_"]], -->
+<!--                                ncores = NCORES) -->
+<!-- AUCBoot(final_pred_auto, obj.bigsnp$fam$CAD) -->
+<!-- ``` -->
+<!-- ### lassosum2: grid of models -->
+<!-- lassosum2 is a re-implementation of the lassosum model [@mak2017polygenic] that now uses the exact same input parameters as LDpred2 (`corr` and `df_beta`). It can therefore be run next to LDpred2 and the best model can be chosen using the validation set. -->
+<!-- Note that parameter 's' from lassosum has been replaced by a new parameter 'delta' in lassosum2, in order to better reflect that the lassosum model also uses L2-regularization (therefore, elastic-net regularization). -->
+<!-- ```{r} -->
+<!-- beta_lassosum2 <- snp_lassosum2( -->
+<!--   corr, df_beta, ncores = NCORES, -->
+<!--   nlambda = 10, maxiter = 50)      # TO REMOVE, for speed here -->
+<!-- ``` -->
+<!-- As with LDpred2-grid, we can compute the corresponding PGS for all these models, and visualize their performance: -->
+<!-- ```{r} -->
+<!-- pred_grid2 <- big_prodMat(G, beta_lassosum2, ind.col = df_beta[["_NUM_ID_"]], -->
+<!--                           ncores = NCORES) -->
+<!-- params2 <- attr(beta_lassosum2, "grid_param") -->
+<!-- params2$score <- apply(pred_grid2, 2, function(.x) { -->
+<!--   if (all(is.na(.x))) return(NA)  # models that diverged substantially -->
+<!--   summary(glm(  # simply use `lm()` for quantitative traits -->
+<!--     CAD ~ .x + sex + age, data = obj.bigsnp$fam, family = "binomial" -->
+<!--   ))$coef[".x", 3] -->
+<!-- }) -->
+<!-- ggplot(params2, aes(x = lambda, y = score, color = as.factor(delta))) + -->
+<!--   theme_bigstatsr() + -->
+<!--   geom_point() + -->
+<!--   geom_line() + -->
+<!--   scale_x_log10(breaks = 10^(-5:0)) + -->
+<!--   labs(y = "GLM Z-Score", color = "delta") -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- best_grid_lassosum2 <- params2 %>% -->
+<!--   mutate(id = row_number()) %>% -->
+<!--   arrange(desc(score)) %>% -->
+<!--   print() %>%  -->
+<!--   slice(1) %>% -->
+<!--   pull(id) %>%  -->
+<!--   beta_lassosum2[, .] -->
+<!-- ``` -->
+<!-- We can choose the best-overall model from both LDpred2-grid and lassosum2: -->
+<!-- ```{r} -->
+<!-- best_grid_overall <- `if`(max(params2$score, na.rm = TRUE) > max(params$score, na.rm = TRUE), -->
+<!--                           best_grid_lassosum2, best_beta_grid) -->
+<!-- ``` -->
+<!-- One advantage of lassosum2 compared to LDpred2 is that it can provide very sparse solutions (< 1% of variants used). -->
+
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-kelemen2025performance" class="csl-entry">
+Kelemen, M., Xu, Y., Jiang, T., Zhao, J.H., Anderson, C.A., Wallace, C., et al. (2025). <a href="https://doi.org/10.1038/s41467-025-60056-1">Performance of deep-learning-based approaches to improve polygenic scores</a>. <em>Nature Communications</em>, <em>16</em>, 1–9.
+</div>
+<div id="ref-prive2022inferring" class="csl-entry">
+Privé, F., Albiñana, C., Arbel, J., Pasaniuc, B., &amp; Vilhjálmsson, B.J. (2023). <a href="https://doi.org/10.1016/j.ajhg.2023.10.010">Inferring disease architecture and predictive ability with <span class="nocase">LDpred2-auto</span></a>. <em>The American Journal of Human Genetics</em>, <em>110</em>, 2042–2055.
+</div>
+<div id="ref-prive2021identifying" class="csl-entry">
+Privé, F., Arbel, J., Aschard, H., &amp; Vilhjálmsson, B.J. (2022). <a href="https://doi.org/10.1016/j.xhgg.2022.100136">Identifying and correcting for misspecifications in <span>GWAS</span> summary statistics and polygenic scores</a>. <em>Human Genetics and Genomics Advances</em>, <em>3</em>, 100136.
+</div>
+<div id="ref-prive2020ldpred2" class="csl-entry">
+Privé, F., Arbel, J., &amp; Vilhjálmsson, B.J. (2020). <a href="https://doi.org/10.1093/bioinformatics/btaa1029"><span class="nocase"><span>LDpred2</span>: better, faster, stronger</span></a>. <em>Bioinformatics</em>, <em>36</em>, 5424–5431.
+</div>
+<div id="ref-prive2019efficient" class="csl-entry">
+Privé, F., Aschard, H., &amp; Blum, M.G. (2019). <a href="https://doi.org/10.1534/genetics.119.302019">Efficient implementation of penalized regression for genetic risk prediction</a>. <em>Genetics</em>, <em>212</em>, 65–74.
+</div>
+<div id="ref-prive2019making" class="csl-entry">
+Privé, F., Vilhjálmsson, B.J., Aschard, H., &amp; Blum, M.G.B. (2019). <a href="https://doi.org/10.1016/j.ajhg.2019.11.001">Making the most of clumping and thresholding for polygenic scores</a>. <em>The American Journal of Human Genetics</em>, <em>105</em>, 1213–1221.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="linkage-disequilibrium-ld.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="fine-mapping-with-susie.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

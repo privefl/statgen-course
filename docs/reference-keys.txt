@@ -1,4 +1,9 @@
 fig:overview-misspec
+eq:sdlin
+eq:sdlog
+eq:sdaf
+fig:unnamed-chunk-2
+fig:unnamed-chunk-5
 course-information
 prerequisites
 license
@@ -35,6 +40,17 @@ ssancestry
 linkage-disequilibrium-ld
 derivation-of-an-ld-matrix
 subtleties-about-ld-matrices
+polygenic-risk-scores-pgs-or-prs
+pgs-from-individual-level-data
+pgs-from-gwas-summary-statistics
+clumping-thresholding-ct-or-pt-restricting-predictors
+other-methods
+predictive-ability-of-pgs
+future-of-pgs
+exercise-with-ldpred2-and-lassosum2
+preparing-the-data
+ldpred2
+lassosum2-grid-of-models
 fine-mapping-with-susie
 objective
 requirements

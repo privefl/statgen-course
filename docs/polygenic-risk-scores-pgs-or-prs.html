@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Polygenic (risk) scores (PGS, or PRS) | Statistical Human Genetics course using R</title>
+  <meta name="description" content="Chapter 8 Polygenic (risk) scores (PGS, or PRS) | Statistical Human Genetics course using R" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Polygenic (risk) scores (PGS, or PRS) | Statistical Human Genetics course using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="privefl/statgen-course" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Polygenic (risk) scores (PGS, or PRS) | Statistical Human Genetics course using R" />
+  
+  
+  
+
+<meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
+
+
+<meta name="date" content="2025-06-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="linkage-disequilibrium-ld.html"/>
+<link rel="next" href="fine-mapping-with-susie.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">Statistical Human Genetics course using R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Course information</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.2</b> License</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i><b>1.3</b> Author</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.4</b> Contact</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#formats-of-genetic-data"><i class="fa fa-check"></i><b>2.1</b> Formats of genetic data</a></li>
+<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> The bigSNP format from {bigsnpr}</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-bigsnp"><i class="fa fa-check"></i><b>2.3</b> Getting a bigSNP object</a></li>
+<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.4</b> The FBM format from {bigstatsr}</a></li>
+<li class="chapter" data-level="2.5" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#working-with-an-fbm"><i class="fa fa-check"></i><b>2.5</b> Working with an FBM</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>2.5.1</b> Similar accessor as R matrices</a></li>
+<li class="chapter" data-level="2.5.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>2.5.2</b> Split-(par)Apply-Combine Strategy</a></li>
+<li class="chapter" data-level="2.5.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>2.5.3</b> Similar accessor as Rcpp matrices</a></li>
+<li class="chapter" data-level="2.5.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>2.5.4</b> Some summary functions are already implemented</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#exercise"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>3</b> Preprocessing</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocessing.html"><a href="preprocessing.html#PLINK"><i class="fa fa-check"></i><b>3.1</b> Conversion and quality control of PLINK files</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocessing.html"><a href="preprocessing.html#imputation"><i class="fa fa-check"></i><b>3.2</b> Imputation</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocessing.html"><a href="preprocessing.html#exo-preprocessing"><i class="fa fa-check"></i><b>3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="population-structure.html"><a href="population-structure.html"><i class="fa fa-check"></i><b>4</b> Population structure</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="population-structure.html"><a href="population-structure.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis (PCA)</a></li>
+<li class="chapter" data-level="4.2" data-path="population-structure.html"><a href="population-structure.html#the-problem-with-ld"><i class="fa fa-check"></i><b>4.2</b> The problem with LD</a></li>
+<li class="chapter" data-level="4.3" data-path="population-structure.html"><a href="population-structure.html#best-practices-for-pca-of-genetic-data"><i class="fa fa-check"></i><b>4.3</b> Best practices for PCA of genetic data</a></li>
+<li class="chapter" data-level="4.4" data-path="population-structure.html"><a href="population-structure.html#exo-pca"><i class="fa fa-check"></i><b>4.4</b> Exercise</a></li>
+<li class="chapter" data-level="4.5" data-path="population-structure.html"><a href="population-structure.html#ancestry"><i class="fa fa-check"></i><b>4.5</b> Ancestry inference</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html"><i class="fa fa-check"></i><b>5</b> Genome-Wide Association Study (GWAS)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Example</a></li>
+<li class="chapter" data-level="5.2" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#regenie"><i class="fa fa-check"></i><b>5.2</b> REGENIE</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html"><i class="fa fa-check"></i><b>6</b> GWAS summary statistics</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html#format"><i class="fa fa-check"></i><b>6.1</b> Format</a></li>
+<li class="chapter" data-level="6.2" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html#quality-control"><i class="fa fa-check"></i><b>6.2</b> Quality control</a></li>
+<li class="chapter" data-level="6.3" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html#ssancestry"><i class="fa fa-check"></i><b>6.3</b> Ancestry inference</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html"><i class="fa fa-check"></i><b>7</b> Linkage Disequilibrium (LD)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html#derivation-of-an-ld-matrix"><i class="fa fa-check"></i><b>7.1</b> Derivation of an LD matrix</a></li>
+<li class="chapter" data-level="7.2" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html#subtleties-about-ld-matrices"><i class="fa fa-check"></i><b>7.2</b> Subtleties about LD matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html"><i class="fa fa-check"></i><b>8</b> Polygenic (risk) scores (PGS, or PRS)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#pgs-from-individual-level-data"><i class="fa fa-check"></i><b>8.1</b> PGS from individual-level data</a></li>
+<li class="chapter" data-level="8.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#pgs-from-gwas-summary-statistics"><i class="fa fa-check"></i><b>8.2</b> PGS from GWAS summary statistics</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#clumping-thresholding-ct-or-pt-restricting-predictors"><i class="fa fa-check"></i><b>8.2.1</b> <span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span> (C+T, or P+T): restricting predictors</a></li>
+<li class="chapter" data-level="8.2.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#other-methods"><i class="fa fa-check"></i><b>8.2.2</b> Other methods</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#predictive-ability-of-pgs"><i class="fa fa-check"></i><b>8.3</b> Predictive ability of PGS</a></li>
+<li class="chapter" data-level="8.4" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#future-of-pgs"><i class="fa fa-check"></i><b>8.4</b> Future of PGS</a></li>
+<li class="chapter" data-level="8.5" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#exercise-with-ldpred2-and-lassosum2"><i class="fa fa-check"></i><b>8.5</b> Exercise with LDpred2 and lassosum2</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#preparing-the-data"><i class="fa fa-check"></i><b>8.5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="8.5.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#ldpred2"><i class="fa fa-check"></i><b>8.5.2</b> LDpred2</a></li>
+<li class="chapter" data-level="8.5.3" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>8.5.3</b> lassosum2: grid of models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html"><i class="fa fa-check"></i><b>9</b> Fine-mapping with SuSiE</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#objective"><i class="fa fa-check"></i><b>9.1</b> Objective</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#requirements"><i class="fa fa-check"></i><b>9.1.1</b> Requirements:</a></li>
+<li class="chapter" data-level="9.1.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-libraries"><i class="fa fa-check"></i><b>9.1.2</b> Load libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#simulated-example"><i class="fa fa-check"></i><b>9.2</b> Simulated Example</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-data"><i class="fa fa-check"></i><b>9.2.1</b> Load data</a></li>
+<li class="chapter" data-level="9.2.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#fit-susie-to-the-data"><i class="fa fa-check"></i><b>9.2.2</b> Fit SuSiE to the data</a></li>
+<li class="chapter" data-level="9.2.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#plot-the-susie-results"><i class="fa fa-check"></i><b>9.2.3</b> Plot the SuSiE results</a></li>
+<li class="chapter" data-level="9.2.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#lets-take-a-closer-look-at-which-variants-are-in-the-credible-sets"><i class="fa fa-check"></i><b>9.2.4</b> Let’s take a closer look at which variants are in the credible sets</a></li>
+<li class="chapter" data-level="9.2.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#how-correlated-are-the-variants-in-the-credible-sets"><i class="fa fa-check"></i><b>9.2.5</b> How correlated are the variants in the credible sets?</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#real-data"><i class="fa fa-check"></i><b>9.3</b> Real data</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#import-gwas-data"><i class="fa fa-check"></i><b>9.3.1</b> Import GWAS data</a></li>
+<li class="chapter" data-level="9.3.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#find-window-around-loci-of-interest"><i class="fa fa-check"></i><b>9.3.2</b> Find window around loci of interest</a></li>
+<li class="chapter" data-level="9.3.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#ldplink"><i class="fa fa-check"></i><b>9.3.3</b> Create LD matrix</a></li>
+<li class="chapter" data-level="9.3.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#read-in-data-and-fit-susie"><i class="fa fa-check"></i><b>9.3.4</b> Read in data and fit SuSiE</a></li>
+<li class="chapter" data-level="9.3.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#examine-results"><i class="fa fa-check"></i><b>9.3.5</b> Examine results</a></li>
+<li class="chapter" data-level="9.3.6" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#locus-2"><i class="fa fa-check"></i><b>9.3.6</b> Locus 2</a></li>
+<li class="chapter" data-level="9.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>9.3.7</b> Reflections</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Human Genetics course using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="polygenic-risk-scores-pgs-or-prs" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Polygenic (risk) scores (PGS, or PRS)<a href="polygenic-risk-scores-pgs-or-prs.html#polygenic-risk-scores-pgs-or-prs" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Improving PGS methods is the main topic of my research work. These are the main methods currently available in my packages:</p>
+<ul>
+<li><p>efficient penalized regressions, with individual-level data (<span class="citation">Privé, Aschard, &amp; Blum (<a href="#ref-prive2019efficient">2019</a>)</span> + <a href="https://privefl.github.io/bigstatsr/articles/penalized-regressions.html">tutorial</a>)</p></li>
+<li><p>Clumping and Thresholding (C+T) and Stacked C+T (SCT), with GWAS summary statistics and individual level data (<span class="citation">Privé, Vilhjálmsson, Aschard, &amp; Blum (<a href="#ref-prive2019making">2019</a>)</span> + <a href="https://privefl.github.io/bigsnpr/articles/SCT.html">tutorial</a>)</p></li>
+<li><p>LDpred2, with summary statistics (<span class="citation">Privé, Arbel, et al. (<a href="#ref-prive2020ldpred2">2020</a>)</span> + <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html">tutorial</a>)</p></li>
+<li><p>lassosum2, with the same input data as LDpred2 (<span class="citation">Privé, Arbel, et al. (<a href="#ref-prive2021identifying">2022</a>)</span> + <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html#lassosum2-grid-of-models">tutorial</a>)</p></li>
+</ul>
+<div class="infobox info">
+<p>You can now use LDpred2-auto for inference (<span class="citation">Privé et al. (<a href="#ref-prive2022inferring">2023</a>)</span> + <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html#inference-with-ldpred2-auto">tutorial</a>).</p>
+</div>
+<div id="pgs-from-individual-level-data" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> PGS from individual-level data<a href="polygenic-risk-scores-pgs-or-prs.html#pgs-from-individual-level-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you have individual-level data (i.e. genotypes and phenotypes), you can basically use any supervised learning (machine learning) method to build PGS.
+However, because of the size of the genetic data, you will quickly have scalability issues with these models.
+Moreover, it has been shown that effects for most diseases and traits are small and essentially additive, and that fancy methods such as deep learning are not much effective at constructing PGS <span class="citation">(<a href="#ref-kelemen2025performance">Kelemen et al., 2025</a>)</span>.</p>
+<p>Therefore, using penalized linear/logistic regression (PLR) can be a very efficient and effective method to train PGS. In my R package bigstatsr, I have developed a very fast implementation with automatic choice of the two hyper-parameters <span class="citation">(<a href="#ref-prive2019efficient">Privé, Aschard, et al., 2019</a>)</span>.</p>
+<p>This is an example of using PLR for predicting height from genotypes in the UK Biobank</p>
+<ul>
+<li><p>training on 350K individuals x 656K variants in less than 24H</p></li>
+<li><p>within both males and females, PGS achieved 65.5% of correlation (<span class="math inline">\(r^2\)</span> of 42.9%) between genetically predicted and true height</p></li>
+</ul>
+<p><img src="https://privefl.github.io/blog/images/UKB-final-pred.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="pgs-from-gwas-summary-statistics" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> PGS from GWAS summary statistics<a href="polygenic-risk-scores-pgs-or-prs.html#pgs-from-gwas-summary-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="infobox question">
+<p>Why is it suboptimal to derive a PGS like this: <span class="math inline">\(PGS_i = \sum_j \hat\beta_j \cdot G_{i,j}\)</span>?<br />
+(<span class="math inline">\(\hat\beta\)</span> are the GWAS effects sizes)</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="https://github.com/privefl/thesis-docs/blob/master/figures/fig-LD.png?raw=true" alt="Local correlation between variants causes redundant GWAS signals." width="85%" />
+<p class="caption">
+Figure 8.1: Local correlation between variants causes redundant GWAS signals.
+</p>
+</div>
+<div id="clumping-thresholding-ct-or-pt-restricting-predictors" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> <span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span> (C+T, or P+T): restricting predictors<a href="polygenic-risk-scores-pgs-or-prs.html#clumping-thresholding-ct-or-pt-restricting-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>C+T is the simplest and has long been the most widely used method for constructing PGS based on GWAS summary statistics. C+T is simple because it directly uses the GWAS effects as the predictive (PGS) effects. To reduce noise in the predictor, C+T only uses genetic variants that pass some chosen p-value threshold (the thresholding part).
+To avoid redundancy, C+T retains only one variant per group of correlated variants (the clumping step), as GWAS effects were learned independently rather than jointly.</p>
+<p><img src="https://github.com/privefl/thesis-docs/blob/master/figures/GWAS2PRS3.png?raw=true" width="100%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<p><span class="math display">\[PGS_i = \sum_{\substack{j \in S_\text{clumping} \\ p_j~&lt;~p_T}} \hat\beta_j \cdot G_{i,j}\]</span></p>
+<p><br></p>
+<p><img src="https://github.com/privefl/thesis-docs/blob/master/figures/fig-GWAS-C+T.jpg?raw=true" width="95%" style="display: block; margin: auto;" /><img src="https://github.com/privefl/thesis-docs/blob/master/figures/fig-GWAS-C+T-clumping.jpg?raw=true" width="95%" style="display: block; margin: auto;" /><img src="https://github.com/privefl/thesis-docs/blob/master/figures/fig-GWAS-C+T-clumping-thresholding.jpg?raw=true" width="95%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<p>In GWAS, it is commonly accepted to use a p-value threshold of <span class="math inline">\(5 \times 10^{-8}\)</span> when reporting significant findings, which corresponds to correcting for one million independent tests.
+Yet for prediction purposes, including less significant variants can substantially improve predictive performance of C+T.
+Therefore, the p-value threshold must be chosen carefully in C+T. A stringent threshold risks excluding informative variants, while a lenient threshold may introduce noise by including non-informative variants.
+For the clumping step, one must choose the threshold above which to discard correlated variants.</p>
+<p>Hyper-parameters in C+T (and usual values):</p>
+<ul>
+<li><p>threshold on squared correlation of clumping (e.g. <span class="math inline">\(r_c^2 &gt; 0.2\)</span>)</p></li>
+<li><p>window size for LD computation in clumping (e.g. 500 kb)</p></li>
+<li><p>p-value threshold ( <span class="math inline">\(p_T\)</span> between <span class="math inline">\(1\)</span> and <span class="math inline">\(10^{-8}\)</span> and choose the best one )</p></li>
+<li><p>other parameters such as the threshold of imputation quality score (e.g. <span class="math inline">\(INFO &gt; 0.5\)</span>) or minor allele frequency (e.g. <span class="math inline">\(MAF &gt; 0.01\)</span>)</p></li>
+</ul>
+<p>A popular software to derive C+T scores is <a href="https://choishingwan.github.io/PRSice/">PRSice-2</a> <span class="citation">(<a href="#ref-choi2019prsice">Choi &amp; O’Reilly, 2019</a>)</span>.</p>
+<p>My contributions in <span class="citation">Privé, Vilhjálmsson, et al. (<a href="#ref-prive2019making">2019</a>)</span>:</p>
+<ul>
+<li><p>an implementation to efficiently compute thousands of C+T scores corresponding to different sets of hyper-parameters (to explore more)</p></li>
+<li><p>going further by <em>stacking</em> with a (penalized) linear combination of all C+T models (instead of just choosing the best model) <span class="math inline">\(\Rightarrow\)</span> <em>SCT</em> (Stacked C+T)</p></li>
+</ul>
+</div>
+<div id="other-methods" class="section level3 hasAnchor" number="8.2.2">
+<h3><span class="header-section-number">8.2.2</span> Other methods<a href="polygenic-risk-scores-pgs-or-prs.html#other-methods" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are methods that better model LD than C+T (which uses simple heuristics):</p>
+<ul>
+<li><p>lassosum <span class="citation">(<a href="#ref-mak2017polygenic">Mak, Porsch, Choi, Zhou, &amp; Sham, 2017</a>)</span> and lassosum2 <span class="citation">(<a href="#ref-prive2021identifying">Privé, Arbel, et al., 2022</a>)</span>, which approximate a penalized linear regression based on GWAS summary statistics and some LD reference</p></li>
+<li><p>Bayesian methods such as LDpred2 <span class="citation">(<a href="#ref-prive2020ldpred2">Privé, Arbel, et al., 2020</a>)</span>, SBayesR/RC <span class="citation">(<a href="#ref-lloyd2019improved">Lloyd-Jones et al., 2019</a>; <a href="#ref-zheng2024leveraging">Zheng et al., 2024</a>)</span> and PRS-CS <span class="citation">(<a href="#ref-ge2019polygenic">Ge, Chen, Ni, Feng, &amp; Smoller, 2019</a>)</span>, also approximating a penalized regression, with some different priors and details in the implementation</p></li>
+</ul>
+<p>My opinion on these methods:</p>
+<ul>
+<li><p>C+T is known to be suboptimal but works okay for traits with low polygenicity (the proportion of causal variants)</p></li>
+<li><p>lassosum is very good at getting very sparse solutions (lots of variants are not used); C+T can be good for that as well</p></li>
+<li><p>LDpred2 is the best in my very biased opinion 😉; there is an “auto” option to directly infer hyper-parameters of the methods from the data, and many developments have been made regarding improving robustness</p></li>
+<li><p>SBayesR is very good with in-sample LD (i.e. from the GWAS data), otherwise it lacks robustness</p></li>
+<li><p>SBayesRC uses functional annotations to help prioritize causal variants, which can help improve prediction, especially when applying the PGS to other populations</p></li>
+<li><p>PRS-CS uses a lot of regularization to ensure robustness, which can be at the expense of lower predictive ability</p></li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<img src="https://github.com/privefl/thesis-docs/blob/master/figures/ldpred2-comparison.jpeg?raw=true" alt="Comparison of PGS methods from the LDpred2 paper." width="75%" />
+<p class="caption">
+Figure 8.2: Comparison of PGS methods from the LDpred2 paper.
+</p>
+</div>
+</div>
+</div>
+<div id="predictive-ability-of-pgs" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Predictive ability of PGS<a href="polygenic-risk-scores-pgs-or-prs.html#predictive-ability-of-pgs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>What influences predictive power of PGS?</p>
+<ul>
+<li><p>Predictive power <span class="math inline">\(r^2\)</span> is bounded by the heritability <span class="math inline">\(h^2\)</span> captured by the set of variants used (called SNP-heritability).</p></li>
+<li><p><span class="math inline">\(r^2\)</span> increases with sample size <span class="math inline">\(N\)</span> (of course)</p></li>
+<li><p><span class="math inline">\(r^2\)</span> decreases with polygenicity (proportion of causal variants), because there are more small effects, harder to detect and estimate.<br />
+Let’s denote <span class="math inline">\(M_c\)</span> the number of causal variants.</p></li>
+</ul>
+<p>The theoretical upper bound for the phenotypic variance that can be explained by PGS <span class="citation">(<a href="#ref-daetwyler2008accuracy">Daetwyler, Villanueva, &amp; Woolliams, 2008</a>)</span>:</p>
+<p><span class="math display">\[r^2_\text{max} = \dfrac{h^2}{1 + (1 - r^2_\text{max}) \dfrac{M_c}{N h^2}}\]</span>
+In R: <code>uniroot(function(r2) r2 - h2 / (1 + (1 - r2) * M_c / (N * h2)), interval = c(0, h2))$root</code></p>
+<hr />
+<p><strong>A major limitation of current PGS is their poor portability across ancestries.</strong></p>
+<p>Here is an example across 245 phenotypes and 9 ancestry groups <span class="citation">(<a href="#ref-prive2021high">Privé, Aschard, et al., 2022</a>)</span>:</p>
+<p><img src="https://github.com/privefl/UKBB-PGS/blob/main/docs/figures/lasso-ancestry-2.png?raw=true" width="92%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<p>Basically, predictive performance drops with genetic distance from the training population <span class="citation">(<a href="#ref-ding2023polygenic">Ding et al., 2023</a>; <a href="#ref-prive2021high">Privé, Aschard, et al., 2022</a>)</span>:</p>
+<p><img src="https://github.com/privefl/UKBB-PGS/blob/main/docs/figures/ratio-dist-2.png?raw=true" width="75%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<p>One possible explanation: different tagging, because correlation between genetic variants are different across populations <span class="citation">(<a href="#ref-wang2020theoretical">Y. Wang et al., 2020</a>)</span>:</p>
+<p><img src="https://github.com/privefl/thesis-docs/blob/master/figures/LD-multipop3.png?raw=true" width="80%" style="display: block; margin: auto;" /></p>
+<ul>
+<li>effect of a causal variant should be similar for all populations <span class="citation">(<a href="#ref-hou2023causal">Hou et al., 2023</a>; <a href="#ref-hu2025fine">Hu et al., 2025</a>)</span></li>
+<li>all 3 variants have same effect in N.W. Europeans (perfect correlation)</li>
+<li>in E. Asians, variant 1 retains only 60% of the causal effect</li>
+</ul>
+</div>
+<div id="future-of-pgs" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Future of PGS<a href="polygenic-risk-scores-pgs-or-prs.html#future-of-pgs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><p>Use ever-increasing GWAS summary statistics</p></li>
+<li><p>Use more variants to include more causal variants (currently, most methods use around 1M variants)</p></li>
+<li><p>Integrate functional annotations and multi-ancestry data to prioritize causal variants</p></li>
+</ul>
+</div>
+<div id="exercise-with-ldpred2-and-lassosum2" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Exercise with LDpred2 and lassosum2<a href="polygenic-risk-scores-pgs-or-prs.html#exercise-with-ldpred2-and-lassosum2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>First, let’s carefully look at <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html">the LDpred2 tutorial</a>.</p>
+<div id="preparing-the-data" class="section level3 hasAnchor" number="8.5.1">
+<h3><span class="header-section-number">8.5.1</span> Preparing the data<a href="polygenic-risk-scores-pgs-or-prs.html#preparing-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s first read the data produced in <a href="preprocessing.html#exo-preprocessing">3.3</a>:</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb153-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
+<pre><code>#&gt; Loading required package: bigstatsr</code></pre>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb155-1" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
+<span id="cb155-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb155-2" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb155-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb155-3" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
+<p>Let’s use some GWAS summary statistics for CAD that I derived from the UK Biobank <span class="citation">(<a href="#ref-bycroft2018uk">Bycroft et al., 2018</a>)</span>:</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb156-1" tabindex="-1"></a>gz <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb156-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb156-2" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38077323&quot;</span>,</span>
+<span id="cb156-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb156-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;sumstats_CAD_tuto.csv.gz&quot;</span>)</span>
+<span id="cb156-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb156-4" tabindex="-1"></a><span class="fu">readLines</span>(gz, <span class="at">n =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;chr,pos,rsid,allele1,allele2,freq,info,beta,se&quot;                                                   
+#&gt; [2] &quot;1,721290,rs12565286,C,G,0.035889027911808,0.941918079726998,0.0361758959140647,0.0290865883937757&quot;
+#&gt; [3] &quot;1,752566,rs3094315,A,G,0.840799909379283,0.997586884856296,-0.0340838522604864,0.0144572980122262&quot;</code></pre>
+<div class="infobox exo">
+<p>Read and prepare them in the format required by LDpred2 (columns “chr”, “pos”, “a0”, “a1”, “beta”, “beta_se”, and “n_eff”, as well as additional columns “freq” and “info” for QC)</p>
+<p>Note that there were 20791 cases and 323124 controls in the GWAS. Can you estimate the total effective sample size without this information?</p>
+</div>
+<details>
+<summary>
+Click to see solution
+</summary>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb158-1" tabindex="-1"></a>sumstats <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
+<span id="cb158-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb158-2" tabindex="-1"></a>  gz,</span>
+<span id="cb158-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb158-3" tabindex="-1"></a>  <span class="at">select    =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pos&quot;</span>, <span class="st">&quot;allele2&quot;</span>, <span class="st">&quot;allele1&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;se&quot;</span>, <span class="st">&quot;freq&quot;</span>, <span class="st">&quot;info&quot;</span>),</span>
+<span id="cb158-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb158-4" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pos&quot;</span>, <span class="st">&quot;a0&quot;</span>, <span class="st">&quot;a1&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;beta_se&quot;</span>, <span class="st">&quot;freq&quot;</span>, <span class="st">&quot;info&quot;</span>))</span>
+<span id="cb158-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb158-5" tabindex="-1"></a></span>
+<span id="cb158-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb158-6" tabindex="-1"></a><span class="co"># GWAS effective sample size for binary traits (4 / (1 / n_case + 1 / n_control))</span></span>
+<span id="cb158-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb158-7" tabindex="-1"></a><span class="co"># For quantitative traits, just use the total sample size for `n_eff`.</span></span>
+<span id="cb158-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb158-8" tabindex="-1"></a>sumstats<span class="sc">$</span>n_eff <span class="ot">&lt;-</span> <span class="dv">4</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">/</span> <span class="dv">20791</span> <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">323124</span>)</span></code></pre></div>
+</details>
+<hr />
+<p>Note that we recommend to use imputed HapMap3(+) variants when available, for which you can download some precomputed LD reference for European individuals based on the UK Biobank.
+Here, we will use the genotyped variants for this tutorial.
+Try to use an LD reference with at least 2000 individuals (I have only 1401 in this example).
+<a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html">The LDpred2 tutorial</a> provides more information.</p>
+<div class="infobox exo">
+<p>Match the variants in the GWAS summary statistics with the internal data we have here.</p>
+</div>
+<details>
+<summary>
+Click to see solution
+</summary>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb159-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb159-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb159-2" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">transmute</span>(obj.bigsnp<span class="sc">$</span>map,</span>
+<span id="cb159-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb159-3" tabindex="-1"></a>                 <span class="at">chr =</span> chromosome, <span class="at">pos =</span> physical.pos,</span>
+<span id="cb159-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb159-4" tabindex="-1"></a>                 <span class="at">a0 =</span> allele2, <span class="at">a1 =</span> allele1)</span>
+<span id="cb159-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb159-5" tabindex="-1"></a>info_snp <span class="ot">&lt;-</span> <span class="fu">snp_match</span>(sumstats, map, <span class="at">return_flip_and_rev =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb159-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb159-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">_REV_</span><span class="st">`</span>, <span class="dv">1</span> <span class="sc">-</span> freq, freq),</span>
+<span id="cb159-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb159-7" tabindex="-1"></a>         <span class="st">`</span><span class="at">_REV_</span><span class="st">`</span> <span class="ot">=</span> <span class="cn">NULL</span>, <span class="st">`</span><span class="at">_FLIP_</span><span class="st">`</span><span class="ot">=</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb159-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb159-8" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div>
+<pre><code>#&gt;   chr    pos a0 a1         beta    beta_se       freq      info    n_eff
+#&gt; 1   1 752566  T  C  0.034083852 0.01445730 0.15920009 0.9975869 78136.41
+#&gt; 2   1 785989  G  A  0.018289010 0.01549153 0.13007399 0.9913233 78136.41
+#&gt; 3   1 798959  G  A  0.003331013 0.01307707 0.20524280 0.9734898 78136.41
+#&gt; 4   1 947034  T  C -0.021202725 0.02838148 0.03595249 0.9924989 78136.41
+#&gt;   _NUM_ID_.ss _NUM_ID_
+#&gt; 1           2        2
+#&gt; 2           4        4
+#&gt; 3           5        5
+#&gt; 4           6        6
+#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 340206 rows ]</code></pre>
+</details>
+<hr />
+<div class="infobox exo">
+<p>What QC could you perform on the GWAS summary statistics? Apply it here.</p>
+</div>
+<details>
+<summary>
+Click to see solution
+</summary>
+<p>Check the summary statistics; some quality control may be needed:</p>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb161-1" tabindex="-1"></a><span class="fu">hist</span>(info_snp<span class="sc">$</span>n_eff)    <span class="co"># all the same values, otherwise filter at 70% of max</span></span></code></pre></div>
+<p><img src="PGS_files/figure-html/unnamed-chunk-13-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb162-1" tabindex="-1"></a><span class="fu">hist</span>(info_snp<span class="sc">$</span>info)     <span class="co"># very good imputation; filter e.g. at 0.7 or 0.8</span></span></code></pre></div>
+<p><img src="PGS_files/figure-html/unnamed-chunk-13-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb163-1" tabindex="-1"></a><span class="fu">summary</span>(info_snp<span class="sc">$</span>freq)</span></code></pre></div>
+<pre><code>#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+#&gt; 0.0000027 0.1100250 0.2261357 0.2365588 0.3580946 0.9998703</code></pre>
+<p>Then we can perform some quality control on the summary statistics by checking whether standard deviations (of genotypes) inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:</p>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-1" tabindex="-1"></a>af_ref <span class="ot">&lt;-</span> <span class="fu">big_colstats</span>(G, <span class="at">ind.col =</span> info_snp<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)<span class="sc">$</span>sum <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> <span class="fu">nrow</span>(G))</span>
+<span id="cb165-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-2" tabindex="-1"></a>sd_ref <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> af_ref <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> af_ref))</span>
+<span id="cb165-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-3" tabindex="-1"></a>sd_ss <span class="ot">&lt;-</span> <span class="fu">with</span>(info_snp, <span class="dv">2</span> <span class="sc">/</span> <span class="fu">sqrt</span>(n_eff <span class="sc">*</span> beta_se<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> beta<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb165-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-4" tabindex="-1"></a>is_bad <span class="ot">&lt;-</span></span>
+<span id="cb165-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-5" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> (<span class="fl">0.5</span> <span class="sc">*</span> sd_ref) <span class="sc">|</span> sd_ss <span class="sc">&gt;</span> (sd_ref <span class="sc">+</span> <span class="fl">0.1</span>) <span class="sc">|</span></span>
+<span id="cb165-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-6" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">|</span> sd_ref <span class="sc">&lt;</span> <span class="fl">0.05</span>  <span class="co"># basically filtering small MAF</span></span>
+<span id="cb165-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-7" tabindex="-1"></a></span>
+<span id="cb165-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-8" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb165-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-9" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_ref, sd_ss, is_bad), <span class="at">n =</span> <span class="fl">50e3</span>)) <span class="sc">+</span></span>
+<span id="cb165-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-10" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_ref, sd_ss, <span class="at">color =</span> is_bad), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb165-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-11" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb165-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-12" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb165-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-13" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb165-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-14" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations in the reference set&quot;</span>,</span>
+<span id="cb165-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-15" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>,</span>
+<span id="cb165-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb165-16" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;To remove?&quot;</span>)</span></code></pre></div>
+<p><img src="PGS_files/figure-html/unnamed-chunk-14-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<div class="infobox caution">
+<p>When using quantitative traits (linear regression instead of logistic regression for the GWAS), you need to replace <code>2</code> by <code>sd(y)</code> when computing <code>sd_ss</code> (equations <a href="gwas-summary-statistics.html#eq:sdlog">(6.2)</a> and <a href="gwas-summary-statistics.html#eq:sdlin">(6.1)</a>).</p>
+</div>
+<p>When allele frequencies are available in the GWAS summary statistics, you can use them (along with INFO scores) to get an even better match (equation <a href="gwas-summary-statistics.html#eq:sdaf">(6.3)</a>):</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb166-1" tabindex="-1"></a>sd_af <span class="ot">&lt;-</span> <span class="fu">with</span>(info_snp, <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> freq <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> freq) <span class="sc">*</span> info))</span>
+<span id="cb166-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb166-2" tabindex="-1"></a></span>
+<span id="cb166-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb166-3" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_af, sd_ss), <span class="at">n =</span> <span class="fl">50e3</span>)) <span class="sc">+</span></span>
+<span id="cb166-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb166-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_af, sd_ss), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb166-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb166-5" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb166-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb166-6" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb166-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb166-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations derived from allele frequencies&quot;</span>,</span>
+<span id="cb166-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb166-8" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>)</span></code></pre></div>
+<p><img src="PGS_files/figure-html/unnamed-chunk-15-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>You can still use the reference panel to do some quality control by comparing allele frequencies, which is useful to detect allelic errors (inversion of alleles and therefore effect sizes) and the other issues detected before:</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb167-1" tabindex="-1"></a>af_diff <span class="ot">&lt;-</span> af_ref <span class="sc">-</span> info_snp<span class="sc">$</span>freq</span>
+<span id="cb167-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb167-2" tabindex="-1"></a><span class="fu">hist</span>(af_diff, <span class="st">&quot;FD&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>))</span></code></pre></div>
+<p><img src="PGS_files/figure-html/unnamed-chunk-16-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Then you can filter</p>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb168-1" tabindex="-1"></a>is_bad2 <span class="ot">&lt;-</span></span>
+<span id="cb168-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb168-2" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> (<span class="fl">0.7</span> <span class="sc">*</span> sd_af) <span class="sc">|</span> sd_ss <span class="sc">&gt;</span> (sd_af <span class="sc">+</span> <span class="fl">0.1</span>) <span class="sc">|</span></span>
+<span id="cb168-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb168-3" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">|</span> sd_af <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">|</span></span>
+<span id="cb168-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb168-4" tabindex="-1"></a>  info_snp<span class="sc">$</span>info <span class="sc">&lt;</span> <span class="fl">0.7</span> <span class="sc">|</span> <span class="fu">abs</span>(af_diff) <span class="sc">&gt;</span> <span class="fl">0.07</span></span>
+<span id="cb168-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb168-5" tabindex="-1"></a><span class="fu">mean</span>(is_bad2)</span></code></pre></div>
+<pre><code>#&gt; [1] 0.002410276</code></pre>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb170-1" tabindex="-1"></a>df_beta <span class="ot">&lt;-</span> info_snp[<span class="sc">!</span>is_bad2, ]</span></code></pre></div>
+</details>
+<hr />
+<p>Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes here, for faster running of this tutorial):</p>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-1" tabindex="-1"></a><span class="co"># Precomputed genetic positions (in cM) to avoid downloading large files in this tuto</span></span>
+<span id="cb171-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-2" tabindex="-1"></a>gen_pos <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb171-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-3" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38247288&quot;</span>,</span>
+<span id="cb171-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-4" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;gen_pos_tuto.rds&quot;</span>))</span>
+<span id="cb171-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-5" tabindex="-1"></a></span>
+<span id="cb171-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-6" tabindex="-1"></a>df_beta <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(df_beta, chr <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)  <span class="co"># TO REMOVE (for speed here)</span></span>
+<span id="cb171-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-7" tabindex="-1"></a></span>
+<span id="cb171-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-8" tabindex="-1"></a><span class="cf">for</span> (chr <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {  <span class="co"># REPLACE BY 1:22</span></span>
+<span id="cb171-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-9" tabindex="-1"></a></span>
+<span id="cb171-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-10" tabindex="-1"></a>  <span class="fu">print</span>(chr)</span>
+<span id="cb171-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-11" tabindex="-1"></a></span>
+<span id="cb171-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-12" tabindex="-1"></a>  corr0 <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>({</span>
+<span id="cb171-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-13" tabindex="-1"></a></span>
+<span id="cb171-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-14" tabindex="-1"></a>    <span class="co"># indices in &#39;sumstats&#39;</span></span>
+<span id="cb171-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-15" tabindex="-1"></a>    ind.chr <span class="ot">&lt;-</span> <span class="fu">which</span>(df_beta<span class="sc">$</span>chr <span class="sc">==</span> chr)</span>
+<span id="cb171-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-16" tabindex="-1"></a>    <span class="co"># indices in &#39;G&#39;</span></span>
+<span id="cb171-17"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-17" tabindex="-1"></a>    ind.chr2 <span class="ot">&lt;-</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>[ind.chr]</span>
+<span id="cb171-18"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-18" tabindex="-1"></a></span>
+<span id="cb171-19"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-19" tabindex="-1"></a>    <span class="co"># genetic positions (in cM)</span></span>
+<span id="cb171-20"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-20" tabindex="-1"></a>    <span class="co"># POS2 &lt;- snp_asGeneticPos(map$chr[ind.chr2], map$pos[ind.chr2], dir = &quot;tmp-data&quot;)</span></span>
+<span id="cb171-21"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-21" tabindex="-1"></a>    POS2 <span class="ot">&lt;-</span> gen_pos[ind.chr2]  <span class="co"># PRECOMPUTED HERE; USE snp_asGeneticPos() IN REAL CODE</span></span>
+<span id="cb171-22"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-22" tabindex="-1"></a></span>
+<span id="cb171-23"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-23" tabindex="-1"></a>    <span class="co"># compute the banded correlation matrix in sparse matrix format</span></span>
+<span id="cb171-24"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-24" tabindex="-1"></a>    <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind.chr2, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>, <span class="at">infos.pos =</span> POS2,</span>
+<span id="cb171-25"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-25" tabindex="-1"></a>            <span class="at">ncores =</span> NCORES)</span>
+<span id="cb171-26"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-26" tabindex="-1"></a></span>
+<span id="cb171-27"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-27" tabindex="-1"></a>  }, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&quot;tmp-data/corr_chr&quot;</span>, chr, <span class="st">&quot;.rds&quot;</span>))</span>
+<span id="cb171-28"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-28" tabindex="-1"></a></span>
+<span id="cb171-29"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-29" tabindex="-1"></a>  <span class="co"># transform to SFBM (on-disk format) on the fly</span></span>
+<span id="cb171-30"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-30" tabindex="-1"></a>  <span class="cf">if</span> (chr <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb171-31"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-31" tabindex="-1"></a>    ld <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">colSums</span>(corr0<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb171-32"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-32" tabindex="-1"></a>    corr <span class="ot">&lt;-</span> <span class="fu">as_SFBM</span>(corr0, <span class="st">&quot;tmp-data/corr&quot;</span>, <span class="at">compact =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb171-33"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-33" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb171-34"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-34" tabindex="-1"></a>    ld <span class="ot">&lt;-</span> <span class="fu">c</span>(ld, Matrix<span class="sc">::</span><span class="fu">colSums</span>(corr0<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb171-35"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-35" tabindex="-1"></a>    corr<span class="sc">$</span><span class="fu">add_columns</span>(corr0, <span class="fu">nrow</span>(corr))</span>
+<span id="cb171-36"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-36" tabindex="-1"></a>  }</span>
+<span id="cb171-37"><a href="polygenic-risk-scores-pgs-or-prs.html#cb171-37" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>#&gt; [1] 1
+#&gt;    user  system elapsed 
+#&gt;  110.20    0.71   28.93 
+#&gt; Code finished running at 2025-06-13 14:37:03 CEST 
+#&gt; [1] 2
+#&gt;    user  system elapsed 
+#&gt;  141.60    0.64   37.57 
+#&gt; Code finished running at 2025-06-13 14:37:47 CEST 
+#&gt; [1] 3
+#&gt;    user  system elapsed 
+#&gt;  130.27    0.75   34.44 
+#&gt; Code finished running at 2025-06-13 14:38:27 CEST 
+#&gt; [1] 4
+#&gt;    user  system elapsed 
+#&gt;  112.91    0.95   31.21 
+#&gt; Code finished running at 2025-06-13 14:39:04 CEST</code></pre>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb173-1" tabindex="-1"></a><span class="fu">file.size</span>(corr<span class="sc">$</span>sbk) <span class="sc">/</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">3</span>  <span class="co"># file size in GB</span></span></code></pre></div>
+<pre><code>#&gt; [1] 0.5756225</code></pre>
+<div class="infobox caution">
+<p>Note that you will need at least the same memory as this file size (to keep it cached for faster processing) + some other memory for all the results returned. If you do not have enough memory, processing will be very slow (because you would read the data from disk all the time). If using HapMap3 variants, requesting 60 GB should be enough. For this small example, 8 GB of RAM on a laptop should be enough.</p>
+</div>
+</div>
+<div id="ldpred2" class="section level3 hasAnchor" number="8.5.2">
+<h3><span class="header-section-number">8.5.2</span> LDpred2<a href="polygenic-risk-scores-pgs-or-prs.html#ldpred2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="infobox exo">
+<p>Following the LDpred2 tutorial, run the three versions of LDpred2 and test their predictive performance for <code>obj.bigsnp$fam$CAD</code>.</p>
+<p>For speed here, you can use a smaller grid of hyper-parameters for LDpred2-grid, and a smaller number of burn-in/iterations for LDpred2-auto.</p>
+</div>
+<details>
+<summary>
+Click to see solution
+</summary>
+<p>We can now run LD score regression:</p>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb175-1" tabindex="-1"></a>(ldsc <span class="ot">&lt;-</span> <span class="fu">with</span>(df_beta, <span class="fu">snp_ldsc</span>(ld, <span class="fu">length</span>(ld), <span class="at">chi2 =</span> (beta <span class="sc">/</span> beta_se)<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb175-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb175-2" tabindex="-1"></a>                                 <span class="at">sample_size =</span> n_eff, <span class="at">blocks =</span> <span class="cn">NULL</span>)))</span></code></pre></div>
+<pre><code>#&gt;       int        h2 
+#&gt; 0.9795999 0.0528327</code></pre>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb177-1" tabindex="-1"></a>ldsc_h2_est <span class="ot">&lt;-</span> ldsc[[<span class="st">&quot;h2&quot;</span>]]</span></code></pre></div>
+<p>We can now run LDpred2-inf very easily:</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb178-1" tabindex="-1"></a><span class="co"># LDpred2-inf</span></span>
+<span id="cb178-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb178-2" tabindex="-1"></a>beta_inf <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_inf</span>(corr, df_beta, ldsc_h2_est)</span>
+<span id="cb178-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb178-3" tabindex="-1"></a>pred_inf <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, beta_inf, <span class="at">ind.col =</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>)</span>
+<span id="cb178-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb178-4" tabindex="-1"></a><span class="fu">AUCBoot</span>(pred_inf, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
+<pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
+#&gt; 0.55129301 0.51898976 0.58343050 0.01635637</code></pre>
+<p>For LDpred2(-grid), this is the grid we recommend to use:</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb180-1" tabindex="-1"></a><span class="co"># LDpred2-grid</span></span>
+<span id="cb180-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb180-2" tabindex="-1"></a>(h2_seq <span class="ot">&lt;-</span> <span class="fu">round</span>(ldsc_h2_est <span class="sc">*</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>, <span class="dv">1</span>, <span class="fl">1.4</span>), <span class="dv">4</span>))</span></code></pre></div>
+<pre><code>#&gt; [1] 0.0158 0.0370 0.0528 0.0740</code></pre>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb182-1" tabindex="-1"></a>(p_seq <span class="ot">&lt;-</span> <span class="fu">signif</span>(<span class="fu">seq_log</span>(<span class="fl">1e-5</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">21</span>), <span class="dv">2</span>))</span></code></pre></div>
+<pre><code>#&gt;  [1] 1.0e-05 1.8e-05 3.2e-05 5.6e-05 1.0e-04 1.8e-04 3.2e-04 5.6e-04
+#&gt;  [9] 1.0e-03 1.8e-03 3.2e-03 5.6e-03 1.0e-02 1.8e-02 3.2e-02 5.6e-02
+#&gt; [17] 1.0e-01 1.8e-01 3.2e-01 5.6e-01 1.0e+00</code></pre>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb184-1" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">p =</span> p_seq, <span class="at">h2 =</span> h2_seq, <span class="at">sparse =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>))</span>
+<span id="cb184-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb184-2" tabindex="-1"></a><span class="fu">dim</span>(params)</span></code></pre></div>
+<pre><code>#&gt; [1] 168   3</code></pre>
+<p>Here, we will be using this smaller grid instead (for speed in this tutorial):</p>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-1" tabindex="-1"></a><span class="co"># smaller grid for tutorial only (USE PREVIOUS ONE IN REAL CODE)</span></span>
+<span id="cb186-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-2" tabindex="-1"></a>(params <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">p =</span> <span class="fu">signif</span>(<span class="fu">seq_log</span>(<span class="fl">1e-4</span>, <span class="fl">0.5</span>, <span class="at">length.out =</span> <span class="dv">16</span>), <span class="dv">2</span>),</span>
+<span id="cb186-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-3" tabindex="-1"></a>                       <span class="at">h2 =</span> <span class="fu">round</span>(ldsc_h2_est, <span class="dv">4</span>), <span class="at">sparse =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>#&gt;          p     h2 sparse
+#&gt; 1  0.00010 0.0528   TRUE
+#&gt; 2  0.00018 0.0528   TRUE
+#&gt; 3  0.00031 0.0528   TRUE
+#&gt; 4  0.00055 0.0528   TRUE
+#&gt; 5  0.00097 0.0528   TRUE
+#&gt; 6  0.00170 0.0528   TRUE
+#&gt; 7  0.00300 0.0528   TRUE
+#&gt; 8  0.00530 0.0528   TRUE
+#&gt; 9  0.00940 0.0528   TRUE
+#&gt; 10 0.01700 0.0528   TRUE
+#&gt; 11 0.02900 0.0528   TRUE
+#&gt; 12 0.05200 0.0528   TRUE
+#&gt; 13 0.09100 0.0528   TRUE
+#&gt; 14 0.16000 0.0528   TRUE
+#&gt; 15 0.28000 0.0528   TRUE
+#&gt; 16 0.50000 0.0528   TRUE</code></pre>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-1" tabindex="-1"></a>beta_grid <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_grid</span>(corr, df_beta, params, <span class="at">ncores =</span> NCORES)</span>
+<span id="cb188-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-2" tabindex="-1"></a>params<span class="sc">$</span>sparsity <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(beta_grid <span class="sc">==</span> <span class="dv">0</span>)</span></code></pre></div>
+<p>Then, we can compute the corresponding PGS for all these models, and visualize their performance:</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-1" tabindex="-1"></a>pred_grid <span class="ot">&lt;-</span> <span class="fu">big_prodMat</span>(G, beta_grid, <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb189-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-2" tabindex="-1"></a>                         <span class="at">ncores =</span> NCORES)</span>
+<span id="cb189-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-3" tabindex="-1"></a></span>
+<span id="cb189-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-4" tabindex="-1"></a>params<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_grid, <span class="dv">2</span>, <span class="cf">function</span>(.x) {</span>
+<span id="cb189-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-5" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(.x))) <span class="fu">return</span>(<span class="cn">NA</span>)  <span class="co"># models that diverged substantially</span></span>
+<span id="cb189-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-6" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">glm</span>(  <span class="co"># simply use `lm()` for quantitative traits</span></span>
+<span id="cb189-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-7" tabindex="-1"></a>    CAD <span class="sc">~</span> .x <span class="sc">+</span> sex <span class="sc">+</span> age, <span class="at">data =</span> obj.bigsnp<span class="sc">$</span>fam, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
+<span id="cb189-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-8" tabindex="-1"></a>  ))<span class="sc">$</span>coef[<span class="st">&quot;.x&quot;</span>, <span class="dv">3</span>]</span>
+<span id="cb189-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-9" tabindex="-1"></a>})</span>
+<span id="cb189-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-10" tabindex="-1"></a></span>
+<span id="cb189-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-11" tabindex="-1"></a><span class="fu">ggplot</span>(params, <span class="fu">aes</span>(<span class="at">x =</span> p, <span class="at">y =</span> score, <span class="at">color =</span> <span class="fu">as.factor</span>(h2))) <span class="sc">+</span></span>
+<span id="cb189-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-12" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>() <span class="sc">+</span></span>
+<span id="cb189-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-13" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb189-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-14" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb189-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-15" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">0</span>), <span class="at">minor_breaks =</span> params<span class="sc">$</span>p) <span class="sc">+</span></span>
+<span id="cb189-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-16" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> sparse, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
+<span id="cb189-17"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;GLM Z-Score&quot;</span>, <span class="at">color =</span> <span class="st">&quot;h2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb189-18"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-18" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>, <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">&quot;lines&quot;</span>))</span></code></pre></div>
+<p><img src="PGS_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Then you can use the best-performing model here.
+Note that, in practice, you should use only individuals from the validation set to compute the <code>$score</code> and then evaluate the best model for the individuals in the test set (unrelated to those in the validation set).</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb190-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-2" tabindex="-1"></a>best_beta_grid <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
+<span id="cb190-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb190-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-4" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(score)) <span class="sc">%&gt;%</span></span>
+<span id="cb190-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-5" tabindex="-1"></a>  <span class="fu">print</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb190-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-6" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb190-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-7" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span></span>
+<span id="cb190-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-8" tabindex="-1"></a>  beta_grid[, .]</span></code></pre></div>
+<pre><code>#&gt;         p     h2 sparse  sparsity    score id
+#&gt; 1 0.00300 0.0528   TRUE 0.7640273 4.010421  7
+#&gt; 2 0.00530 0.0528   TRUE 0.6847007 4.005674  8
+#&gt; 3 0.00940 0.0528   TRUE 0.5941913 3.942848  9
+#&gt; 4 0.00097 0.0528   TRUE 0.8788997 3.931843  5
+#&gt; 5 0.00170 0.0528   TRUE 0.8331799 3.877369  6
+#&gt; 6 0.01700 0.0528   TRUE 0.5052878 3.833105 10
+#&gt; 7 0.00018 0.0528   TRUE 0.9548579 3.819481  2
+#&gt; 8 0.00010 0.0528   TRUE 0.9671667 3.810977  1
+#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 8 rows ]</code></pre>
+<div class="infobox question">
+<p>What is the best model with less than 5% of variants used?</p>
+</div>
+<p>To run LDpred2-auto, you can use:</p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-1" tabindex="-1"></a><span class="co"># LDpred2-auto</span></span>
+<span id="cb192-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-2" tabindex="-1"></a>multi_auto <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_auto</span>(</span>
+<span id="cb192-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-3" tabindex="-1"></a>  corr, df_beta, <span class="at">h2_init =</span> ldsc_h2_est,</span>
+<span id="cb192-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-4" tabindex="-1"></a>  <span class="at">vec_p_init =</span> <span class="fu">seq_log</span>(<span class="fl">1e-4</span>, <span class="fl">0.2</span>, <span class="dv">30</span>),</span>
+<span id="cb192-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-5" tabindex="-1"></a>  <span class="at">burn_in =</span> <span class="dv">100</span>, <span class="at">num_iter =</span> <span class="dv">100</span>,         <span class="co"># TO REMOVE, for speed here</span></span>
+<span id="cb192-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-6" tabindex="-1"></a>  <span class="at">allow_jump_sign =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb192-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-7" tabindex="-1"></a>  <span class="at">use_MLE =</span> <span class="cn">FALSE</span>,         <span class="co"># USE `TRUE` ONLY FOR GWAS WITH LARGE N AND M</span></span>
+<span id="cb192-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-8" tabindex="-1"></a>  <span class="at">shrink_corr =</span> <span class="fl">0.95</span>,</span>
+<span id="cb192-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-9" tabindex="-1"></a>  <span class="at">ncores =</span> NCORES)</span></code></pre></div>
+<p>Perform some quality control on the chains:</p>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-1" tabindex="-1"></a><span class="co"># `range` should be between 0 and 2</span></span>
+<span id="cb193-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-2" tabindex="-1"></a>(range <span class="ot">&lt;-</span> <span class="fu">sapply</span>(multi_auto, <span class="cf">function</span>(auto) <span class="fu">diff</span>(<span class="fu">range</span>(auto<span class="sc">$</span>corr_est))))</span></code></pre></div>
+<pre><code>#&gt;  [1] 0.05395088 0.05403683 0.05444629 0.05493481 0.05494501 0.05412931
+#&gt;  [7] 0.05522421 0.05414115 0.05402562 0.05448675 0.05452462 0.05475806
+#&gt; [13] 0.05431510 0.05355348 0.05543871 0.05546965 0.05319904 0.05522783
+#&gt; [19] 0.05372706 0.05265187 0.05513108 0.05400881 0.05196385 0.05323980
+#&gt; [25] 0.05370847 0.05222171 0.05257157 0.05326683 0.05438740 0.05546960</code></pre>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb195-1" tabindex="-1"></a>(keep <span class="ot">&lt;-</span> <span class="fu">which</span>(range <span class="sc">&gt;</span> (<span class="fl">0.95</span> <span class="sc">*</span> <span class="fu">quantile</span>(range, <span class="fl">0.95</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))))</span></code></pre></div>
+<pre><code>#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 21 22 24 25
+#&gt; [24] 28 29 30</code></pre>
+<p>To get the final effects / predictions, <strong>you should only use chains that pass this filtering</strong>:</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb197-1" tabindex="-1"></a>final_beta_auto <span class="ot">&lt;-</span></span>
+<span id="cb197-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb197-2" tabindex="-1"></a>  <span class="fu">rowMeans</span>(<span class="fu">sapply</span>(multi_auto[keep], <span class="cf">function</span>(auto) auto<span class="sc">$</span>beta_est))</span></code></pre></div>
+<p>We can finally test the final prediction</p>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-1" tabindex="-1"></a>final_pred_auto <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, final_beta_auto,</span>
+<span id="cb198-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-2" tabindex="-1"></a>                               <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb198-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-3" tabindex="-1"></a>                               <span class="at">ncores =</span> NCORES)</span>
+<span id="cb198-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-4" tabindex="-1"></a><span class="fu">AUCBoot</span>(final_pred_auto, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
+<pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
+#&gt; 0.56449283 0.53188840 0.59722567 0.01658021</code></pre>
+</details>
+</div>
+<div id="lassosum2-grid-of-models" class="section level3 hasAnchor" number="8.5.3">
+<h3><span class="header-section-number">8.5.3</span> lassosum2: grid of models<a href="polygenic-risk-scores-pgs-or-prs.html#lassosum2-grid-of-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>lassosum2 is a re-implementation of the lassosum model <span class="citation">(<a href="#ref-mak2017polygenic">Mak et al., 2017</a>)</span> that now uses the exact same input parameters as LDpred2 (<code>corr</code> and <code>df_beta</code>). It can therefore be run next to LDpred2 and the best model can be chosen using the validation set.
+Note that parameter ‘s’ from lassosum has been replaced by a new parameter ‘delta’ in lassosum2 to better reflect that the lassosum model also uses L2-regularization (therefore, elastic-net regularization).</p>
+<div class="infobox exo">
+<p>Run lassosum2 and test its predictive performance for <code>obj.bigsnp$fam$CAD</code>.</p>
+<p>For speed here, you can use parameters <code>nlambda = 10, maxiter = 50</code>.</p>
+</div>
+<details>
+<summary>
+Click to see solution
+</summary>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb200-1" tabindex="-1"></a>beta_lassosum2 <span class="ot">&lt;-</span> <span class="fu">snp_lassosum2</span>(</span>
+<span id="cb200-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb200-2" tabindex="-1"></a>  corr, df_beta, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb200-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb200-3" tabindex="-1"></a>  <span class="at">nlambda =</span> <span class="dv">10</span>, <span class="at">maxiter =</span> <span class="dv">50</span>)      <span class="co"># TO REMOVE, for speed here</span></span></code></pre></div>
+<p>As with LDpred2-grid, we can compute the corresponding PGS for all these models, and visualize their performance:</p>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-1" tabindex="-1"></a>pred_grid2 <span class="ot">&lt;-</span> <span class="fu">big_prodMat</span>(G, beta_lassosum2, <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb201-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-2" tabindex="-1"></a>                          <span class="at">ncores =</span> NCORES)</span>
+<span id="cb201-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-3" tabindex="-1"></a></span>
+<span id="cb201-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-4" tabindex="-1"></a>params2 <span class="ot">&lt;-</span> <span class="fu">attr</span>(beta_lassosum2, <span class="st">&quot;grid_param&quot;</span>)</span>
+<span id="cb201-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-5" tabindex="-1"></a>params2<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_grid2, <span class="dv">2</span>, <span class="cf">function</span>(.x) {</span>
+<span id="cb201-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-6" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(.x))) <span class="fu">return</span>(<span class="cn">NA</span>)  <span class="co"># models that diverged substantially</span></span>
+<span id="cb201-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-7" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">glm</span>(  <span class="co"># simply use `lm()` for quantitative traits</span></span>
+<span id="cb201-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-8" tabindex="-1"></a>    CAD <span class="sc">~</span> .x <span class="sc">+</span> sex <span class="sc">+</span> age, <span class="at">data =</span> obj.bigsnp<span class="sc">$</span>fam, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
+<span id="cb201-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-9" tabindex="-1"></a>  ))<span class="sc">$</span>coef[<span class="st">&quot;.x&quot;</span>, <span class="dv">3</span>]</span>
+<span id="cb201-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-10" tabindex="-1"></a>})</span>
+<span id="cb201-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-11" tabindex="-1"></a></span>
+<span id="cb201-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-12" tabindex="-1"></a><span class="fu">ggplot</span>(params2, <span class="fu">aes</span>(<span class="at">x =</span> lambda, <span class="at">y =</span> score, <span class="at">color =</span> <span class="fu">as.factor</span>(delta))) <span class="sc">+</span></span>
+<span id="cb201-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-13" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>() <span class="sc">+</span></span>
+<span id="cb201-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-14" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb201-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-15" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb201-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-16" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb201-17"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;GLM Z-Score&quot;</span>, <span class="at">color =</span> <span class="st">&quot;delta&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Warning: Removed 4 rows containing missing values or values outside the scale range
+#&gt; (`geom_point()`).</code></pre>
+<pre><code>#&gt; Warning: Removed 4 rows containing missing values or values outside the scale range
+#&gt; (`geom_line()`).</code></pre>
+<p><img src="PGS_files/figure-html/unnamed-chunk-33-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<div class="infobox question">
+<p>When are large <code>delta</code> values useful?</p>
+</div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb204-1" tabindex="-1"></a>best_grid_lassosum2 <span class="ot">&lt;-</span> params2 <span class="sc">%&gt;%</span></span>
+<span id="cb204-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb204-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb204-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb204-3" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(score)) <span class="sc">%&gt;%</span></span>
+<span id="cb204-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb204-4" tabindex="-1"></a>  <span class="fu">print</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb204-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb204-5" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb204-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb204-6" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span></span>
+<span id="cb204-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb204-7" tabindex="-1"></a>  beta_lassosum2[, .]</span></code></pre></div>
+<pre><code>#&gt;       lambda delta num_iter time  sparsity    score id
+#&gt; 1 0.00996541 0.001       51 0.18 0.9937624 4.112203  3
+#&gt; 2 0.00996541 0.010       51 0.19 0.9936938 4.106545 13
+#&gt; 3 0.00996541 0.100       45 0.18 0.9930475 4.053764 23
+#&gt; 4 0.01579411 0.001       51 0.09 0.9997062 3.977849  2
+#&gt; 5 0.00996541 1.000       14 0.07 0.9902959 3.976200 33
+#&gt; 6 0.01579411 0.010       51 0.10 0.9997062 3.973049 12
+#&gt; 7 0.01579411 0.100       35 0.06 0.9996181 3.900467 22
+#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 33 rows ]</code></pre>
+<p>We can choose the best-overall model from both LDpred2-grid and lassosum2:</p>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb206-1" tabindex="-1"></a>best_grid_overall <span class="ot">&lt;-</span> <span class="st">`</span><span class="at">if</span><span class="st">`</span>(<span class="fu">max</span>(params2<span class="sc">$</span>score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">&gt;</span> <span class="fu">max</span>(params<span class="sc">$</span>score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb206-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb206-2" tabindex="-1"></a>                          best_grid_lassosum2, best_beta_grid)</span></code></pre></div>
+</details>
+
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-bycroft2018uk" class="csl-entry">
+Bycroft, C., Freeman, C., Petkova, D., Band, G., Elliott, L.T., Sharp, K., et al. (2018). <a href="https://doi.org/10.1038/s41586-018-0579-z">The <span>UK Biobank</span> resource with deep phenotyping and genomic data</a>. <em>Nature</em>, <em>562</em>, 203–209.
+</div>
+<div id="ref-choi2019prsice" class="csl-entry">
+Choi, S.W., &amp; O’Reilly, P.F. (2019). <a href="https://doi.org/10.1093/gigascience/giz082"><span>PRSice-2</span>: Polygenic risk score software for biobank-scale data</a>. <em>Gigascience</em>, <em>8</em>, giz082.
+</div>
+<div id="ref-daetwyler2008accuracy" class="csl-entry">
+Daetwyler, H.D., Villanueva, B., &amp; Woolliams, J.A. (2008). <a href="https://doi.org/10.1371/journal.pone.0003395">Accuracy of predicting the genetic risk of disease using a genome-wide approach</a>. <em>PloS One</em>, <em>3</em>, e3395.
+</div>
+<div id="ref-ding2023polygenic" class="csl-entry">
+Ding, Y., Hou, K., Xu, Z., Pimplaskar, A., Petter, E., Boulier, K., et al. (2023). <a href="https://doi.org/10.1038/s41586-023-06079-4">Polygenic scoring accuracy varies across the genetic ancestry continuum</a>. <em>Nature</em>, <em>618</em>, 774–781.
+</div>
+<div id="ref-ge2019polygenic" class="csl-entry">
+Ge, T., Chen, C.-Y., Ni, Y., Feng, Y.-C.A., &amp; Smoller, J.W. (2019). <a href="https://doi.org/10.1038/s41467-019-09718-5">Polygenic prediction via <span>Bayesian</span> regression and continuous shrinkage priors</a>. <em>Nature Communications</em>, <em>10</em>, 1776.
+</div>
+<div id="ref-hou2023causal" class="csl-entry">
+Hou, K., Ding, Y., Xu, Z., Wu, Y., Bhattacharya, A., Mester, R., et al. (2023). <a href="https://doi.org/10.1038/s41588-023-01338-6">Causal effects on complex traits are similar for common variants across segments of different continental ancestries within admixed individuals</a>. <em>Nature Genetics</em>, <em>55</em>, 549–558.
+</div>
+<div id="ref-hu2025fine" class="csl-entry">
+Hu, S., Ferreira, L.A., Shi, S., Hellenthal, G., Marchini, J., Lawson, D.J., &amp; Myers, S.R. (2025). <a href="https://doi.org/10.1038/s41588-024-02035-8">Fine-scale population structure and widespread conservation of genetic effect sizes between human groups across traits</a>. <em>Nature Genetics</em>, 1–11.
+</div>
+<div id="ref-kelemen2025performance" class="csl-entry">
+Kelemen, M., Xu, Y., Jiang, T., Zhao, J.H., Anderson, C.A., Wallace, C., et al. (2025). <a href="https://doi.org/10.1038/s41467-025-60056-1">Performance of deep-learning-based approaches to improve polygenic scores</a>. <em>Nature Communications</em>, <em>16</em>, 1–9.
+</div>
+<div id="ref-lloyd2019improved" class="csl-entry">
+Lloyd-Jones, L.R., Zeng, J., Sidorenko, J., Yengo, L., Moser, G., Kemper, K.E., et al. (2019). <a href="https://doi.org/10.1038/s41467-019-12653-0">Improved polygenic prediction by <span>Bayesian</span> multiple regression on summary statistics</a>. <em>Nature Communications</em>, <em>10</em>, 5086.
+</div>
+<div id="ref-mak2017polygenic" class="csl-entry">
+Mak, T.S.H., Porsch, R.M., Choi, S.W., Zhou, X., &amp; Sham, P.C. (2017). <a href="https://doi.org/10.1002/gepi.22050">Polygenic scores via penalized regression on summary statistics</a>. <em>Genetic Epidemiology</em>, <em>41</em>, 469–480.
+</div>
+<div id="ref-prive2022inferring" class="csl-entry">
+Privé, F., Albiñana, C., Arbel, J., Pasaniuc, B., &amp; Vilhjálmsson, B.J. (2023). <a href="https://doi.org/10.1016/j.ajhg.2023.10.010">Inferring disease architecture and predictive ability with <span class="nocase">LDpred2-auto</span></a>. <em>The American Journal of Human Genetics</em>, <em>110</em>, 2042–2055.
+</div>
+<div id="ref-prive2021identifying" class="csl-entry">
+Privé, F., Arbel, J., Aschard, H., &amp; Vilhjálmsson, B.J. (2022). <a href="https://doi.org/10.1016/j.xhgg.2022.100136">Identifying and correcting for misspecifications in <span>GWAS</span> summary statistics and polygenic scores</a>. <em>Human Genetics and Genomics Advances</em>, <em>3</em>, 100136.
+</div>
+<div id="ref-prive2020ldpred2" class="csl-entry">
+Privé, F., Arbel, J., &amp; Vilhjálmsson, B.J. (2020). <a href="https://doi.org/10.1093/bioinformatics/btaa1029"><span class="nocase"><span>LDpred2</span>: better, faster, stronger</span></a>. <em>Bioinformatics</em>, <em>36</em>, 5424–5431.
+</div>
+<div id="ref-prive2019efficient" class="csl-entry">
+Privé, F., Aschard, H., &amp; Blum, M.G. (2019). <a href="https://doi.org/10.1534/genetics.119.302019">Efficient implementation of penalized regression for genetic risk prediction</a>. <em>Genetics</em>, <em>212</em>, 65–74.
+</div>
+<div id="ref-prive2021high" class="csl-entry">
+Privé, F., Aschard, H., Carmi, S., Folkersen, L., Hoggart, C., O’Reilly, P.F., &amp; Vilhjálmsson, B.J. (2022). <a href="https://doi.org/10.1016/j.ajhg.2021.11.008">Portability of 245 polygenic scores when derived from the <span>UK Biobank</span> and applied to 9 ancestry groups from the same cohort</a>. <em>The American Journal of Human Genetics</em>, <em>109</em>, 12–23.
+</div>
+<div id="ref-prive2019making" class="csl-entry">
+Privé, F., Vilhjálmsson, B.J., Aschard, H., &amp; Blum, M.G.B. (2019). <a href="https://doi.org/10.1016/j.ajhg.2019.11.001">Making the most of clumping and thresholding for polygenic scores</a>. <em>The American Journal of Human Genetics</em>, <em>105</em>, 1213–1221.
+</div>
+<div id="ref-wang2020theoretical" class="csl-entry">
+Wang, Y., Guo, J., Ni, G., Yang, J., Visscher, P.M., &amp; Yengo, L. (2020). <a href="https://doi.org/10.1038/s41467-020-17719-y">Theoretical and empirical quantification of the accuracy of polygenic scores in ancestry divergent populations</a>. <em>Nature Communications</em>, <em>11</em>, 3865.
+</div>
+<div id="ref-zheng2024leveraging" class="csl-entry">
+Zheng, Z., Liu, S., Sidorenko, J., Wang, Y., Lin, T., Yengo, L., et al. (2024). <a href="https://doi.org/10.1038/s41588-024-01704-y">Leveraging functional genomic annotations and genome coverage to improve polygenic prediction of complex traits within and between ancestries</a>. <em>Nature Genetics</em>, <em>56</em>, 767–777.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="linkage-disequilibrium-ld.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="fine-mapping-with-susie.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

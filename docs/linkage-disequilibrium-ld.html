@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-12" />
+<meta name="date" content="2025-06-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="gwas-summary-statistics.html"/>
-<link rel="next" href="fine-mapping-with-susie.html"/>
+<link rel="next" href="polygenic-risk-scores-pgs-or-prs.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -214,30 +214,47 @@ div.csl-indent {
 <li class="chapter" data-level="7.1" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html#derivation-of-an-ld-matrix"><i class="fa fa-check"></i><b>7.1</b> Derivation of an LD matrix</a></li>
 <li class="chapter" data-level="7.2" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html#subtleties-about-ld-matrices"><i class="fa fa-check"></i><b>7.2</b> Subtleties about LD matrices</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html"><i class="fa fa-check"></i><b>8</b> Fine-mapping with SuSiE</a>
+<li class="chapter" data-level="8" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html"><i class="fa fa-check"></i><b>8</b> Polygenic (risk) scores (PGS, or PRS)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#objective"><i class="fa fa-check"></i><b>8.1</b> Objective</a>
+<li class="chapter" data-level="8.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#pgs-from-individual-level-data"><i class="fa fa-check"></i><b>8.1</b> PGS from individual-level data</a></li>
+<li class="chapter" data-level="8.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#pgs-from-gwas-summary-statistics"><i class="fa fa-check"></i><b>8.2</b> PGS from GWAS summary statistics</a>
 <ul>
-<li class="chapter" data-level="8.1.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#requirements"><i class="fa fa-check"></i><b>8.1.1</b> Requirements:</a></li>
-<li class="chapter" data-level="8.1.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-libraries"><i class="fa fa-check"></i><b>8.1.2</b> Load libraries</a></li>
+<li class="chapter" data-level="8.2.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#clumping-thresholding-ct-or-pt-restricting-predictors"><i class="fa fa-check"></i><b>8.2.1</b> <span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span> (C+T, or P+T): restricting predictors</a></li>
+<li class="chapter" data-level="8.2.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#other-methods"><i class="fa fa-check"></i><b>8.2.2</b> Other methods</a></li>
 </ul></li>
-<li class="chapter" data-level="8.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#simulated-example"><i class="fa fa-check"></i><b>8.2</b> Simulated Example</a>
+<li class="chapter" data-level="8.3" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#predictive-ability-of-pgs"><i class="fa fa-check"></i><b>8.3</b> Predictive ability of PGS</a></li>
+<li class="chapter" data-level="8.4" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#future-of-pgs"><i class="fa fa-check"></i><b>8.4</b> Future of PGS</a></li>
+<li class="chapter" data-level="8.5" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#exercise-with-ldpred2-and-lassosum2"><i class="fa fa-check"></i><b>8.5</b> Exercise with LDpred2 and lassosum2</a>
 <ul>
-<li class="chapter" data-level="8.2.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-data"><i class="fa fa-check"></i><b>8.2.1</b> Load data</a></li>
-<li class="chapter" data-level="8.2.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#fit-susie-to-the-data"><i class="fa fa-check"></i><b>8.2.2</b> Fit SuSiE to the data</a></li>
-<li class="chapter" data-level="8.2.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#plot-the-susie-results"><i class="fa fa-check"></i><b>8.2.3</b> Plot the SuSiE results</a></li>
-<li class="chapter" data-level="8.2.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#lets-take-a-closer-look-at-which-variants-are-in-the-credible-sets"><i class="fa fa-check"></i><b>8.2.4</b> Let’s take a closer look at which variants are in the credible sets</a></li>
-<li class="chapter" data-level="8.2.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#how-correlated-are-the-variants-in-the-credible-sets"><i class="fa fa-check"></i><b>8.2.5</b> How correlated are the variants in the credible sets?</a></li>
+<li class="chapter" data-level="8.5.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#preparing-the-data"><i class="fa fa-check"></i><b>8.5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="8.5.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#ldpred2"><i class="fa fa-check"></i><b>8.5.2</b> LDpred2</a></li>
+<li class="chapter" data-level="8.5.3" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>8.5.3</b> lassosum2: grid of models</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#real-data"><i class="fa fa-check"></i><b>8.3</b> Real data</a>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html"><i class="fa fa-check"></i><b>9</b> Fine-mapping with SuSiE</a>
 <ul>
-<li class="chapter" data-level="8.3.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#import-gwas-data"><i class="fa fa-check"></i><b>8.3.1</b> Import GWAS data</a></li>
-<li class="chapter" data-level="8.3.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#find-window-around-loci-of-interest"><i class="fa fa-check"></i><b>8.3.2</b> Find window around loci of interest</a></li>
-<li class="chapter" data-level="8.3.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#ldplink"><i class="fa fa-check"></i><b>8.3.3</b> Create LD matrix</a></li>
-<li class="chapter" data-level="8.3.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#read-in-data-and-fit-susie"><i class="fa fa-check"></i><b>8.3.4</b> Read in data and fit SuSiE</a></li>
-<li class="chapter" data-level="8.3.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#examine-results"><i class="fa fa-check"></i><b>8.3.5</b> Examine results</a></li>
-<li class="chapter" data-level="8.3.6" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#locus-2"><i class="fa fa-check"></i><b>8.3.6</b> Locus 2</a></li>
-<li class="chapter" data-level="8.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>8.3.7</b> Reflections</a></li>
+<li class="chapter" data-level="9.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#objective"><i class="fa fa-check"></i><b>9.1</b> Objective</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#requirements"><i class="fa fa-check"></i><b>9.1.1</b> Requirements:</a></li>
+<li class="chapter" data-level="9.1.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-libraries"><i class="fa fa-check"></i><b>9.1.2</b> Load libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#simulated-example"><i class="fa fa-check"></i><b>9.2</b> Simulated Example</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-data"><i class="fa fa-check"></i><b>9.2.1</b> Load data</a></li>
+<li class="chapter" data-level="9.2.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#fit-susie-to-the-data"><i class="fa fa-check"></i><b>9.2.2</b> Fit SuSiE to the data</a></li>
+<li class="chapter" data-level="9.2.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#plot-the-susie-results"><i class="fa fa-check"></i><b>9.2.3</b> Plot the SuSiE results</a></li>
+<li class="chapter" data-level="9.2.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#lets-take-a-closer-look-at-which-variants-are-in-the-credible-sets"><i class="fa fa-check"></i><b>9.2.4</b> Let’s take a closer look at which variants are in the credible sets</a></li>
+<li class="chapter" data-level="9.2.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#how-correlated-are-the-variants-in-the-credible-sets"><i class="fa fa-check"></i><b>9.2.5</b> How correlated are the variants in the credible sets?</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#real-data"><i class="fa fa-check"></i><b>9.3</b> Real data</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#import-gwas-data"><i class="fa fa-check"></i><b>9.3.1</b> Import GWAS data</a></li>
+<li class="chapter" data-level="9.3.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#find-window-around-loci-of-interest"><i class="fa fa-check"></i><b>9.3.2</b> Find window around loci of interest</a></li>
+<li class="chapter" data-level="9.3.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#ldplink"><i class="fa fa-check"></i><b>9.3.3</b> Create LD matrix</a></li>
+<li class="chapter" data-level="9.3.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#read-in-data-and-fit-susie"><i class="fa fa-check"></i><b>9.3.4</b> Read in data and fit SuSiE</a></li>
+<li class="chapter" data-level="9.3.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#examine-results"><i class="fa fa-check"></i><b>9.3.5</b> Examine results</a></li>
+<li class="chapter" data-level="9.3.6" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#locus-2"><i class="fa fa-check"></i><b>9.3.6</b> Locus 2</a></li>
+<li class="chapter" data-level="9.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>9.3.7</b> Reflections</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -274,7 +291,7 @@ If we use e.g. one million variants, the LD matrix would be a 1M x 1M matrix, w
 In practice, we know that LD between two genetic variants tend to decay with an increasing distance between them. In LDpred2 <span class="citation">(<a href="#ref-prive2020ldpred2">Privé, Arbel, &amp; Vilhjálmsson, 2020</a>)</span>, I assume that variants distant from more than 3 cM are uncorrelated (the case also for variants on different chromosomes).
 Genetic positions in centimorgans (cM) are preferred over using physical positions in base pairs (bp) in this case.
 From this, it results a (sparse) windowed LD matrix.</p>
-<p>In <a href="fine-mapping-with-susie.html#ldplink">8.3.3</a>, we will see how to alternatively use PLINK to derive an LD matrix.</p>
+<p>In <a href="fine-mapping-with-susie.html#ldplink">9.3.3</a>, we will see how to alternatively use PLINK to derive an LD matrix.</p>
 <div class="infobox exo">
 <p>Reuse the same data as before to compute the LD matrix for variants on chromosome 22.</p>
 <p>Use <code>snp_asGeneticPos()</code> to convert to cM (do it for chromosome 22 only, to avoid downloading large files). And use <code>size = 3 / 1000</code> (because positions are divided by 1000 internally in bigsnpr).</p>
@@ -367,7 +384,7 @@ Zabad, S., Haryan, C.A., Gravel, S., Misra, S., &amp; Li, Y. (2025). Towards who
         </div>
       </div>
 <a href="gwas-summary-statistics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="fine-mapping-with-susie.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="polygenic-risk-scores-pgs-or-prs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

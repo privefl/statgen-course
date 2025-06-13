@@ -37,7 +37,7 @@ Population structure is the second main topic of my research work (after polygen
 
 ## The problem with LD
 
-Let us reuse the data prepared in \@ref(exo-preprocessing).
+Let's reuse the data prepared in \@ref(exo-preprocessing).
 
 ```{r, warning=FALSE}
 library(ggplot2)
@@ -101,7 +101,7 @@ Let's have a look at [the corresponding tutorial from the bigsnpr website](https
 ## Exercise {#exo-pca}
 
 :::: {.infobox .exo}
-Let us reuse the data prepared in \@ref(exo-preprocessing).
+Let's reuse the data prepared in \@ref(exo-preprocessing).
 
 Follow the previous tutorial to perform a PCA for this data, either using `snp_*` functions on the bigSNP object or `bed_*` functions on the bed file mapped.
 ::::
@@ -109,7 +109,7 @@ Follow the previous tutorial to perform a PCA for this data, either using `snp_*
 <details>
 <summary>Click to see solution</summary>
 
-First, let us get an idea of the relatedness in the data using
+First, let's get an idea of the relatedness in the data using
 ```{r, results='hide'}
 library(bigsnpr)
 (NCORES <- nb_cores())
@@ -126,7 +126,7 @@ hist(log2(rel$KINSHIP), "FD"); abline(v = c(-4.5, -3.5), col = "red")
 When computing relatedness with KING, LD pruning is *NOT* recommended. However, it may be useful to filter out some variants that are highly associated with population structure, e.g. as performed in the UK Biobank [@bycroft2018uk]. For example, see [this code](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/2-rel-and-pca.R).
 ::::
 
-Relatedness should not be a major issue here. Let us now compute PCs.
+Relatedness should not be a major issue here. Let's now compute PCs.
 
 :::: {.infobox .info}
 All the code that follows could be run on the bigSNP object we made before. Nevertheless, to showcase the `bed_*` functions here, we will run the following analyses on the bed file directly.

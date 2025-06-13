@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-12" />
+<meta name="date" content="2025-06-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -214,30 +214,47 @@ div.csl-indent {
 <li class="chapter" data-level="7.1" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html#derivation-of-an-ld-matrix"><i class="fa fa-check"></i><b>7.1</b> Derivation of an LD matrix</a></li>
 <li class="chapter" data-level="7.2" data-path="linkage-disequilibrium-ld.html"><a href="linkage-disequilibrium-ld.html#subtleties-about-ld-matrices"><i class="fa fa-check"></i><b>7.2</b> Subtleties about LD matrices</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html"><i class="fa fa-check"></i><b>8</b> Fine-mapping with SuSiE</a>
+<li class="chapter" data-level="8" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html"><i class="fa fa-check"></i><b>8</b> Polygenic (risk) scores (PGS, or PRS)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#objective"><i class="fa fa-check"></i><b>8.1</b> Objective</a>
+<li class="chapter" data-level="8.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#pgs-from-individual-level-data"><i class="fa fa-check"></i><b>8.1</b> PGS from individual-level data</a></li>
+<li class="chapter" data-level="8.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#pgs-from-gwas-summary-statistics"><i class="fa fa-check"></i><b>8.2</b> PGS from GWAS summary statistics</a>
 <ul>
-<li class="chapter" data-level="8.1.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#requirements"><i class="fa fa-check"></i><b>8.1.1</b> Requirements:</a></li>
-<li class="chapter" data-level="8.1.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-libraries"><i class="fa fa-check"></i><b>8.1.2</b> Load libraries</a></li>
+<li class="chapter" data-level="8.2.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#clumping-thresholding-ct-or-pt-restricting-predictors"><i class="fa fa-check"></i><b>8.2.1</b> <span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span> (C+T, or P+T): restricting predictors</a></li>
+<li class="chapter" data-level="8.2.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#other-methods"><i class="fa fa-check"></i><b>8.2.2</b> Other methods</a></li>
 </ul></li>
-<li class="chapter" data-level="8.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#simulated-example"><i class="fa fa-check"></i><b>8.2</b> Simulated Example</a>
+<li class="chapter" data-level="8.3" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#predictive-ability-of-pgs"><i class="fa fa-check"></i><b>8.3</b> Predictive ability of PGS</a></li>
+<li class="chapter" data-level="8.4" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#future-of-pgs"><i class="fa fa-check"></i><b>8.4</b> Future of PGS</a></li>
+<li class="chapter" data-level="8.5" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#exercise-with-ldpred2-and-lassosum2"><i class="fa fa-check"></i><b>8.5</b> Exercise with LDpred2 and lassosum2</a>
 <ul>
-<li class="chapter" data-level="8.2.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-data"><i class="fa fa-check"></i><b>8.2.1</b> Load data</a></li>
-<li class="chapter" data-level="8.2.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#fit-susie-to-the-data"><i class="fa fa-check"></i><b>8.2.2</b> Fit SuSiE to the data</a></li>
-<li class="chapter" data-level="8.2.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#plot-the-susie-results"><i class="fa fa-check"></i><b>8.2.3</b> Plot the SuSiE results</a></li>
-<li class="chapter" data-level="8.2.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#lets-take-a-closer-look-at-which-variants-are-in-the-credible-sets"><i class="fa fa-check"></i><b>8.2.4</b> Let’s take a closer look at which variants are in the credible sets</a></li>
-<li class="chapter" data-level="8.2.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#how-correlated-are-the-variants-in-the-credible-sets"><i class="fa fa-check"></i><b>8.2.5</b> How correlated are the variants in the credible sets?</a></li>
+<li class="chapter" data-level="8.5.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#preparing-the-data"><i class="fa fa-check"></i><b>8.5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="8.5.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#ldpred2"><i class="fa fa-check"></i><b>8.5.2</b> LDpred2</a></li>
+<li class="chapter" data-level="8.5.3" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#lassosum2-grid-of-models"><i class="fa fa-check"></i><b>8.5.3</b> lassosum2: grid of models</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#real-data"><i class="fa fa-check"></i><b>8.3</b> Real data</a>
+</ul></li>
+<li class="chapter" data-level="9" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html"><i class="fa fa-check"></i><b>9</b> Fine-mapping with SuSiE</a>
 <ul>
-<li class="chapter" data-level="8.3.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#import-gwas-data"><i class="fa fa-check"></i><b>8.3.1</b> Import GWAS data</a></li>
-<li class="chapter" data-level="8.3.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#find-window-around-loci-of-interest"><i class="fa fa-check"></i><b>8.3.2</b> Find window around loci of interest</a></li>
-<li class="chapter" data-level="8.3.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#ldplink"><i class="fa fa-check"></i><b>8.3.3</b> Create LD matrix</a></li>
-<li class="chapter" data-level="8.3.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#read-in-data-and-fit-susie"><i class="fa fa-check"></i><b>8.3.4</b> Read in data and fit SuSiE</a></li>
-<li class="chapter" data-level="8.3.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#examine-results"><i class="fa fa-check"></i><b>8.3.5</b> Examine results</a></li>
-<li class="chapter" data-level="8.3.6" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#locus-2"><i class="fa fa-check"></i><b>8.3.6</b> Locus 2</a></li>
-<li class="chapter" data-level="8.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>8.3.7</b> Reflections</a></li>
+<li class="chapter" data-level="9.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#objective"><i class="fa fa-check"></i><b>9.1</b> Objective</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#requirements"><i class="fa fa-check"></i><b>9.1.1</b> Requirements:</a></li>
+<li class="chapter" data-level="9.1.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-libraries"><i class="fa fa-check"></i><b>9.1.2</b> Load libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#simulated-example"><i class="fa fa-check"></i><b>9.2</b> Simulated Example</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#load-data"><i class="fa fa-check"></i><b>9.2.1</b> Load data</a></li>
+<li class="chapter" data-level="9.2.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#fit-susie-to-the-data"><i class="fa fa-check"></i><b>9.2.2</b> Fit SuSiE to the data</a></li>
+<li class="chapter" data-level="9.2.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#plot-the-susie-results"><i class="fa fa-check"></i><b>9.2.3</b> Plot the SuSiE results</a></li>
+<li class="chapter" data-level="9.2.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#lets-take-a-closer-look-at-which-variants-are-in-the-credible-sets"><i class="fa fa-check"></i><b>9.2.4</b> Let’s take a closer look at which variants are in the credible sets</a></li>
+<li class="chapter" data-level="9.2.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#how-correlated-are-the-variants-in-the-credible-sets"><i class="fa fa-check"></i><b>9.2.5</b> How correlated are the variants in the credible sets?</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#real-data"><i class="fa fa-check"></i><b>9.3</b> Real data</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#import-gwas-data"><i class="fa fa-check"></i><b>9.3.1</b> Import GWAS data</a></li>
+<li class="chapter" data-level="9.3.2" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#find-window-around-loci-of-interest"><i class="fa fa-check"></i><b>9.3.2</b> Find window around loci of interest</a></li>
+<li class="chapter" data-level="9.3.3" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#ldplink"><i class="fa fa-check"></i><b>9.3.3</b> Create LD matrix</a></li>
+<li class="chapter" data-level="9.3.4" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#read-in-data-and-fit-susie"><i class="fa fa-check"></i><b>9.3.4</b> Read in data and fit SuSiE</a></li>
+<li class="chapter" data-level="9.3.5" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#examine-results"><i class="fa fa-check"></i><b>9.3.5</b> Examine results</a></li>
+<li class="chapter" data-level="9.3.6" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#locus-2"><i class="fa fa-check"></i><b>9.3.6</b> Locus 2</a></li>
+<li class="chapter" data-level="9.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>9.3.7</b> Reflections</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -282,7 +299,7 @@ However, PCA can actually capture different kinds of structure <span class="cita
 </div>
 <div id="the-problem-with-ld" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> The problem with LD<a href="population-structure.html#the-problem-with-ld" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Let us reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">3.3</a>.</p>
+<p>Let’s reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">3.3</a>.</p>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="population-structure.html#cb87-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb87-2"><a href="population-structure.html#cb87-2" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
 <pre><code>#&gt; Loading required package: bigstatsr</code></pre>
@@ -334,14 +351,14 @@ Let’s have a look at <a href="https://privefl.github.io/bigsnpr/articles/bedpc
 <div id="exo-pca" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Exercise<a href="population-structure.html#exo-pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="infobox exo">
-<p>Let us reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">3.3</a>.</p>
+<p>Let’s reuse the data prepared in <a href="preprocessing.html#exo-preprocessing">3.3</a>.</p>
 <p>Follow the previous tutorial to perform a PCA for this data, either using <code>snp_*</code> functions on the bigSNP object or <code>bed_*</code> functions on the bed file mapped.</p>
 </div>
 <details>
 <summary>
 Click to see solution
 </summary>
-<p>First, let us get an idea of the relatedness in the data using</p>
+<p>First, let’s get an idea of the relatedness in the data using</p>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="population-structure.html#cb97-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
 <span id="cb97-2"><a href="population-structure.html#cb97-2" tabindex="-1"></a>(NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>())</span>
 <span id="cb97-3"><a href="population-structure.html#cb97-3" tabindex="-1"></a>plink2 <span class="ot">&lt;-</span> <span class="fu">download_plink2</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
@@ -352,7 +369,7 @@ Click to see solution
 <div class="infobox info">
 <p>When computing relatedness with KING, LD pruning is <em>NOT</em> recommended. However, it may be useful to filter out some variants that are highly associated with population structure, e.g. as performed in the UK Biobank <span class="citation">(<a href="#ref-bycroft2018uk">Bycroft et al., 2018</a>)</span>. For example, see <a href="https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/2-rel-and-pca.R">this code</a>.</p>
 </div>
-<p>Relatedness should not be a major issue here. Let us now compute PCs.</p>
+<p>Relatedness should not be a major issue here. Let’s now compute PCs.</p>
 <div class="infobox info">
 <p>All the code that follows could be run on the bigSNP object we made before. Nevertheless, to showcase the <code>bed_*</code> functions here, we will run the following analyses on the bed file directly.</p>
 </div>

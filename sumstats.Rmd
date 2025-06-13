@@ -7,7 +7,7 @@ editor_options:
 # GWAS summary statistics
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("frac", "rsid", "se", "cdot", "dfrac", "eq", "sd")
+WORDS_TO_IGNORE <- c("rsid", "se", "eq", "sd", "sdlin", "sdlog")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -72,15 +72,17 @@ The QC I recommend to perform consist in **comparing standard deviations** of ge
 
 1.  - When linear regression was used 
     \begin{equation}
-    \text{sd}(G_j) \approx \dfrac{\text{sd}(y)}{\sqrt{n_j \cdot \text{se}(\hat{\gamma}_j)^2 + \hat{\gamma}_j^2}}
+    \text{sd}(G_j) \approx \dfrac{\text{sd}(y)}{\sqrt{n_j \cdot \text{se}(\hat{\gamma}_j)^2 + \hat{\gamma}_j^2}} (\#eq:sdlin)
     \end{equation}
 
     - When logistic regression was used (case-control phenotype)
     \begin{equation}\label{eq:approx-sd-log}
-    \text{sd}(G_j) \approx \dfrac{2}{\sqrt{n_j^\text{eff} \cdot \text{se}(\hat{\gamma}_j)^2 + \hat{\gamma}_j^2}}
+    \text{sd}(G_j) \approx \dfrac{2}{\sqrt{n_j^\text{eff} \cdot \text{se}(\hat{\gamma}_j)^2 + \hat{\gamma}_j^2}} (\#eq:sdlog)
     \end{equation}
 <br>
-2. \begin{equation}\text{sd}(G_j) \approx \sqrt{2 \cdot f_j \cdot (1 - f_j) \cdot \text{INFO}_j}\end{equation}
+2. \begin{equation}
+\text{sd}(G_j) \approx \sqrt{2 \cdot f_j \cdot (1 - f_j) \cdot \text{INFO}_j} (\#eq:sdaf)
+\end{equation}
 
 ---
 
