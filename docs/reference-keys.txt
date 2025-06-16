@@ -33,6 +33,7 @@ ancestry
 genome-wide-association-study-gwas
 exo-gwas
 regenie
+genomic-control-and-ld-score-regression
 gwas-summary-statistics
 format
 quality-control

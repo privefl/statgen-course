@@ -17,19 +17,19 @@ In this section, I talk about conversion, quality control and imputation. Conver
 
 ## Conversion and quality control of PLINK files {#PLINK}
 
-PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in {bigsnpr}, for ease of use directly from R:
+PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in bigsnpr, for ease of use directly from R:
 
 - `download_plink()` and `download_plink2()` for downloading the latest stable versions of PLINK 1.9 and 2.0 [@chang2015second].
 
 - `snp_plinkQC()` for quality control (QC) and conversion to bed/bim/fam.
 
-- `snp_plinkKINGQC()` for QC on relatedness based on KING-robust kinship estimator [@manichaikul2010robust]. Using `make.bed = FALSE` allows for computing related pairs only, i.e. reporting a data frame without producing new bed/bim/fam files. Note that monozygotic twins or identical samples have a KING coefficient of $0.5$, not $1$; $0.25$ = siblings and parents; $2^{-3}$ = second-degree relatives (e.g. grandparents, uncles); $2^{-4}$ = third-degree relatives (e.g. cousins). You can use a threshold of $2^{-4.5} \approx 0.0442$ to remove all these related individuals (one from each pair, or all for PCA).
+- `snp_plinkKINGQC()` for QC on relatedness based on KING-robust kinship estimator [@manichaikul2010robust]. Using `make.bed = FALSE` allows for computing related pairs only, i.e. reporting a data frame without producing new bed/bim/fam files. Note that monozygotic twins or identical samples have a KING coefficient of $0.5$, not $1$; $0.25$ = siblings and parents; $2^{-3}$ = second-degree relatives (e.g. grandparents, uncles); $2^{-4}$ = third-degree relatives (e.g. cousins). You can use a threshold of $2^{-4.5} \approx 0.0442$ to remove related individuals (PLINK removes one member of each pair of samples).
 	
-- `snp_plinkIBDQC()` for QC based on identity-by-descent (IBD) computed by PLINK using its method-of-moments. I prefer the KING one.
+- `snp_plinkIBDQC()` for QC based on identity-by-descent (IBD) computed by PLINK using its method-of-moments. The KING one is supposed to be more robust.
 	
 - `snp_plinkRmSamples()` for producing new PLINK files after having removed some individuals.
 
-- For any other PLINK function, I prefer calling PLINK directly from R thanks to system calls and package {glue}, e.g.
+- For any other PLINK function, I prefer calling PLINK directly from R thanks to system calls and R package glue, e.g.
     ```{r}
     plink <- download_plink("tmp-data")
     system(glue::glue(
@@ -40,11 +40,11 @@ PLINK is very efficient for conversion and quality control of multiple formats, 
 
 ## Imputation
 
-Note that most functions from {bigstatsr} and {bigsnpr} do NOT handle missing values, except for some of the `bed_` functions.
+Note that most functions from bigstatsr and bigsnpr do NOT handle missing values, except for some of the `bed_` functions.
 
 Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g. the code from [this vignette](https://privefl.github.io/bigstatsr/articles/big-apply.html).
 
-In {bigsnpr}, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use the (much) slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient].
+In bigsnpr, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use the (much) slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient].
 If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as discussed in \@ref(getting-bigsnp).
 
 

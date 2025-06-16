@@ -7,7 +7,7 @@ editor_options:
 # Population structure
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("pca", "loadings", "pcadapt")
+WORDS_TO_IGNORE <- c("pca", "loadings", "pcadapt", "autoSVD")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -19,21 +19,22 @@ However, PCA can actually capture different kinds of structure [@prive2020effici
 
 - population structure (what we want),
 
-- Linkage Disequilibrium (LD) structure, when there are two many correlated variants (e.g. within long-range LD regions) and not enough population structure (see [this vignette](https://privefl.github.io/bigsnpr/articles/how-to-PCA.html)),
+- Linkage Disequilibrium (LD) structure, when there are too many correlated variants (e.g. within long-range LD regions) and not enough population structure (see [this vignette](https://privefl.github.io/bigsnpr/articles/how-to-PCA.html)),
 
 - relatedness structure, when there are related individuals who usually cluster together in later PCs,
 
 - noise, basically just circles when looking at PC scores.
 
-Population structure is the second main topic of my research work (after polygenic scores).
+Capturing population structure with PCA is the second main topic of my research work (after polygenic scores).
 
 - In @prive2017efficient, I introduced an algorithm to compute PCA for a `bigSNP` object while accounting for the LD problem by using clumping (not pruning, cf. [this vignette](https://privefl.github.io/bigsnpr/articles/pruning-vs-clumping.html)) and an *automatic* detection and removal of long-range LD regions.
 
 - In @prive2020performing, I improved the implementation of the pcadapt algorithm, which detects variants associated with population structure (i.e. some kind of GWAS for population structure).
 
-- In @prive2020efficient, I extended {bigsnpr} to also be able to run PCA on PLINK bed files directly with a small percentage of missing values, and investigated best practices for PCA in more detail.
+- In @prive2020efficient, I extended bigsnpr to also be able to run PCA on PLINK bed files directly with a small percentage of missing values, and investigated best practices for PCA in more detail.
 
 - In @prive2021high and @prive2021using, I showed how to use PCA for ancestry inference, including grouping individuals in homogeneous ancestry groups, and inferring ancestry proportions from genotype data but also from allele frequencies only (see [this vignette](https://privefl.github.io/bigsnpr/articles/ancestry.html)).
+
 
 ## The problem with LD
 
@@ -49,7 +50,9 @@ NCORES <- nb_cores()
 ```
 
 :::: {.infobox .exo}
-Use `big_randomSVD()` to perform a SVD/PCA on `G`. Do not forget to use some scaling (at least some centering). Look at PC scores and PC loadings with `plot()`. What do you see for PC4?
+Use `big_randomSVD()` to perform a SVD/PCA on `G`. Do not forget to use some scaling (at least some centering). 
+
+Look at PC scores and PC loadings with `plot()`. What do you see for PC4? Color PC scores using the most associated variant with PC4.
 ::::
 
 <details>
@@ -77,19 +80,23 @@ plot(svd, type = "scores", scores = 3:4) +
         legend.text = element_text(margin = margin(r = 6)))
 ```
 
-PC4 is basically capturing variation in a block of LD and is then very correlated to genetic variants in this region. You really want to avoid using this type of PCs e.g. as covariates in GWAS because it will cause some collider bias.
+PC4 is basically capturing variation in a block of LD (the peak you see for loadings of PC4) and is then very correlated to genetic variants in this region.
 
 </details>
 
 ***
 
-To avoid capturing LD in PCA, it has been recommended to perform some pruning (removing variants too correlated with one another) AND remove some known list of long-range LD regions (that can be captured by PCA, even after a stringent pruning step). But this is not enough... This is exactly what the UK Biobank did, and this how the PC loadings of the 40 PCs they provide look like:
+:::: {.infobox .caution}
+You really want to avoid using PCs that capture LD e.g. as covariates in GWAS because it will cause some collider bias [@prive2021identifying; @grinde2024adjusting].
+::::
+
+To avoid capturing LD in PCA, it has been recommended to perform some pruning (removing variants too correlated with one another) AND remove some known list of long-range LD regions (that can still be captured by PCA, even after a stringent pruning step) [@price2008long; @abdellaoui2013population]. But this is not enough; this is exactly what the UK Biobank did [@bycroft2018uk], and this how the PC loadings of the 40 PCs they provide look like:
 
 ```{r, echo=FALSE, out.width="50%"}
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/loadings-ukbb.jpeg?raw=true")
 ```
 
-**I recommend using only the first 16 PCs provided by the UK Biobank [@prive2020efficient].**
+**I recommend using only the first 16 PCs provided by the UK Biobank [@prive2020efficient].** If you want to compute PCs yourself, I recommend using the autoSVD functions I developed that perform an *automatic* detection and removal of long-range LD regions.
 
 
 ## Best practices for PCA of genetic data
@@ -103,7 +110,7 @@ Let's have a look at [the corresponding tutorial from the bigsnpr website](https
 :::: {.infobox .exo}
 Let's reuse the data prepared in \@ref(exo-preprocessing).
 
-Follow the previous tutorial to perform a PCA for this data, either using `snp_*` functions on the bigSNP object or `bed_*` functions on the bed file mapped.
+Follow the previous tutorial to perform a PCA for this data, using either `snp_*` functions on the bigSNP object or `bed_*` functions on the bed file mapped.
 ::::
 
 <details>
@@ -161,7 +168,7 @@ If you expect the individuals to mostly come from one population (e.g. in a nati
 ```{r}
 PC <- predict(obj.svd)
 ldist <- log(bigutilsr::dist_ogk(PC[, 1:6]))
-hist(ldist, "FD")
+hist(ldist, "FD"); abline(v = 4.5, col = "red")
 ```
 
 ```{r, message=FALSE}
@@ -181,10 +188,11 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
 
 </details>
 
+
 ## Ancestry inference {#ancestry}
 
 It would be nice if we could get a better sense of the ancestry of these individuals.
-To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using (using the UK Biobank and some individuals from the 1000 Genomes).
+To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using (based on the UK Biobank and some individuals from the 1000 Genomes).
 
 ```{r}
 all_freq <- bigreadr::fread2(
@@ -204,6 +212,19 @@ correction <- c(1, 1, 1, 1.008, 1.021, 1.034, 1.052, 1.074, 1.099,
                 1.123, 1.15, 1.195, 1.256, 1.321, 1.382, 1.443)
 ```
 
+```{r}
+str(all_freq)    # reference allele frequencies
+str(projection)  # PC loadings of the reference data
+```
+
+:::: {.infobox .exo}
+Match variants between `obj.bed` and `all_freq` using `snp_match()`.
+
+For the variants matched, further remove the variants with more than 5% of missing values.
+::::
+
+<details>
+<summary>Click to see solution</summary>
 
 ```{r, warning=FALSE, message=FALSE}
 # match variants between the two datasets
@@ -213,26 +234,50 @@ matched <- obj.bed$map %>%
   mutate(beta = 1) %>%
   snp_match(all_freq[1:5]) %>%
   print()
+```
 
+:::: {.infobox .caution}
+Some datasets may have the convention that `a0 = allele1, a1 = allele2`, therefore all effects or allele frequencies are reversed (after matching).
+::::
+
+```{r}
 # further subsetting on missing values
 counts <- bed_counts(obj.bed, ind.col = matched$`_NUM_ID_.ss`, ncores = NCORES)
 hist(counts[4, ])
 ind <- which((counts[4, ] / nrow(obj.bed)) < 0.05)
+matched2 <- matched[ind, ]
+```
 
+</details>
+
+***
+
+```{r}
+# projection matrix
+proj_mat <- as.matrix(projection[matched2$`_NUM_ID_`, -(1:5)])
+# reference allele frequencies
+ref_mat  <- as.matrix(all_freq  [matched2$`_NUM_ID_`, -(1:5)])
+# centers of reference populations in the PCA
+all_centers <- crossprod(ref_mat, proj_mat)
+```
+
+```{r}
 # project individuals (divided by 2 -> as AF) onto the PC space
-proj_mat <- as.matrix(projection[matched$`_NUM_ID_`[ind], -(1:5)])
 all_proj <- apply(sweep(proj_mat, 2, correction / 2, '*'), 2, function(x) {
-  bed_prodVec(obj.bed, x, ind.col = matched$`_NUM_ID_.ss`[ind], ncores = NCORES,
+  bed_prodVec(obj.bed, x, ind.col = matched2$`_NUM_ID_.ss`, ncores = NCORES,
               # scaling to get G if beta = 1 and (2 - G) if beta = -1
-              center = 1 - matched$beta[ind],
-              scale = matched$beta[ind])
+              center = 1 - matched2$beta, scale = matched2$beta)
 })
 ```
 
-We can then assign individuals to the closest center:
+:::: {.infobox .question}
+When is it needed to use the `correction`? Why can't we use these provided PC loadings to project the UK Biobank individuals?
+::::
+
+***
+
+We can then assign each individual to their closest center:
 ```{r}
-# centers of reference populations in the PCA
-all_centers <- crossprod(as.matrix(all_freq[matched$`_NUM_ID_`[ind], -(1:5)]), proj_mat)
 # distance of individuals from each reference population (the center)
 all_sq_dist <- apply(all_centers, 1, function(one_center) {
   rowSums(sweep(all_proj, 2, one_center, '-')^2)
@@ -261,10 +306,14 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
   k2 <- 2 * k
   qplot(PC[, k1], PC[, k2], color = cluster, size = I(2)) +
     theme_bigstatsr(0.6) +
-    labs(x = paste0("PC", k1), y = paste0("PC", k2), color = "Assigned\npopulation") +
+    labs(x = paste0("PC", k1), y = paste0("PC", k2), color = "Assigned group") +
     coord_equal()
 }), nrow = 2, legend_ratio = 0.25, title_ratio = 0)
 ```
 
 These are mostly European individuals.
 PC4 is definitively a bit odd.
+
+:::: {.infobox .exo}
+Try to find out what's going on with PC4.
+::::

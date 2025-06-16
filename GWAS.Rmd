@@ -1,16 +1,22 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
 # Genome-Wide Association Study (GWAS)
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", "batchtools", "Slurm", "ACATO", "ACATV", "Conda", "GxE", "GxG", "Regeneron", "regenie", "REGENIE", "REMETA", "SBAT", "SKAT", "SKATO")
+WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", "batchtools", "Slurm", "ACATO", "ACATV", "Conda", "GxE", "GxG", "Regeneron", "regenie", "REGENIE", "REMETA", "SBAT", "SKAT", "SKATO", "COJO", "GCTA", "GC", "HPC", "iteratively")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
 
-In {bigstatsr}, you can perform both standard linear and logistic regressions GWAS, using either `big_univLinReg()` or `big_univLogReg()`.
+In bigstatsr, you can perform both standard linear and logistic regressions GWAS, using either `big_univLinReg()` or `big_univLogReg()`.
 Function `big_univLinReg()` should be very fast, while `big_univLogReg()` is slower.
 
 :::: {.infobox .info}
-This type of association, where each variable is considered independently, can be performed for any type of FBM (i.e. it does not have to be a genotype matrix). This is why these two functions are in package {bigstatsr}, and not {bigsnpr}.
+This type of association, where each variable is considered independently, can be performed for any type of FBM (i.e. it does not have to be a genotype matrix). This is why these two functions are in package bigstatsr, and not bigsnpr.
 ::::
 
 
@@ -74,6 +80,9 @@ snp_manhattan(gwas, CHR, POS, npoints = 50e3) +
 ```
 Here, nothing is genome-wide significant because of the small sample size.
 
+:::: {.infobox .info}
+Normally, a p-value threshold of $5 \times 10^{-8}$ is used when reporting significant findings, which corresponds to correcting for one million independent tests. Now, with larger GWAS datasets that include tens of millions of variants, researchers have started using an even more stringent threshold of $5 \times 10^{-9}$.
+:::: 
 
 :::: {.infobox .exo}
 Perform a GWAS for the other phenotypes, and look at the histogram, Q-Q plot and Manhattan plot.
@@ -90,12 +99,37 @@ gwas2 <- big_univLinReg(G, y2[ind.gwas2], ind.train = ind.gwas2,
 snp_manhattan(gwas2, CHR, POS, npoints = 50e3) +
   ggplot2::geom_hline(yintercept = -log10(5e-8), linetype = 2, color = "red")
 ```
-
-<details>
+</details>
 
 ***
 
-Some other example code:
+:::: {.infobox .exo}
+To report independent findings (instead of all variants in one peak), people have used LD clumping, which iteratively keeps the most associated variant and remove those that are too correlated with this one. Another strategy is to use GCTA-COJO [@yang2012conditional].
+
+Perform some LD clumping for all variants with a p-value lower than $10^{-5}$, using a stringent $r^2$ threshold of 0.05 over a 5 Mb window. How many variants are left?
+::::
+
+<details>
+<summary>Click to see solution</summary>
+
+```{r, out.width="95%", fig.asp=0.5, fig.width=10, dev='png'}
+lpval <- -predict(gwas)  # -log10(pval)
+ind_keep <- snp_clumping(G, CHR, S = lpval, thr.r2 = 0.05,
+                         size = 5e6, infos.pos = POS, 
+                         exclude = which(lpval < -log10(1e-5)),
+                         ncores = NCORES)
+obj.bigsnp$map[ind_keep, ]
+
+snp_manhattan(gwas, CHR, POS, npoints = 50e3, ind.highlight = ind_keep) +
+  ggplot2::geom_hline(yintercept = -log10(5e-8), linetype = 2, color = "red") +
+  ggplot2::geom_hline(yintercept = -log10(1e-5), linetype = 2, color = "blue")
+```
+
+</details>
+
+***
+
+Some example code to run a GWAS on multiple nodes on an HPC cluster:
 
 - [GWAS in iPSYCH](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/3-GWAS.R); you can perform the GWAS on multiple nodes in parallel that would each process a chunk of the variants only
 - [GWAS for very large data and multiple phenotypes](https://github.com/privefl/UKBB-PGS/blob/main/code/run-GWAS-large.R); you should perform the GWAS for all phenotypes for a "small" chunk of columns to avoid repeated access from disk, and can process these chunks on multiple nodes in parallel
@@ -131,3 +165,20 @@ The method has the following properties:
 - It supports the BGEN, PLINK bed/bim/fam and PLINK2 pgen/pvar/psam genetic data formats
 
 - It can be installed with Conda
+
+
+## Genomic control and LD score regression
+
+$\lambda_\text{GC}$, the genomic inflation factor (GIF), was used a lot to assess whether a GWAS is confounded by population structure or relatedness (when e.g. larger than 1.05).
+It corresponds to the ratio between the median of test statistics over the median of expected test statistics (under the null hypothesis).
+However, it is no longer used because, with sufficient GWAS power and trait polygenicity, a GIF larger than 1 is actually expected [@yang2011genomic].
+
+```{r}
+snp_qq(gwas) + 
+  ggplot2::ylim(1, NA)  # to plot less points
+```
+
+***
+
+Then, the intercept of LD score regression was used to test for confounding [@bulik2015ld]. 
+However, it was observed that LD score regression intercepts tend to increase with SNP-heritability and GWAS sample size [@loh2018mixed].

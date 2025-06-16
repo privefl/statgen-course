@@ -5,7 +5,7 @@ knitr::opts_chunk$set(
   dev = "png"
 )
 
-options(width = 75)
+options(width = 75, max.print = 50)
 
 Sys.setenv(LANGUAGE = "en")
 Sys.setlocale("LC_TIME", "C")

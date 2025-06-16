@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-13" />
+<meta name="date" content="2025-06-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -172,9 +172,9 @@ div.csl-indent {
 <li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#formats-of-genetic-data"><i class="fa fa-check"></i><b>2.1</b> Formats of genetic data</a></li>
-<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> The bigSNP format from {bigsnpr}</a></li>
+<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> The bigSNP format from bigsnpr</a></li>
 <li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-bigsnp"><i class="fa fa-check"></i><b>2.3</b> Getting a bigSNP object</a></li>
-<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.4</b> The FBM format from {bigstatsr}</a></li>
+<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.4</b> The FBM format from bigstatsr</a></li>
 <li class="chapter" data-level="2.5" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#working-with-an-fbm"><i class="fa fa-check"></i><b>2.5</b> Working with an FBM</a>
 <ul>
 <li class="chapter" data-level="2.5.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>2.5.1</b> Similar accessor as R matrices</a></li>
@@ -202,6 +202,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Example</a></li>
 <li class="chapter" data-level="5.2" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#regenie"><i class="fa fa-check"></i><b>5.2</b> REGENIE</a></li>
+<li class="chapter" data-level="5.3" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#genomic-control-and-ld-score-regression"><i class="fa fa-check"></i><b>5.3</b> Genomic control and LD score regression</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html"><i class="fa fa-check"></i><b>6</b> GWAS summary statistics</a>
 <ul>
@@ -281,7 +282,7 @@ div.csl-indent {
 <h1 class="title">Statistical Human Genetics course using R</h1>
 <h2 class="subtitle"><em>Originally a SMARTbiomed Summer course</em></h2>
 <p class="author"><em>Florian Privé &amp; Isabelle McGrath</em></p>
-<p class="date"><em>2025-06-13</em></p>
+<p class="date"><em>2025-06-16</em></p>
 </div>
 <div id="course-information" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Course information<a href="index.html#course-information" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -290,8 +291,8 @@ div.csl-indent {
 <ul>
 <li><p>Have at least a basic knowledge of R,</p></li>
 <li><p>Install R (&gt;= 3.4) and RStudio (&gt;= 1.2),</p></li>
-<li><p>Install recent versions of {bigstatsr}, {bigsnpr}, and {susieR} (e.g. from CRAN),</p></li>
-<li><p>Download the data used in the tutorials:</p>
+<li><p>Install recent versions of R packages bigstatsr, bigsnpr, and susieR (e.g. from CRAN),</p></li>
+<li><p>Create an RStudio project for this course and download the data to be used in the tutorials:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a>runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
 <span id="cb1-2"><a href="index.html#cb1-2" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38019072&quot;</span>,</span>
 <span id="cb1-3"><a href="index.html#cb1-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;GWAS_data.zip&quot;</span>)  <span class="co"># 109 MB</span></span>
@@ -335,7 +336,7 @@ div.csl-indent {
 <h2><span class="header-section-number">1.4</span> Contact<a href="index.html#contact" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If you want me to add or clarify some content in this course, please open <a href="https://github.com/privefl/statgen-course/issues">an issue on the GitHub repository of this course</a>.</p>
 <p>If you have bug reports or questions specifically on functions of the packages, please open an issue on the corresponding package’s repository.</p>
-<p>I will always redirect you to GitHub issues if you email me about the packages, so that others can benefit from our discussion.</p>
+<p>I will always redirect you to GitHub issues if you email me about the packages, so that others can benefit from our discussion. Search through existing issues; your question might have already been asked and answered.</p>
 
 </div>
 </div>

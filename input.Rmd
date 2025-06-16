@@ -17,30 +17,24 @@ rm(X); gc(); file.remove(c("tmp-data/test.bk", "tmp-data/test.rds"))
 
 There exist many different data formats for genetic data:
 
-- *bed*/*bim*/*fam* files (also called PLINK1 files) that respectively store genotype calls only (0, 1, 2, or NA) in a very condensed way (one byte only for 4 genotypes), information on the genetic variants, and information on the individuals. PLINK 1.9 and 2.0 [@chang2015second] provide many functions to work with this format.
+- *bed*/*bim*/*fam* files (also called PLINK1 files) that respectively store genotype calls only (0, 1, 2, or NA) in a very condensed way (binary using one byte only for 4 genotypes), information on the genetic variants (text), and information on the individuals (text). PLINK 1.9 and 2.0 [@chang2015second] provide many functions to work with this format.
 
-- *bgen* files (usually one per chromosome) that can store imputed probabilities (P(0), P(1), P(2)) that are often transformed to dosage information (expected values: P(1) + 2 P(2)). Each variant is stored compressed, which is very efficient, especially for low-frequency variants. They are accompanied by *bgen.bgi* files that store information on the genetic variants and the position of their corresponding data in the *bgen* files, and by a *sample* file that stores information on the individual IDs.
+- *bgen* files (usually one per chromosome) that can store imputed probabilities (P(0), P(1), P(2)) that are often transformed to dosage information (expected values: P(1) + 2 P(2)). Each variant is stored compressed, which is very efficient, especially for low-frequency variants. They are accompanied by *bgen.bgi* files that store information on the genetic variants and the position of their corresponding data in the *bgen* files, and by a *sample* file that stores information on the individual IDs. This is the format used for the original UK Biobank imputed data [@bycroft2018uk].
 
 - *pgen*/*pvar*/*psam* files (also called PLINK2 files) that can store imputed data as well, and *pgen* files seem more compressed than *bgen* files. PLINK2 provides many functions to work with this format.
 
 - Many other formats that you can usually convert from using PLINK.
 
 
-## The bigSNP format from {bigsnpr}
+## The bigSNP format from bigsnpr
 
-R package {bigsnpr} [@prive2017efficient] uses a class called `bigSNP` for representing SNP data. A `bigSNP` object is merely a list with the three following elements:
+My R package bigsnpr [@prive2017efficient] uses a class called `bigSNP` for representing SNP data. A `bigSNP` object is merely a list with the three following elements:
 
 - `$genotypes`: A [`FBM.code256`](https://privefl.github.io/bigstatsr/reference/FBM.code256-class.html). Rows are samples and columns are genetic variants. This stores genotype calls or *dosages* (rounded to 2 decimal places). More about this format below.
 - `$fam`: A `data.frame` with some information on the samples.
-- `$map`: A `data.frame` with some information on the genetic variants.
+- `$map`: A `data.frame` with some information on the genetic variants. 
 
-The code used in class *FBM.code256* for imputed data is e.g. 
-```{r, R.options=list(max.print=1000)}
-bigsnpr::CODE_DOSAGE
-```
-where the first four elements are used to store genotype calls, the next three to store imputed allele counts, and the next 201 values to store dosages rounded to 2 decimal places. This allows for handling many data types (genotype calls and dosages) while storing each element using one byte only (x4 compared to bed files, but /8 compared to double-precision floating-point numbers). 
-
-Package {bigsnpr} also provides functions for directly working on bed files with a small percentage of missing values [@prive2020efficient].
+Package bigsnpr also provides functions for directly working on bed files with a small percentage of missing values [@prive2020efficient].
 
 
 ## Getting a bigSNP object {#getting-bigsnp}
@@ -56,6 +50,18 @@ Package {bigsnpr} also provides functions for directly working on bed files with
 ```{r}
 library(bigsnpr)
 bedfile <- system.file("extdata", "example.bed", package = "bigsnpr")
+```
+
+:::: {.infobox .exo}
+Before using some functions you don't know, have a look at their documentation to see how to use them and some examples (`?snp_readBed`).
+
+Use `snp_readBed()` to transform this data into a bigSNP object.
+What do you get? Use `snp_attach()` to get the data into R and explore it a bit.
+::::
+
+<details>
+<summary>Click to see solution</summary>
+```{r}
 (rds <- snp_readBed2(bedfile, backingfile = tempfile()))  # get path to new file
 bigsnp <- snp_attach(rds)  # can then read in the bigSNP object in any R session
 (G <- bigsnp$genotypes)
@@ -63,15 +69,27 @@ G[1:5, 1:5]
 str(bigsnp$fam)
 str(bigsnp$map)
 ```
+</details>
+
+***
 
 **Example directly mapping the bed file:**
 
+:::: {.infobox .exo}
+Map the bed file directly using `bed()`. Can you access the same data as with the bigSNP object?
+::::
+
+<details>
+<summary>Click to see solution</summary>
 ```{r}
 obj.bed <- bed(bedfile)
 obj.bed[1:5, 1:5]
 str(obj.bed$fam)
 str(obj.bed$map)
 ```
+</details>
+
+***
 
 **Example converting a bgen file to bigSNP:**
 
@@ -85,15 +103,25 @@ bgi <- runonce::download_file(
 sample <- runonce::download_file(
   "https://enkre.net/cgi-bin/code/bgen/raw/a3c4d8e4c132048a502dc00a3e51362f98eda5a2889df695ba260dc48c327fd9?at=example.sample",
   fname = "example.sample")
+readLines(sample, n = 6)
 ```
 
-```{r}
-# What should you be careful about when reading this file?
-readLines(sample, n = 5)
-```
+
+:::: {.infobox .caution}
+What should you be careful about when reading the *sample* file?
+::::
+
+
+:::: {.infobox .exo}
+Use `snp_readBGI()` to get information on the variants, and read the first 10 variants using `snp_readBGEN()` (pay attention to the specific format of `list_snp_id`) and `snp_attach()`. 
+
+What extra information do you get about the variants?
+::::
+
+<details>
+<summary>Click to see solution</summary>
 
 ```{r}
-library(bigsnpr)
 (var_info <- snp_readBGI(bgi))
 (snp_id <- with(var_info[1:10, ], paste(chromosome, position, allele1, allele2, sep = "_")))
 (rds <- snp_readBGEN(bgen, backingfile = tempfile(), list_snp_id = list(snp_id)))
@@ -102,12 +130,16 @@ bigsnp <- snp_attach(rds)
 str(bigsnp$map)  # `$freq` and `$info` are computed when reading the data
 ```
 
-There is no `$fam` information in this case, which should be read from other data and match using IDs from the *sample* file.
+:::: {.infobox .caution}
+There is no `$fam` information in this case, which should be read from other data and matched/joined using IDs from the *sample* file. From the BGEN, you can also use these IDs to read a subset of individuals only, as done [in this code](https://github.com/privefl/paper-misspec/blob/main/code/prepare-genotypes.R#L33-L34).
+::::
+
+</details>
 
 
-## The FBM format from {bigstatsr}
+## The FBM format from bigstatsr
 
-The format provided in package {bigstatsr} is called a Filebacked Big Matrix (FBM). It is an on-disk matrix format that is accessed through memory-mapping.
+The format provided in R package bigstatsr is called a Filebacked Big Matrix (FBM). It is an on-disk matrix format that is accessed through memory-mapping.
 
 ```{r, echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/privefl/R-presentation/master/memory-solution.svg")
@@ -129,7 +161,13 @@ All the elements of an FBM have the same type; supported types are:
  - `"float"` (single precision -- 4 bytes)
  - `"integer"` (signed, so between $\text{-}2^{31}$ and ($2^{31} \text{ - } 1$) -- 4 bytes)
  - `"unsigned short"`: can store integer values from $0$ to $65535$ (2 bytes)
- - `"raw"` or `"unsigned char"`: can store integer values from $0$ to $255$ (1 byte). **It is the basis for class *FBM.code256* that can access 256 arbitrary different numeric values (decoded using a `CODE_*`), which is used in package {bigsnpr} (see above).**
+ - `"raw"` or `"unsigned char"`: can store integer values from $0$ to $255$ (1 byte). **It is the basis for class *FBM.code256* that can access 256 arbitrary different numeric values (decoded using a `CODE_*`), which is used in bigsnpr.**
+ 
+The code used in class *FBM.code256* for imputed data is e.g. 
+```{r, R.options=list(max.print=1000)}
+bigsnpr::CODE_DOSAGE
+```
+where the first four elements are used to store genotype calls, the next three to store imputed allele counts, and the next 201 values to store dosages rounded to 2 decimal places. This allows for handling many data types (genotype calls and dosages) while storing each element using one byte only (x4 compared to bed files, but /8 compared to double-precision floating-point numbers).
 
 
 ## Working with an FBM
@@ -149,7 +187,7 @@ X <- big_attach("tmp-data/test.rds")  # can get the FBM from any R session
 
 You can access the whole FBM as an R matrix in memory using `X[]`.
 However, if the matrix is too large to fit in memory, you should always access only a subset of columns.
-Note that the elements of the FBM are stored column-wise (as for a standard R matrix). Therefore, be careful not to access a subset of rows, since it would read non-contiguous elements from the whole matrix from disk.
+Note that the elements of an FBM are stored column-wise (as for a standard R matrix). Therefore, be careful not to access a subset of rows, since it would read non-contiguous elements from the whole matrix from disk.
 
 ```{r}
 X[, 1]  # ok (must read first column only)
@@ -179,56 +217,31 @@ Compute the sum of each column of `X <- big_attachExtdata()` using `big_apply()`
 
 ### Similar accessor as Rcpp matrices
 
-In case you want to develop new R functions for this format while coding in C++ (which is the case for many bigstatsr/bigsnpr functions).
+In case you want to develop new R functions for the FBM format while coding in C++ (which is the case for many bigstatsr/bigsnpr functions). Note that it is easy to use only a subset of the data without having to change anything in the code.
 
 ```{Rcpp, eval=FALSE}
 // [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::depends(bigstatsr, rmio)]]
-#include <bigstatsr/BMAcc.h>
+#include <bigstatsr/BMCodeAcc.h>
 
 // [[Rcpp::export]]
-NumericVector bigcolsums(Environment BM) {
+NumericVector bigcolsums(Environment BM,
+                         const IntegerVector& rowInd,
+                         const IntegerVector& colInd) {
   
-  XPtr<FBM> xpBM = BM["address"];   // get the external pointer
-  BMAcc<double> macc(xpBM);         // create an accessor to the data
+  // the external pointer
+  XPtr<FBM> xpBM = BM["address"];
+  // accessor to a sub-view of the data + automatically decoded
+  SubBMCode256Acc(xpBM, rowInd, colInd, BM["code256"], 1)
   
-  size_t n = macc.nrow();           // similar code as for an Rcpp::NumericMatrix
-  size_t m = macc.ncol();           // similar code as for an Rcpp::NumericMatrix
+  size_t n = macc.nrow();          // similar code as for an Rcpp::NumericMatrix
+  size_t m = macc.ncol();          // similar code as for an Rcpp::NumericMatrix
   
   NumericVector res(m);
   
   for (size_t j = 0; j < m; j++) 
     for (size_t i = 0; i < n; i++)
-      res[j] += macc(i, j);         // similar code as for an Rcpp::NumericMatrix
-  
-  return res;
-}
-```
-
-For a subset of the data:
-
-```{Rcpp, eval=FALSE}
-// [[Rcpp::plugins(cpp11)]]
-// [[Rcpp::depends(bigstatsr, rmio)]]
-#include <bigstatsr/BMAcc.h>
-
-// [[Rcpp::export]]
-NumericVector bigcolsums2(Environment BM,
-                          const IntegerVector& rowInd,
-                          const IntegerVector& colInd) {
-  
-  XPtr<FBM> xpBM = BM["address"];   
-  // accessor to a sub-view of the data -> the only line of code that should change
-  SubBMAcc<double> macc(xpBM, rowInd, colInd, 1);  
-  
-  size_t n = macc.nrow();
-  size_t m = macc.ncol();
-  
-  NumericVector res(m);
-  
-  for (size_t j = 0; j < m; j++) 
-    for (size_t i = 0; i < n; i++)
-      res[j] += macc(i, j); 
+      res[j] += macc(i, j);        // similar code as for an Rcpp::NumericMatrix
   
   return res;
 }
@@ -236,7 +249,7 @@ NumericVector bigcolsums2(Environment BM,
 
 ### Some summary functions are already implemented
 
-```{r}
+```{r, R.options=list(max.print=20)}
 (X2 <- snp_attachExtdata()$genotypes)
 big_colstats(X2)      # sum and var (for each column)
 big_scale()(X2)       # mean and sd (for each column)
@@ -244,9 +257,9 @@ snp_scaleBinom()(X2)  # 2 * af (mean) and sqrt(2 * af * (1 - af)) (~sd)
 ```
 
 :::: {.infobox .info}
-Functions starting with `big_` are part of {bigstatsr} and work for any type of FBM, while functions starting with `snp_` or `bed_` are part of {bigsnpr} and are more specific to genetic data.
+Functions starting with `big_` are part of bigstatsr and work for any type of FBM, while functions starting with `snp_` or `bed_` are part of bigsnpr and are more specific to genetic data.
 
-There are now many functions implemented in the packages. You can find a comprehensive list of available functions on the package website [of {bigstatsr}](https://privefl.github.io/bigstatsr/reference/index.html) and [of {bigsnpr}](https://privefl.github.io/bigsnpr/reference/index.html).
+There are now many functions implemented in the packages. You can find a comprehensive list of available functions on the package website [of bigstatsr](https://privefl.github.io/bigstatsr/reference/index.html) and [of bigsnpr](https://privefl.github.io/bigsnpr/reference/index.html).
 ::::
 
 :::: {.infobox .question}
@@ -254,7 +267,7 @@ What is the difference between functions starting with `snp_` vs `bed_`?
 ::::
 
 :::: {.infobox .caution}
-To only use a subset of the data stored as an FBM, you should almost never make a copy of the data; instead, use parameters `ind.row` (or `ind.train`) and `ind.col` to apply functions to a subset of the data.
+To only use a subset of the data stored as an FBM, you should almost never make a copy of the data. Instead, to apply functions to a subset of the data, use their parameters `ind.row` (or `ind.train`) and `ind.col`.
 ::::
 
 ```{r, include=FALSE}
