@@ -56,13 +56,24 @@ source("spelling-check.R")
     bigsnpr::download_plink2("tmp-data")  # 6.6 MB
     ```
 
-## License
 
-This material is licensed under the [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 
+## Schedule of SMARTbiomed Summer school
+
+| Time                                   | Activity                                    |
+|:---------------------------------------|:--------------------------------------------|
+| Monday 13:00–16:30                     | Starting part 1 (chapters 2 to 5)           |
+| Tuesday 09:00–12:00 and 13:00–16:00    | Continuing part 1                           |
+| Wednesday 09:00–10:00                  | Finishing part 1 + general Q&A              |
+| Wednesday 10:30–12:00 and 13:00–15:30  | Language exchange workshop (with everyone)  |
+| Wednesday 16:00–17:00                  | Starting part 2 (chapters 6 to 9)           |
+| Thursday 09:00–12:00 and 13:00–16:30   | Continuing part 2                           |
+| Friday 09:00–12:00                     | Finishing part 2 + general Q&A              |
+
 
 ## Author
 
 [Florian Privé](https://privefl.github.io/) is a senior researcher in statistical human genetics, fond of Data Science and an R(cpp) enthusiast. You can find him on [Bluesky](https://bsky.app/profile/privefl.bsky.social) and [GitHub](https://github.com/privefl) as \@privefl.
+
 
 ## Contact
 
@@ -71,3 +82,8 @@ If you want me to add or clarify some content in this course, please open [an is
 If you have bug reports or questions specifically on functions of the packages, please open an issue on the corresponding package's repository.
 
 I will always redirect you to GitHub issues if you email me about the packages, so that others can benefit from our discussion. Search through existing issues; your question might have already been asked and answered.
+
+
+## License
+
+This material is licensed under the [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 

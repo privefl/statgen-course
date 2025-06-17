@@ -4,11 +4,13 @@ eq:sdlog
 eq:sdaf
 fig:unnamed-chunk-2
 fig:unnamed-chunk-5
+fig:unnamed-chunk-6
 course-information
 prerequisites
-license
+schedule-of-smartbiomed-summer-school
 author
 contact
+license
 inputs-and-formats
 formats-of-genetic-data
 the-bigsnp-format-from-bigsnpr
@@ -48,7 +50,7 @@ clumping-thresholding-ct-or-pt-restricting-predictors
 other-methods
 predictive-ability-of-pgs
 future-of-pgs
-exercise-with-ldpred2-and-lassosum2
+exo-ldpred2
 preparing-the-data
 ldpred2
 lassosum2-grid-of-models

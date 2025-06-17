@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-16" />
+<meta name="date" content="2025-06-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -165,9 +165,10 @@ div.csl-indent {
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Course information</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.2</b> License</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#schedule-of-smartbiomed-summer-school"><i class="fa fa-check"></i><b>1.2</b> Schedule of SMARTbiomed Summer school</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i><b>1.3</b> Author</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.4</b> Contact</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.5</b> License</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
 <ul>
@@ -225,7 +226,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="8.3" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#predictive-ability-of-pgs"><i class="fa fa-check"></i><b>8.3</b> Predictive ability of PGS</a></li>
 <li class="chapter" data-level="8.4" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#future-of-pgs"><i class="fa fa-check"></i><b>8.4</b> Future of PGS</a></li>
-<li class="chapter" data-level="8.5" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#exercise-with-ldpred2-and-lassosum2"><i class="fa fa-check"></i><b>8.5</b> Exercise with LDpred2 and lassosum2</a>
+<li class="chapter" data-level="8.5" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#exo-ldpred2"><i class="fa fa-check"></i><b>8.5</b> Exercise with LDpred2 and lassosum2</a>
 <ul>
 <li class="chapter" data-level="8.5.1" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#preparing-the-data"><i class="fa fa-check"></i><b>8.5.1</b> Preparing the data</a></li>
 <li class="chapter" data-level="8.5.2" data-path="polygenic-risk-scores-pgs-or-prs.html"><a href="polygenic-risk-scores-pgs-or-prs.html#ldpred2"><i class="fa fa-check"></i><b>8.5.2</b> LDpred2</a></li>
@@ -283,15 +284,15 @@ div.csl-indent {
 <p>Most methods that rely on GWAS summary statistics also rely on an LD matrix (correlation matrix between genetic variants). It is used in algorithms to transform GWAS marginal (i.e. independent) effects into joint effects.</p>
 <p>Indeed, if we take the simple example of a linear regression <span class="math inline">\(y = X \beta + \epsilon\)</span>, the joint effects are given by <span class="math inline">\(\hat\beta = (X^T X)^{-1} X^T y\)</span>, where <span class="math inline">\(X^T y\)</span> are the marginal effects and <span class="math inline">\(X^T X\)</span> is the covariance matrix (up to some scaling).</p>
 <p>The GWAS data from which the GWAS summary statistics are derived is often not accessible, so that the LD matrix is usually derived from another dataset.
-This other dataset needs to be as close as possible as the GWAS data (in terms of genetic ancestry) to provide a close estimation of the LD.
+<strong>This other dataset needs to be as close as possible as the GWAS data (in terms of genetic ancestry) to provide a close estimation of the LD.</strong>
 This is why I got interested in estimating the ancestry composition of a GWAS based on allele frequencies reported in GWAS summary statistics (as we’ve seen in <a href="gwas-summary-statistics.html#ssancestry">6.3</a>), at least to make sure that the reference data used to compute the LD is similar (in terms of genetic ancestry) to the original GWAS data.</p>
 <div id="derivation-of-an-ld-matrix" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Derivation of an LD matrix<a href="linkage-disequilibrium-ld.html#derivation-of-an-ld-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Functions <code>snp_cor()</code> and <code>bed_cor()</code> from bigsnpr can be used to derive a sparse LD matrix. Both functions allow for some missing values in the input genotypes; but we will see that it might not be such a good idea.
-If we use e.g. one million variants, the LD matrix would be a 1M x 1M matrix, which is way to large to compute but also to store.
-In practice, we know that LD between two genetic variants tend to decay with an increasing distance between them. In LDpred2 <span class="citation">(<a href="#ref-prive2020ldpred2">Privé, Arbel, &amp; Vilhjálmsson, 2020</a>)</span>, I assume that variants distant from more than 3 cM are uncorrelated (the case also for variants on different chromosomes).
+<p>Functions <code>snp_cor()</code> and <code>bed_cor()</code> from bigsnpr can be used to derive a sparse LD matrix. Both functions allow for some missing values in the input genotypes (although we will see that it might not be such a good idea).
+If we use e.g. one million variants, the LD matrix is a 1M x 1M matrix, which is too large to compute but also to store.</p>
+<p>In practice, we know that LD between two genetic variants tend to decay with an increasing distance between them <span class="citation">(<a href="#ref-pritchard2001linkage">Pritchard &amp; Przeworski, 2001</a>)</span>. In LDpred2 <span class="citation">(<a href="#ref-prive2020ldpred2">Privé, Arbel, et al., 2020</a>)</span>, I assume that variants distant from more than 3 cM are uncorrelated (the case also for variants on different chromosomes).
 Genetic positions in centimorgans (cM) are preferred over using physical positions in base pairs (bp) in this case.
-From this, it results a (sparse) windowed LD matrix.</p>
+From this, it results in a windowed (sparse) LD matrix.</p>
 <p>In <a href="fine-mapping-with-susie.html#ldplink">9.3.3</a>, we will see how to alternatively use PLINK to derive an LD matrix.</p>
 <div class="infobox exo">
 <p>Reuse the same data as before to compute the LD matrix for variants on chromosome 22.</p>
@@ -302,33 +303,25 @@ From this, it results a (sparse) windowed LD matrix.</p>
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="linkage-disequilibrium-ld.html#cb149-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="linkage-disequilibrium-ld.html#cb159-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
 <pre><code>#&gt; Loading required package: bigstatsr</code></pre>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="linkage-disequilibrium-ld.html#cb151-1" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
-<span id="cb151-2"><a href="linkage-disequilibrium-ld.html#cb151-2" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="linkage-disequilibrium-ld.html#cb152-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
-<pre><code>#&gt; Warning: package &#39;dplyr&#39; was built under R version 4.2.3</code></pre>
-<pre><code>#&gt; 
-#&gt; Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>#&gt; The following objects are masked from &#39;package:stats&#39;:
-#&gt; 
-#&gt;     filter, lag</code></pre>
-<pre><code>#&gt; The following objects are masked from &#39;package:base&#39;:
-#&gt; 
-#&gt;     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="linkage-disequilibrium-ld.html#cb157-1" tabindex="-1"></a>ind_chr22 <span class="ot">&lt;-</span> <span class="fu">which</span>(obj.bed<span class="sc">$</span>map<span class="sc">$</span>chromosome <span class="sc">==</span> <span class="dv">22</span>)</span>
-<span id="cb157-2"><a href="linkage-disequilibrium-ld.html#cb157-2" tabindex="-1"></a>POS_chr22 <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map<span class="sc">$</span>physical.pos[ind_chr22]  <span class="co"># in bp</span></span>
-<span id="cb157-3"><a href="linkage-disequilibrium-ld.html#cb157-3" tabindex="-1"></a></span>
-<span id="cb157-4"><a href="linkage-disequilibrium-ld.html#cb157-4" tabindex="-1"></a><span class="co"># downloads 5.9 MB</span></span>
-<span id="cb157-5"><a href="linkage-disequilibrium-ld.html#cb157-5" tabindex="-1"></a>POS2_chr22 <span class="ot">&lt;-</span> <span class="fu">snp_asGeneticPos</span>(<span class="fu">rep</span>(<span class="dv">22</span>, <span class="fu">length</span>(POS_chr22)), POS_chr22, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)  <span class="co"># in cM</span></span></code></pre></div>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="linkage-disequilibrium-ld.html#cb158-1" tabindex="-1"></a>cor1 <span class="ot">&lt;-</span> <span class="fu">bed_cor</span>(obj.bed, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb158-2"><a href="linkage-disequilibrium-ld.html#cb158-2" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="linkage-disequilibrium-ld.html#cb159-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
-<span id="cb159-2"><a href="linkage-disequilibrium-ld.html#cb159-2" tabindex="-1"></a>G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes</span>
-<span id="cb159-3"><a href="linkage-disequilibrium-ld.html#cb159-3" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">dim</span>(G) <span class="sc">==</span> <span class="fu">dim</span>(obj.bed)))</span>
-<span id="cb159-4"><a href="linkage-disequilibrium-ld.html#cb159-4" tabindex="-1"></a>cor2 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb159-5"><a href="linkage-disequilibrium-ld.html#cb159-5" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
-<span id="cb159-6"><a href="linkage-disequilibrium-ld.html#cb159-6" tabindex="-1"></a><span class="fu">cbind</span>(cor2[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], cor1[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])  <span class="co"># not exactly the same; why?</span></span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="linkage-disequilibrium-ld.html#cb161-1" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
+<span id="cb161-2"><a href="linkage-disequilibrium-ld.html#cb161-2" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="linkage-disequilibrium-ld.html#cb162-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb162-2"><a href="linkage-disequilibrium-ld.html#cb162-2" tabindex="-1"></a>ind_chr22 <span class="ot">&lt;-</span> <span class="fu">which</span>(obj.bed<span class="sc">$</span>map<span class="sc">$</span>chromosome <span class="sc">==</span> <span class="dv">22</span>)</span>
+<span id="cb162-3"><a href="linkage-disequilibrium-ld.html#cb162-3" tabindex="-1"></a>POS_chr22 <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map<span class="sc">$</span>physical.pos[ind_chr22]  <span class="co"># in bp</span></span>
+<span id="cb162-4"><a href="linkage-disequilibrium-ld.html#cb162-4" tabindex="-1"></a></span>
+<span id="cb162-5"><a href="linkage-disequilibrium-ld.html#cb162-5" tabindex="-1"></a><span class="co"># downloads 5.9 MB</span></span>
+<span id="cb162-6"><a href="linkage-disequilibrium-ld.html#cb162-6" tabindex="-1"></a>POS2_chr22 <span class="ot">&lt;-</span> <span class="fu">snp_asGeneticPos</span>(<span class="at">infos.chr =</span> <span class="fu">rep</span>(<span class="dv">22</span>, <span class="fu">length</span>(POS_chr22)), </span>
+<span id="cb162-7"><a href="linkage-disequilibrium-ld.html#cb162-7" tabindex="-1"></a>                               <span class="at">infos.pos =</span> POS_chr22, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="linkage-disequilibrium-ld.html#cb163-1" tabindex="-1"></a>cor1 <span class="ot">&lt;-</span> <span class="fu">bed_cor</span>(obj.bed, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb163-2"><a href="linkage-disequilibrium-ld.html#cb163-2" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)  <span class="co"># in cM</span></span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="linkage-disequilibrium-ld.html#cb164-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
+<span id="cb164-2"><a href="linkage-disequilibrium-ld.html#cb164-2" tabindex="-1"></a>G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb164-3"><a href="linkage-disequilibrium-ld.html#cb164-3" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">dim</span>(G) <span class="sc">==</span> <span class="fu">dim</span>(obj.bed)))</span>
+<span id="cb164-4"><a href="linkage-disequilibrium-ld.html#cb164-4" tabindex="-1"></a>cor2 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb164-5"><a href="linkage-disequilibrium-ld.html#cb164-5" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
+<span id="cb164-6"><a href="linkage-disequilibrium-ld.html#cb164-6" tabindex="-1"></a><span class="fu">cbind</span>(cor2[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], cor1[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])  <span class="co"># not exactly the same; why?</span></span></code></pre></div>
 <pre><code>#&gt; 5 x 10 sparse Matrix of class &quot;dgCMatrix&quot;
 #&gt;                                                                 
 #&gt; [1,]  1.00000000 -0.05154381 -0.03629097 -0.02959808 -0.04231449
@@ -347,22 +340,26 @@ Click to see solution
 <div id="subtleties-about-ld-matrices" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Subtleties about LD matrices<a href="linkage-disequilibrium-ld.html#subtleties-about-ld-matrices" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><p>LD matrices are often singular, often with negative eigenvalues, which causes stability and divergence issues in algorithms using them <span class="citation">(<a href="#ref-zabad2025towards">Zabad, Haryan, Gravel, Misra, &amp; Li, 2025</a>)</span></p>
+<li><p>LD matrices are often singular (non invertible), often with negative eigenvalues even, which causes stability and divergence issues in algorithms using them <span class="citation">(<a href="#ref-zabad2025towards">Zabad, Haryan, Gravel, Misra, &amp; Li, 2025</a>)</span></p>
 <ul>
-<li><p>if the LD is computed using less individuals than the number of variants, this leads to some eigenvalues been 0</p></li>
-<li><p>missing values often lead to negative eigenvalues (because not the same individuals are used for all correlations, when using pairwise complete observations); imputing before computing LD can solve this <span class="citation">(<a href="#ref-zabad2025towards">Zabad et al., 2025</a>)</span></p></li>
-<li><p>windowing often lead to negative eigenvalues; defining independent LD blocks <span class="citation">(<a href="#ref-prive2021optimal">Privé, 2021</a>)</span> in the LD matrix helps a lot <span class="citation">(<a href="#ref-prive2021identifying">Privé, Arbel, et al., 2022</a>)</span></p></li>
-<li><p>thresholding (discarding small absolute correlations) will lead to negative eigenvalues, so best to be avoided</p></li>
+<li><p>if the LD is computed using less individuals than the number of variants, this leads to some eigenvalues being 0 (singular)</p></li>
+<li><p>computing LD from data with missing values often leads to the LD matrix having negative eigenvalues (because not the same individuals are used for all correlations, when using pairwise complete observations); imputing before computing LD can solve this issue <span class="citation">(<a href="#ref-zabad2025towards">Zabad et al., 2025</a>)</span></p></li>
+<li><p>windowing often results in having negative eigenvalues; defining independent LD blocks <span class="citation">(<a href="#ref-prive2021optimal">Privé, 2021</a>)</span> in the LD matrix helps a lot <span class="citation">(<a href="#ref-prive2021identifying">Privé, Arbel, et al., 2022</a>)</span></p></li>
+<li><p>thresholding (discarding small absolute correlations) results in negative eigenvalues, so best to be avoided</p></li>
 </ul></li>
 <li><p>one can regularize the LD matrix (as done in many methods); but too much regularization will bias results <span class="citation">(<a href="#ref-prive2022inferring">Privé, Albiñana, Arbel, Pasaniuc, &amp; Vilhjálmsson, 2023</a>)</span></p></li>
-<li><p>computing LD from imputed data seem to provide a good estimation <span class="citation">(<a href="#ref-prive2021identifying">Privé, Arbel, et al., 2022</a>)</span></p></li>
-<li><p>should partial correlations be used instead? (e.g. when there is some population structure in the data; still an open question that I want to investigate)</p></li>
+<li><p>computing LD from imputed data seem to provide an unbiased estimation <span class="citation">(<a href="#ref-prive2021identifying">Privé, Arbel, et al., 2022</a>)</span></p></li>
+<li><p>should partial correlations be used instead? (e.g. when there is some population structure in the data)<br />
+this is still an open question I want to investigate</p></li>
 </ul>
 
 </div>
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-pritchard2001linkage" class="csl-entry">
+Pritchard, J.K., &amp; Przeworski, M. (2001). <a href="https://doi.org/10.1086/321275">Linkage disequilibrium in humans: Models and data</a>. <em>The American Journal of Human Genetics</em>, <em>69</em>, 1–14.
+</div>
 <div id="ref-prive2021optimal" class="csl-entry">
 Privé, F. (2021). <a href="https://doi.org/10.1093/bioinformatics/btab519"><span class="nocase">Optimal linkage disequilibrium splitting</span></a>. <em>Bioinformatics</em>, <em>38</em>, 255–256.
 </div>

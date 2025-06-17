@@ -7,7 +7,7 @@ editor_options:
 # Linkage Disequilibrium (LD)
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("bp", "centimorgans", "cM")
+WORDS_TO_IGNORE <- c("bp", "centimorgans", "cM", "invertible")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -17,16 +17,17 @@ Most methods that rely on GWAS summary statistics also rely on an LD matrix (cor
 Indeed, if we take the simple example of a linear regression $y = X \beta + \epsilon$, the joint effects are given by $\hat\beta = (X^T X)^{-1} X^T y$, where $X^T y$ are the marginal effects and $X^T X$ is the covariance matrix (up to some scaling).
 
 The GWAS data from which the GWAS summary statistics are derived is often not accessible, so that the LD matrix is usually derived from another dataset. 
-This other dataset needs to be as close as possible as the GWAS data (in terms of genetic ancestry) to provide a close estimation of the LD.
+**This other dataset needs to be as close as possible as the GWAS data (in terms of genetic ancestry) to provide a close estimation of the LD.**
 This is why I got interested in estimating the ancestry composition of a GWAS based on allele frequencies reported in GWAS summary statistics (as we've seen in \@ref(ssancestry)), at least to make sure that the reference data used to compute the LD is similar (in terms of genetic ancestry) to the original GWAS data.
 
 ## Derivation of an LD matrix
 
-Functions `snp_cor()` and `bed_cor()` from bigsnpr can be used to derive a sparse LD matrix. Both functions allow for some missing values in the input genotypes; but we will see that it might not be such a good idea.
-If we use e.g. one million variants, the LD matrix would be a 1M x 1M matrix, which is way to large to compute but also to store.
-In practice, we know that LD between two genetic variants tend to decay with an increasing distance between them. In LDpred2 [@prive2020ldpred2], I assume that variants distant from more than 3 cM are uncorrelated (the case also for variants on different chromosomes). 
+Functions `snp_cor()` and `bed_cor()` from bigsnpr can be used to derive a sparse LD matrix. Both functions allow for some missing values in the input genotypes (although we will see that it might not be such a good idea).
+If we use e.g. one million variants, the LD matrix is a 1M x 1M matrix, which is too large to compute but also to store.
+
+In practice, we know that LD between two genetic variants tend to decay with an increasing distance between them [@pritchard2001linkage]. In LDpred2 [@prive2020ldpred2], I assume that variants distant from more than 3 cM are uncorrelated (the case also for variants on different chromosomes). 
 Genetic positions in centimorgans (cM) are preferred over using physical positions in base pairs (bp) in this case.
-From this, it results a (sparse) windowed LD matrix.
+From this, it results in a windowed (sparse) LD matrix.
 
 In \@ref(ldplink), we will see how to alternatively use PLINK to derive an LD matrix.
 
@@ -47,18 +48,19 @@ obj.bed <- bed("tmp-data/GWAS_data_sorted_QC.bed")
 NCORES <- nb_cores()
 ```
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(dplyr)
 ind_chr22 <- which(obj.bed$map$chromosome == 22)
 POS_chr22 <- obj.bed$map$physical.pos[ind_chr22]  # in bp
 
 # downloads 5.9 MB
-POS2_chr22 <- snp_asGeneticPos(rep(22, length(POS_chr22)), POS_chr22, dir = "tmp-data")  # in cM
+POS2_chr22 <- snp_asGeneticPos(infos.chr = rep(22, length(POS_chr22)), 
+                               infos.pos = POS_chr22, dir = "tmp-data")
 ```
 
 ```{r}
 cor1 <- bed_cor(obj.bed, ind.col = ind_chr22, ncores = NCORES,
-                infos.pos = POS2_chr22, size = 3 / 1000)
+                infos.pos = POS2_chr22, size = 3 / 1000)  # in cM
 ```
 
 
@@ -76,18 +78,19 @@ cbind(cor2[1:5, 1:5], cor1[1:5, 1:5])  # not exactly the same; why?
 
 ## Subtleties about LD matrices
 
-- LD matrices are often singular, often with negative eigenvalues, which causes stability and divergence issues in algorithms using them [@zabad2025towards]
+- LD matrices are often singular (non invertible), often with negative eigenvalues even, which causes stability and divergence issues in algorithms using them [@zabad2025towards]
 
-    - if the LD is computed using less individuals than the number of variants, this leads to some eigenvalues been 0
+    - if the LD is computed using less individuals than the number of variants, this leads to some eigenvalues being 0 (singular)
     
-    - missing values often lead to negative eigenvalues (because not the same individuals are used for all correlations, when using pairwise complete observations); imputing before computing LD can solve this [@zabad2025towards]
+    - computing LD from data with missing values often leads to the LD matrix having negative eigenvalues (because not the same individuals are used for all correlations, when using pairwise complete observations); imputing before computing LD can solve this issue [@zabad2025towards]
     
-    - windowing often lead to negative eigenvalues; defining independent LD blocks [@prive2021optimal] in the LD matrix helps a lot [@prive2021identifying]
+    - windowing often results in having negative eigenvalues; defining independent LD blocks [@prive2021optimal] in the LD matrix helps a lot [@prive2021identifying]
     
-    - thresholding (discarding small absolute correlations) will lead to negative eigenvalues, so best to be avoided
+    - thresholding (discarding small absolute correlations) results in negative eigenvalues, so best to be avoided
 
 - one can regularize the LD matrix (as done in many methods); but too much regularization will bias results [@prive2022inferring]
 
-- computing LD from imputed data seem to provide a good estimation [@prive2021identifying]
+- computing LD from imputed data seem to provide an unbiased estimation [@prive2021identifying]
 
-- should partial correlations be used instead? (e.g. when there is some population structure in the data; still an open question that I want to investigate)
+- should partial correlations be used instead? (e.g. when there is some population structure in the data)    
+this is still an open question I want to investigate

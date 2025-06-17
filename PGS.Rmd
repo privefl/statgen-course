@@ -23,13 +23,13 @@ Improving PGS methods is the main topic of my research work. These are the main 
 - lassosum2, with the same input data as LDpred2 (@prive2021identifying + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html#lassosum2-grid-of-models))
 
 :::: {.infobox .info}
-You can now use LDpred2-auto for inference (@prive2022inferring + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html#inference-with-ldpred2-auto)).
+You can now use LDpred2-auto for inference of e.g. the SNP-heritability and polygenicity (@prive2022inferring + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html#inference-with-ldpred2-auto)).
 ::::
 
 
 ## PGS from individual-level data
 
-If you have individual-level data (i.e. genotypes and phenotypes), you can basically use any supervised learning (machine learning) method to build PGS.
+If you have individual-level data (i.e. genotypes and phenotypes), you can basically use any supervised learning (machine learning) method to train a PGS.
 However, because of the size of the genetic data, you will quickly have scalability issues with these models.
 Moreover, it has been shown that effects for most diseases and traits are small and essentially additive, and that fancy methods such as deep learning are not much effective at constructing PGS [@kelemen2025performance].
 
@@ -39,7 +39,7 @@ This is an example of using PLR for predicting height from genotypes in the UK B
 
 - training on 350K individuals x 656K variants in less than 24H
 
-- within both males and females, PGS achieved 65.5% of correlation ($r^2$ of 42.9%) between genetically predicted and true height
+- within both males and females, PGS achieved a correlation of 65.5% ($r^2$ of 42.9%) between genetically predicted and true height
 
 ```{r, echo=FALSE, out.width="70%"}
 knitr::include_graphics("https://privefl.github.io/blog/images/UKB-final-pred.png")
@@ -50,7 +50,7 @@ knitr::include_graphics("https://privefl.github.io/blog/images/UKB-final-pred.pn
 
 :::: {.infobox .question}
 Why is it suboptimal to derive a PGS like this: $PGS_i = \sum_j \hat\beta_j \cdot G_{i,j}$?    
-($\hat\beta$ are the GWAS effects sizes)
+($\hat\beta$ are the GWAS effects sizes here)
 ::::
 
 ```{r, echo=FALSE, out.width="85%", fig.cap="Local correlation between variants causes redundant GWAS signals."}
@@ -80,18 +80,18 @@ knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figu
 
 <br>
 
-In GWAS, it is commonly accepted to use a p-value threshold of $5 \times 10^{-8}$ when reporting significant findings, which corresponds to correcting for one million independent tests. 
+In GWAS, a p-value threshold of $5 \times 10^{-8}$ is used when reporting significant findings, which corresponds to correcting for one million independent tests. 
 Yet for prediction purposes, including less significant variants can substantially improve predictive performance of C+T.
-Therefore, the p-value threshold must be chosen carefully in C+T. A stringent threshold risks excluding informative variants, while a lenient threshold may introduce noise by including non-informative variants.
+Therefore, the p-value threshold must be chosen carefully in C+T. A stringent threshold risks excluding informative variants, while a lenient threshold may introduce noise by including too many non-informative variants.
 For the clumping step, one must choose the threshold above which to discard correlated variants.
 
 Hyper-parameters in C+T (and usual values):
 
-- threshold on squared correlation of clumping (e.g. $r_c^2 > 0.2$) 
+- threshold on squared correlation in clumping (e.g. 0.2) 
 
 - window size for LD computation in clumping (e.g. 500 kb)
 
-- p-value threshold ( $p_T$ between $1$ and $10^{-8}$ and choose the best one )
+- p-value threshold (e.g. test $p_T$ between $1$ and $10^{-8}$ and choose the best one in a tuning/validation set)
 
 - other parameters such as the threshold of imputation quality score (e.g. $INFO > 0.5$) or minor allele frequency (e.g. $MAF > 0.01$)
 
@@ -99,9 +99,11 @@ A popular software to derive C+T scores is [PRSice-2](https://choishingwan.githu
 
 My contributions in @prive2019making:
 
-- an implementation to efficiently compute thousands of C+T scores corresponding to different sets of hyper-parameters (to explore more)
+- an implementation to efficiently compute thousands of C+T scores corresponding to different sets of hyper-parameters (to explore more values for more hyper-parameters, rather than simply a few values for $p_T$ only)
 
 - going further by *stacking* with a (penalized) linear combination of all C+T models (instead of just choosing the best model) $\Rightarrow$ *SCT* (Stacked C+T)
+
+This can lead to achieving much better predictive performance compared to some standard use of C+T.
 
 
 ### Other methods
@@ -112,21 +114,23 @@ There are methods that better model LD than C+T (which uses simple heuristics):
 
 - Bayesian methods such as LDpred2 [@prive2020ldpred2], SBayesR/RC [@lloyd2019improved; @zheng2024leveraging] and PRS-CS [@ge2019polygenic], also approximating a penalized regression, with some different priors and details in the implementation
 
+- many others
+
 My opinion on these methods:
 
-- C+T is known to be suboptimal but works okay for traits with low polygenicity (the proportion of causal variants) 
+- C+T is known to be suboptimal but works okay for traits with low polygenicity (the proportion of causal variants) and can be improved with proper tuning/stacking (cf. above)
 
-- lassosum is very good at getting very sparse solutions (lots of variants are not used); C+T can be good for that as well
+- lassosum is very good at getting very sparse solutions (lots of variants are not used in the PGS); C+T can be good for that as well (when a stringent p-value threshold is used)
 
-- LDpred2 is the best in my very biased opinion &#128521;; there is an "auto" option to directly infer hyper-parameters of the methods from the data, and many developments have been made regarding improving robustness
+- LDpred2 is the best in my very biased opinion &#128521;; there is an "auto" option to directly infer hyper-parameters of the methods from the data, and many developments have been made regarding improving its robustness
 
 - SBayesR is very good with in-sample LD (i.e. from the GWAS data), otherwise it lacks robustness
 
-- SBayesRC uses functional annotations to help prioritize causal variants, which can help improve prediction, especially when applying the PGS to other populations
+- SBayesRC uses functional annotations to help prioritize causal variants, which can help improve prediction, especially when applying the resulting PGS to other populations
 
-- PRS-CS uses a lot of regularization to ensure robustness, which can be at the expense of lower predictive ability
+- PRS-CS uses a lot of regularization internally, which makes it very robust, but sometimes at the expense of lower predictive ability; it is also slower than other methods
 
-```{r, echo=FALSE, out.width="75%", fig.cap="Comparison of PGS methods from the LDpred2 paper."}
+```{r, echo=FALSE, out.width="75%", fig.cap="Comparison of PGS methods from the LDpred2 paper. Since, developments have been made to ensure even better predictive performance of LDpred2 models."}
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/ldpred2-comparison.jpeg?raw=true")
 ```
 
@@ -137,7 +141,7 @@ What influences predictive power of PGS?
 
 - Predictive power $r^2$ is bounded by the heritability $h^2$ captured by the set of variants used (called SNP-heritability).
 
-- $r^2$ increases with sample size $N$ (of course)
+- $r^2$ should increase with GWAS sample size $N$ (of course)
 
 - $r^2$ decreases with polygenicity (proportion of causal variants), because there are more small effects, harder to detect and estimate.    
 Let's denote $M_c$ the number of causal variants.
@@ -153,8 +157,7 @@ In R: `uniroot(function(r2) r2 - h2 / (1 + (1 - r2) * M_c / (N * h2)), interval 
 
 Here is an example across 245 phenotypes and 9 ancestry groups [@prive2021high]:
 
-
-```{r, echo=FALSE, out.width="92%"}
+```{r, echo=FALSE, out.width="92%", fig.cap="Partial correlations and 95% CIs in the UK test set versus in a test set from another ancestry group. Each point represents a phenotype and training has been performed with penalized regression on UK individuals and HapMap3 variants. The slope (in blue) is computed using Deming regression accounting for standard errors in both x and y, fixing the intercept at 0. The square of this slope is provided above each plot, which we report as the relative predictive performance compared to testing in the 'United Kingdom' ancestry group (see next figure)."}
 knitr::include_graphics("https://github.com/privefl/UKBB-PGS/blob/main/docs/figures/lasso-ancestry-2.png?raw=true")
 ```
 
@@ -168,7 +171,7 @@ knitr::include_graphics("https://github.com/privefl/UKBB-PGS/blob/main/docs/figu
 
 <br>
 
-One possible explanation: different tagging, because correlation between genetic variants are different across populations [@wang2020theoretical]:
+One possible explanation: different tagging, because correlations between genetic variants are different across populations [@wang2020theoretical]:
 
 ```{r, echo=FALSE, out.width="80%"}
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/LD-multipop3.png?raw=true")
@@ -187,7 +190,8 @@ knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figu
 
 - Integrate functional annotations and multi-ancestry data to prioritize causal variants
 
-## Exercise with LDpred2 and lassosum2
+
+## Exercise with LDpred2 and lassosum2 {#exo-ldpred2}
 
 First, let's carefully look at [the LDpred2 tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html).
 
@@ -287,7 +291,7 @@ is_bad <-
   sd_ss < 0.05 | sd_ref < 0.05  # basically filtering small MAF
 
 library(ggplot2)
-ggplot(slice_sample(data.frame(sd_ref, sd_ss, is_bad), n = 50e3)) +
+ggplot(slice_sample(data.frame(sd_ref, sd_ss, is_bad), n = 100e3)) +
   geom_point(aes(sd_ref, sd_ss, color = is_bad), alpha = 0.5) +
   theme_bigstatsr(0.9) +
   scale_color_viridis_d(direction = -1) +
@@ -305,7 +309,7 @@ When allele frequencies are available in the GWAS summary statistics, you can us
 ```{r}
 sd_af <- with(info_snp, sqrt(2 * freq * (1 - freq) * info))
 
-ggplot(slice_sample(data.frame(sd_af, sd_ss), n = 50e3)) +
+ggplot(slice_sample(data.frame(sd_af, sd_ss), n = 100e3)) +
   geom_point(aes(sd_af, sd_ss), alpha = 0.5) +
   theme_bigstatsr(0.9) +
   geom_abline(linetype = 2, color = "red") +

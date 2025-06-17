@@ -180,5 +180,5 @@ snp_qq(gwas) +
 
 ***
 
-Then, the intercept of LD score regression was used to test for confounding [@bulik2015ld]. 
-However, it was observed that LD score regression intercepts tend to increase with SNP-heritability and GWAS sample size [@loh2018mixed].
+Then, the intercept of LD score regression was introduced to test for confounding [@bulik2015ld]. 
+However, note that it was observed that LD score regression intercepts tend to increase with SNP-heritability and GWAS sample size [@loh2018mixed].
