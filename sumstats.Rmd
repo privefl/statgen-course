@@ -123,7 +123,7 @@ $N_\text{eff} = \frac{4}{1 / N_\text{ca} + 1 / N_\text{co}}$
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/cad_neff_perstudy.png?raw=true")
 ```
 
-For example, overestimating the sample size leads to an underestimation of the SNP heritability in many methods such as LD score regression [@grotzinger2023pervasive].
+For example, overestimating the sample size leads to underestimating the SNP heritability in many methods such as LD score regression [@grotzinger2023pervasive].
 
 ---
 
@@ -144,10 +144,10 @@ knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figu
 ---
 
 :::: {.infobox .exo}
-Reuse GWAS results for HDL and allele frequencies we derived before to estimate standard deviations and compare both estimates. How can you estimate `sd(y)`?
+Use the following GWAS results for HDL and allele frequencies to estimate standard deviations and compare both estimates. How can you estimate `sd(y)`?
 ::::
 
-```{r}
+```{r, message=FALSE}
 library(bigsnpr)
 obj.bigsnp <- snp_attach("tmp-data/GWAS_data_sorted_QC.rds")
 NCORES <- nb_cores()

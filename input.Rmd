@@ -100,17 +100,7 @@ bgen <- runonce::download_file(
 bgi <- runonce::download_file(
   "https://enkre.net/cgi-bin/code/bgen/raw/dc7276e0f0e2e096f58d2dac645aa5711de2cd64c3b29a07a80575e175344f78?at=example.8bits.bgen.bgi",
   fname = "example.bgen.bgi")
-sample <- runonce::download_file(
-  "https://enkre.net/cgi-bin/code/bgen/raw/a3c4d8e4c132048a502dc00a3e51362f98eda5a2889df695ba260dc48c327fd9?at=example.sample",
-  fname = "example.sample")
-readLines(sample, n = 6)
 ```
-
-
-:::: {.infobox .caution}
-What should you be careful about when reading the *sample* file?
-::::
-
 
 :::: {.infobox .exo}
 Use `snp_readBGI()` to get information on the variants, and read the first 10 variants using `snp_readBGEN()` (pay attention to the specific format of `list_snp_id`) and `snp_attach()`. 
@@ -130,11 +120,24 @@ bigsnp <- snp_attach(rds)
 str(bigsnp$map)  # `$freq` and `$info` are computed when reading the data
 ```
 
+</details>
+
+<br>
+
 :::: {.infobox .caution}
-There is no `$fam` information in this case, which should be read from other data and matched/joined using IDs from the *sample* file. From the BGEN, you can also use these IDs to read a subset of individuals only, as done [in this code](https://github.com/privefl/paper-misspec/blob/main/code/prepare-genotypes.R#L33-L34).
+There is no `$fam` information when reading BGEN files, which should be read from other data and matched/joined using IDs from the *sample* file. From the BGEN, you can also use these IDs to read a subset of individuals only, as done [in this code](https://github.com/privefl/paper-misspec/blob/main/code/prepare-genotypes.R#L33-L34).
 ::::
 
-</details>
+```{r}
+sample <- runonce::download_file(
+  "https://enkre.net/cgi-bin/code/bgen/raw/a3c4d8e4c132048a502dc00a3e51362f98eda5a2889df695ba260dc48c327fd9?at=example.sample",
+  fname = "example.sample")
+readLines(sample, n = 6)
+```
+
+:::: {.infobox .caution}
+What should you be careful about when reading the *sample* file?
+::::
 
 
 ## The FBM format from bigstatsr

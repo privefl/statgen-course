@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-17" />
+<meta name="date" content="2025-06-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -322,7 +322,7 @@ What do you get? Use <code>snp_attach()</code> to get the data into R and explor
 Click to see solution
 </summary>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="inputs-and-formats.html#cb6-1" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBed2</span>(bedfile, <span class="at">backingfile =</span> <span class="fu">tempfile</span>()))  <span class="co"># get path to new file</span></span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpiWpCkp\\file61c47bb15e93.rds&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpYzrpvO\\file659c769d354e.rds&quot;</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="inputs-and-formats.html#cb8-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)  <span class="co"># can then read in the bigSNP object in any R session</span></span>
 <span id="cb8-2"><a href="inputs-and-formats.html#cb8-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 517 rows and 4542 columns.</code></pre>
@@ -391,16 +391,7 @@ Click to see solution
 <span id="cb22-3"><a href="inputs-and-formats.html#cb22-3" tabindex="-1"></a>  <span class="at">fname =</span> <span class="st">&quot;example.bgen&quot;</span>)</span>
 <span id="cb22-4"><a href="inputs-and-formats.html#cb22-4" tabindex="-1"></a>bgi <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
 <span id="cb22-5"><a href="inputs-and-formats.html#cb22-5" tabindex="-1"></a>  <span class="st">&quot;https://enkre.net/cgi-bin/code/bgen/raw/dc7276e0f0e2e096f58d2dac645aa5711de2cd64c3b29a07a80575e175344f78?at=example.8bits.bgen.bgi&quot;</span>,</span>
-<span id="cb22-6"><a href="inputs-and-formats.html#cb22-6" tabindex="-1"></a>  <span class="at">fname =</span> <span class="st">&quot;example.bgen.bgi&quot;</span>)</span>
-<span id="cb22-7"><a href="inputs-and-formats.html#cb22-7" tabindex="-1"></a>sample <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb22-8"><a href="inputs-and-formats.html#cb22-8" tabindex="-1"></a>  <span class="st">&quot;https://enkre.net/cgi-bin/code/bgen/raw/a3c4d8e4c132048a502dc00a3e51362f98eda5a2889df695ba260dc48c327fd9?at=example.sample&quot;</span>,</span>
-<span id="cb22-9"><a href="inputs-and-formats.html#cb22-9" tabindex="-1"></a>  <span class="at">fname =</span> <span class="st">&quot;example.sample&quot;</span>)</span>
-<span id="cb22-10"><a href="inputs-and-formats.html#cb22-10" tabindex="-1"></a><span class="fu">readLines</span>(sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;ID_1&quot;       &quot;0&quot;          &quot;sample_001&quot; &quot;sample_002&quot; &quot;sample_003&quot;
-#&gt; [6] &quot;sample_004&quot;</code></pre>
-<div class="infobox caution">
-<p>What should you be careful about when reading the <em>sample</em> file?</p>
-</div>
+<span id="cb22-6"><a href="inputs-and-formats.html#cb22-6" tabindex="-1"></a>  <span class="at">fname =</span> <span class="st">&quot;example.bgen.bgi&quot;</span>)</span></code></pre></div>
 <div class="infobox exo">
 <p>Use <code>snp_readBGI()</code> to get information on the variants, and read the first 10 variants using <code>snp_readBGEN()</code> (pay attention to the specific format of <code>list_snp_id</code>) and <code>snp_attach()</code>.</p>
 <p>What extra information do you get about the variants?</p>
@@ -409,7 +400,7 @@ Click to see solution
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="inputs-and-formats.html#cb24-1" tabindex="-1"></a>(var_info <span class="ot">&lt;-</span> <span class="fu">snp_readBGI</span>(bgi))</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="inputs-and-formats.html#cb23-1" tabindex="-1"></a>(var_info <span class="ot">&lt;-</span> <span class="fu">snp_readBGI</span>(bgi))</span></code></pre></div>
 <pre><code>#&gt; # A tibble: 199 × 8
 #&gt;    chromosome position rsid     number_of_alleles allele1 allele2
 #&gt;    &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;                &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  
@@ -425,15 +416,15 @@ Click to see solution
 #&gt; 10 01             6000 RSID_6                   2 A       G      
 #&gt; # ℹ 189 more rows
 #&gt; # ℹ 2 more variables: file_start_position &lt;dbl&gt;, size_in_bytes &lt;int&gt;</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="inputs-and-formats.html#cb26-1" tabindex="-1"></a>(snp_id <span class="ot">&lt;-</span> <span class="fu">with</span>(var_info[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ], <span class="fu">paste</span>(chromosome, position, allele1, allele2, <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="inputs-and-formats.html#cb25-1" tabindex="-1"></a>(snp_id <span class="ot">&lt;-</span> <span class="fu">with</span>(var_info[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ], <span class="fu">paste</span>(chromosome, position, allele1, allele2, <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>)))</span></code></pre></div>
 <pre><code>#&gt;  [1] &quot;01_1001_A_G&quot; &quot;01_2000_A_G&quot; &quot;01_2001_A_G&quot; &quot;01_3000_A_G&quot; &quot;01_3001_A_G&quot;
 #&gt;  [6] &quot;01_4000_A_G&quot; &quot;01_4001_A_G&quot; &quot;01_5000_A_G&quot; &quot;01_5001_A_G&quot; &quot;01_6000_A_G&quot;</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="inputs-and-formats.html#cb28-1" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBGEN</span>(bgen, <span class="at">backingfile =</span> <span class="fu">tempfile</span>(), <span class="at">list_snp_id =</span> <span class="fu">list</span>(snp_id)))</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpiWpCkp\\file61c468684d7a.rds&quot;</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="inputs-and-formats.html#cb30-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
-<span id="cb30-2"><a href="inputs-and-formats.html#cb30-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="inputs-and-formats.html#cb27-1" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBGEN</span>(bgen, <span class="at">backingfile =</span> <span class="fu">tempfile</span>(), <span class="at">list_snp_id =</span> <span class="fu">list</span>(snp_id)))</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpYzrpvO\\file659c3bc83ae3.rds&quot;</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="inputs-and-formats.html#cb29-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
+<span id="cb29-2"><a href="inputs-and-formats.html#cb29-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 500 rows and 10 columns.</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="inputs-and-formats.html#cb32-1" tabindex="-1"></a><span class="fu">str</span>(bigsnp<span class="sc">$</span>map)  <span class="co"># `$freq` and `$info` are computed when reading the data</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="inputs-and-formats.html#cb31-1" tabindex="-1"></a><span class="fu">str</span>(bigsnp<span class="sc">$</span>map)  <span class="co"># `$freq` and `$info` are computed when reading the data</span></span></code></pre></div>
 <pre><code>#&gt; tibble [10 × 8] (S3: tbl_df/tbl/data.frame)
 #&gt;  $ chromosome  : chr [1:10] &quot;01&quot; &quot;01&quot; &quot;01&quot; &quot;01&quot; ...
 #&gt;  $ marker.ID   : chr [1:10] &quot;SNPID_101&quot; &quot;SNPID_2&quot; &quot;SNPID_102&quot; &quot;SNPID_3&quot; ...
@@ -443,10 +434,20 @@ Click to see solution
 #&gt;  $ allele2     : chr [1:10] &quot;G&quot; &quot;G&quot; &quot;G&quot; &quot;G&quot; ...
 #&gt;  $ freq        : num [1:10] 0.583 0.802 0.198 0.483 0.517 ...
 #&gt;  $ info        : num [1:10] 0.975 0.668 0.666 0.952 0.952 ...</code></pre>
-<div class="infobox caution">
-<p>There is no <code>$fam</code> information in this case, which should be read from other data and matched/joined using IDs from the <em>sample</em> file. From the BGEN, you can also use these IDs to read a subset of individuals only, as done <a href="https://github.com/privefl/paper-misspec/blob/main/code/prepare-genotypes.R#L33-L34">in this code</a>.</p>
-</div>
 </details>
+<p><br></p>
+<div class="infobox caution">
+<p>There is no <code>$fam</code> information when reading BGEN files, which should be read from other data and matched/joined using IDs from the <em>sample</em> file. From the BGEN, you can also use these IDs to read a subset of individuals only, as done <a href="https://github.com/privefl/paper-misspec/blob/main/code/prepare-genotypes.R#L33-L34">in this code</a>.</p>
+</div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="inputs-and-formats.html#cb33-1" tabindex="-1"></a>sample <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb33-2"><a href="inputs-and-formats.html#cb33-2" tabindex="-1"></a>  <span class="st">&quot;https://enkre.net/cgi-bin/code/bgen/raw/a3c4d8e4c132048a502dc00a3e51362f98eda5a2889df695ba260dc48c327fd9?at=example.sample&quot;</span>,</span>
+<span id="cb33-3"><a href="inputs-and-formats.html#cb33-3" tabindex="-1"></a>  <span class="at">fname =</span> <span class="st">&quot;example.sample&quot;</span>)</span>
+<span id="cb33-4"><a href="inputs-and-formats.html#cb33-4" tabindex="-1"></a><span class="fu">readLines</span>(sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;ID_1&quot;       &quot;0&quot;          &quot;sample_001&quot; &quot;sample_002&quot; &quot;sample_003&quot;
+#&gt; [6] &quot;sample_004&quot;</code></pre>
+<div class="infobox caution">
+<p>What should you be careful about when reading the <em>sample</em> file?</p>
+</div>
 </div>
 <div id="the-fbm-format-from-bigstatsr" class="section level2 hasAnchor" number="2.4">
 <h2><span class="header-section-number">2.4</span> The FBM format from bigstatsr<a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -471,7 +472,7 @@ Click to see solution
 <li><code>"raw"</code> or <code>"unsigned char"</code>: can store integer values from <span class="math inline">\(0\)</span> to <span class="math inline">\(255\)</span> (1 byte). <strong>It is the basis for class <em>FBM.code256</em> that can access 256 arbitrary different numeric values (decoded using a <code>CODE_*</code>), which is used in bigsnpr.</strong></li>
 </ul>
 <p>The code used in class <em>FBM.code256</em> for imputed data is e.g. </p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="inputs-and-formats.html#cb34-1" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="inputs-and-formats.html#cb35-1" tabindex="-1"></a>bigsnpr<span class="sc">::</span>CODE_DOSAGE</span></code></pre></div>
 <pre><code>#&gt;   [1] 0.00 1.00 2.00   NA 0.00 1.00 2.00 0.00 0.01 0.02 0.03 0.04 0.05 0.06
 #&gt;  [15] 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20
 #&gt;  [29] 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34
@@ -497,28 +498,28 @@ Click to see solution
 <h2><span class="header-section-number">2.5</span> Working with an FBM<a href="inputs-and-formats.html#working-with-an-fbm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="similar-accessor-as-r-matrices" class="section level3 hasAnchor" number="2.5.1">
 <h3><span class="header-section-number">2.5.1</span> Similar accessor as R matrices<a href="inputs-and-formats.html#similar-accessor-as-r-matrices" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="inputs-and-formats.html#cb36-1" tabindex="-1"></a><span class="fu">library</span>(bigstatsr)</span>
-<span id="cb36-2"><a href="inputs-and-formats.html#cb36-2" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">FBM</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="at">init =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">backingfile =</span> <span class="st">&quot;tmp-data/test&quot;</span>)<span class="sc">$</span><span class="fu">save</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="inputs-and-formats.html#cb37-1" tabindex="-1"></a>X<span class="sc">$</span>backingfile  <span class="co"># the file where numeric data is stored</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="inputs-and-formats.html#cb37-1" tabindex="-1"></a><span class="fu">library</span>(bigstatsr)</span>
+<span id="cb37-2"><a href="inputs-and-formats.html#cb37-2" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">FBM</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="at">init =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">backingfile =</span> <span class="st">&quot;tmp-data/test&quot;</span>)<span class="sc">$</span><span class="fu">save</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="inputs-and-formats.html#cb38-1" tabindex="-1"></a>X<span class="sc">$</span>backingfile  <span class="co"># the file where numeric data is stored</span></span></code></pre></div>
 <pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\OneDrive - Aarhus universitet\\Desktop\\statgen-course\\tmp-data\\test.bk&quot;</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="inputs-and-formats.html#cb39-1" tabindex="-1"></a>X<span class="sc">$</span>rds  <span class="co"># the file where information about the data is stored</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="inputs-and-formats.html#cb40-1" tabindex="-1"></a>X<span class="sc">$</span>rds  <span class="co"># the file where information about the data is stored</span></span></code></pre></div>
 <pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\OneDrive - Aarhus universitet\\Desktop\\statgen-course\\tmp-data\\test.rds&quot;</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="inputs-and-formats.html#cb41-1" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">big_attach</span>(<span class="st">&quot;tmp-data/test.rds&quot;</span>)  <span class="co"># can get the FBM from any R session</span></span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="inputs-and-formats.html#cb42-1" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">big_attach</span>(<span class="st">&quot;tmp-data/test.rds&quot;</span>)  <span class="co"># can get the FBM from any R session</span></span></code></pre></div>
 <p>You can access the whole FBM as an R matrix in memory using <code>X[]</code>.
 However, if the matrix is too large to fit in memory, you should always access only a subset of columns.
 Note that the elements of an FBM are stored column-wise (as for a standard R matrix). Therefore, be careful not to access a subset of rows, since it would read non-contiguous elements from the whole matrix from disk.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="inputs-and-formats.html#cb42-1" tabindex="-1"></a>X[, <span class="dv">1</span>]  <span class="co"># ok (must read first column only)</span></span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="inputs-and-formats.html#cb43-1" tabindex="-1"></a>X[, <span class="dv">1</span>]  <span class="co"># ok (must read first column only)</span></span></code></pre></div>
 <pre><code>#&gt; [1] 1 2</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="inputs-and-formats.html#cb44-1" tabindex="-1"></a>X[<span class="dv">1</span>, ]  <span class="co"># bad (must read all data from disk)</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="inputs-and-formats.html#cb45-1" tabindex="-1"></a>X[<span class="dv">1</span>, ]  <span class="co"># bad (must read all data from disk)</span></span></code></pre></div>
 <pre><code>#&gt; [1] 1 3 5 7 9</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="inputs-and-formats.html#cb46-1" tabindex="-1"></a>X[]     <span class="co"># super bad (standard R matrix in memory)</span></span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="inputs-and-formats.html#cb47-1" tabindex="-1"></a>X[]     <span class="co"># super bad (standard R matrix in memory)</span></span></code></pre></div>
 <pre><code>#&gt;      [,1] [,2] [,3] [,4] [,5]
 #&gt; [1,]    1    3    5    7    9
 #&gt; [2,]    2    4    6    8   10</code></pre>
 </div>
 <div id="split-parapply-combine-strategy" class="section level3 hasAnchor" number="2.5.2">
 <h3><span class="header-section-number">2.5.2</span> Split-(par)Apply-Combine Strategy<a href="inputs-and-formats.html#split-parapply-combine-strategy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="inputs-and-formats.html#cb48-1" tabindex="-1"></a><span class="fu">colSums</span>(X[])  <span class="co"># super bad</span></span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="inputs-and-formats.html#cb49-1" tabindex="-1"></a><span class="fu">colSums</span>(X[])  <span class="co"># super bad</span></span></code></pre></div>
 <pre><code>#&gt; [1]  3  7 11 15 19</code></pre>
 <p>Instead, the split-apply-combine strategy works well for applying standard R functions to FBMs (possibly in parallel), as implemented in <code>big_apply()</code>.</p>
 <p><img src="https://raw.githubusercontent.com/privefl/R-presentation/master/split-apply-combine.svg" width="90%" style="display: block; margin: auto;" /></p>
@@ -530,37 +531,37 @@ Note that the elements of an FBM are stored column-wise (as for a standard R mat
 <div id="similar-accessor-as-rcpp-matrices" class="section level3 hasAnchor" number="2.5.3">
 <h3><span class="header-section-number">2.5.3</span> Similar accessor as Rcpp matrices<a href="inputs-and-formats.html#similar-accessor-as-rcpp-matrices" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In case you want to develop new R functions for the FBM format while coding in C++ (which is the case for many bigstatsr/bigsnpr functions). Note that it is easy to use only a subset of the data without having to change anything in the code.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb50-1"><a href="inputs-and-formats.html#cb50-1" tabindex="-1"></a><span class="co">// [[Rcpp::plugins(cpp11)]]</span></span>
-<span id="cb50-2"><a href="inputs-and-formats.html#cb50-2" tabindex="-1"></a><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></span>
-<span id="cb50-3"><a href="inputs-and-formats.html#cb50-3" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMCodeAcc.h&gt;</span></span>
-<span id="cb50-4"><a href="inputs-and-formats.html#cb50-4" tabindex="-1"></a></span>
-<span id="cb50-5"><a href="inputs-and-formats.html#cb50-5" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
-<span id="cb50-6"><a href="inputs-and-formats.html#cb50-6" tabindex="-1"></a>NumericVector bigcolsums<span class="op">(</span>Environment BM<span class="op">,</span></span>
-<span id="cb50-7"><a href="inputs-and-formats.html#cb50-7" tabindex="-1"></a>                         <span class="at">const</span> IntegerVector<span class="op">&amp;</span> rowInd<span class="op">,</span></span>
-<span id="cb50-8"><a href="inputs-and-formats.html#cb50-8" tabindex="-1"></a>                         <span class="at">const</span> IntegerVector<span class="op">&amp;</span> colInd<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb50-9"><a href="inputs-and-formats.html#cb50-9" tabindex="-1"></a>  </span>
-<span id="cb50-10"><a href="inputs-and-formats.html#cb50-10" tabindex="-1"></a>  <span class="co">// the external pointer</span></span>
-<span id="cb50-11"><a href="inputs-and-formats.html#cb50-11" tabindex="-1"></a>  XPtr<span class="op">&lt;</span>FBM<span class="op">&gt;</span> xpBM <span class="op">=</span> BM<span class="op">[</span><span class="st">&quot;address&quot;</span><span class="op">];</span></span>
-<span id="cb50-12"><a href="inputs-and-formats.html#cb50-12" tabindex="-1"></a>  <span class="co">// accessor to a sub-view of the data + automatically decoded</span></span>
-<span id="cb50-13"><a href="inputs-and-formats.html#cb50-13" tabindex="-1"></a>  SubBMCode256Acc<span class="op">(</span>xpBM<span class="op">,</span> rowInd<span class="op">,</span> colInd<span class="op">,</span> BM<span class="op">[</span><span class="st">&quot;code256&quot;</span><span class="op">],</span> <span class="dv">1</span><span class="op">)</span></span>
-<span id="cb50-14"><a href="inputs-and-formats.html#cb50-14" tabindex="-1"></a>  </span>
-<span id="cb50-15"><a href="inputs-and-formats.html#cb50-15" tabindex="-1"></a>  <span class="dt">size_t</span> n <span class="op">=</span> macc<span class="op">.</span>nrow<span class="op">();</span>          <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
-<span id="cb50-16"><a href="inputs-and-formats.html#cb50-16" tabindex="-1"></a>  <span class="dt">size_t</span> m <span class="op">=</span> macc<span class="op">.</span>ncol<span class="op">();</span>          <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
-<span id="cb50-17"><a href="inputs-and-formats.html#cb50-17" tabindex="-1"></a>  </span>
-<span id="cb50-18"><a href="inputs-and-formats.html#cb50-18" tabindex="-1"></a>  NumericVector res<span class="op">(</span>m<span class="op">);</span></span>
-<span id="cb50-19"><a href="inputs-and-formats.html#cb50-19" tabindex="-1"></a>  </span>
-<span id="cb50-20"><a href="inputs-and-formats.html#cb50-20" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++)</span> </span>
-<span id="cb50-21"><a href="inputs-and-formats.html#cb50-21" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb50-22"><a href="inputs-and-formats.html#cb50-22" tabindex="-1"></a>      res<span class="op">[</span>j<span class="op">]</span> <span class="op">+=</span> macc<span class="op">(</span>i<span class="op">,</span> j<span class="op">);</span>        <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
-<span id="cb50-23"><a href="inputs-and-formats.html#cb50-23" tabindex="-1"></a>  </span>
-<span id="cb50-24"><a href="inputs-and-formats.html#cb50-24" tabindex="-1"></a>  <span class="cf">return</span> res<span class="op">;</span></span>
-<span id="cb50-25"><a href="inputs-and-formats.html#cb50-25" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb51-1"><a href="inputs-and-formats.html#cb51-1" tabindex="-1"></a><span class="co">// [[Rcpp::plugins(cpp11)]]</span></span>
+<span id="cb51-2"><a href="inputs-and-formats.html#cb51-2" tabindex="-1"></a><span class="co">// [[Rcpp::depends(bigstatsr, rmio)]]</span></span>
+<span id="cb51-3"><a href="inputs-and-formats.html#cb51-3" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bigstatsr/BMCodeAcc.h&gt;</span></span>
+<span id="cb51-4"><a href="inputs-and-formats.html#cb51-4" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="inputs-and-formats.html#cb51-5" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb51-6"><a href="inputs-and-formats.html#cb51-6" tabindex="-1"></a>NumericVector bigcolsums<span class="op">(</span>Environment BM<span class="op">,</span></span>
+<span id="cb51-7"><a href="inputs-and-formats.html#cb51-7" tabindex="-1"></a>                         <span class="at">const</span> IntegerVector<span class="op">&amp;</span> rowInd<span class="op">,</span></span>
+<span id="cb51-8"><a href="inputs-and-formats.html#cb51-8" tabindex="-1"></a>                         <span class="at">const</span> IntegerVector<span class="op">&amp;</span> colInd<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb51-9"><a href="inputs-and-formats.html#cb51-9" tabindex="-1"></a>  </span>
+<span id="cb51-10"><a href="inputs-and-formats.html#cb51-10" tabindex="-1"></a>  <span class="co">// the external pointer</span></span>
+<span id="cb51-11"><a href="inputs-and-formats.html#cb51-11" tabindex="-1"></a>  XPtr<span class="op">&lt;</span>FBM<span class="op">&gt;</span> xpBM <span class="op">=</span> BM<span class="op">[</span><span class="st">&quot;address&quot;</span><span class="op">];</span></span>
+<span id="cb51-12"><a href="inputs-and-formats.html#cb51-12" tabindex="-1"></a>  <span class="co">// accessor to a sub-view of the data + automatically decoded</span></span>
+<span id="cb51-13"><a href="inputs-and-formats.html#cb51-13" tabindex="-1"></a>  SubBMCode256Acc<span class="op">(</span>xpBM<span class="op">,</span> rowInd<span class="op">,</span> colInd<span class="op">,</span> BM<span class="op">[</span><span class="st">&quot;code256&quot;</span><span class="op">],</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb51-14"><a href="inputs-and-formats.html#cb51-14" tabindex="-1"></a>  </span>
+<span id="cb51-15"><a href="inputs-and-formats.html#cb51-15" tabindex="-1"></a>  <span class="dt">size_t</span> n <span class="op">=</span> macc<span class="op">.</span>nrow<span class="op">();</span>          <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
+<span id="cb51-16"><a href="inputs-and-formats.html#cb51-16" tabindex="-1"></a>  <span class="dt">size_t</span> m <span class="op">=</span> macc<span class="op">.</span>ncol<span class="op">();</span>          <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
+<span id="cb51-17"><a href="inputs-and-formats.html#cb51-17" tabindex="-1"></a>  </span>
+<span id="cb51-18"><a href="inputs-and-formats.html#cb51-18" tabindex="-1"></a>  NumericVector res<span class="op">(</span>m<span class="op">);</span></span>
+<span id="cb51-19"><a href="inputs-and-formats.html#cb51-19" tabindex="-1"></a>  </span>
+<span id="cb51-20"><a href="inputs-and-formats.html#cb51-20" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> m<span class="op">;</span> j<span class="op">++)</span> </span>
+<span id="cb51-21"><a href="inputs-and-formats.html#cb51-21" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb51-22"><a href="inputs-and-formats.html#cb51-22" tabindex="-1"></a>      res<span class="op">[</span>j<span class="op">]</span> <span class="op">+=</span> macc<span class="op">(</span>i<span class="op">,</span> j<span class="op">);</span>        <span class="co">// similar code as for an Rcpp::NumericMatrix</span></span>
+<span id="cb51-23"><a href="inputs-and-formats.html#cb51-23" tabindex="-1"></a>  </span>
+<span id="cb51-24"><a href="inputs-and-formats.html#cb51-24" tabindex="-1"></a>  <span class="cf">return</span> res<span class="op">;</span></span>
+<span id="cb51-25"><a href="inputs-and-formats.html#cb51-25" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 <div id="some-summary-functions-are-already-implemented" class="section level3 hasAnchor" number="2.5.4">
 <h3><span class="header-section-number">2.5.4</span> Some summary functions are already implemented<a href="inputs-and-formats.html#some-summary-functions-are-already-implemented" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="inputs-and-formats.html#cb51-1" tabindex="-1"></a>(X2 <span class="ot">&lt;-</span> <span class="fu">snp_attachExtdata</span>()<span class="sc">$</span>genotypes)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="inputs-and-formats.html#cb52-1" tabindex="-1"></a>(X2 <span class="ot">&lt;-</span> <span class="fu">snp_attachExtdata</span>()<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 517 rows and 4542 columns.</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="inputs-and-formats.html#cb53-1" tabindex="-1"></a><span class="fu">big_colstats</span>(X2)      <span class="co"># sum and var (for each column)</span></span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="inputs-and-formats.html#cb54-1" tabindex="-1"></a><span class="fu">big_colstats</span>(X2)      <span class="co"># sum and var (for each column)</span></span></code></pre></div>
 <pre><code>#&gt;    sum       var
 #&gt; 1  354 0.4604831
 #&gt; 2  213 0.3241195
@@ -573,7 +574,7 @@ Note that the elements of an FBM are stored column-wise (as for a standard R mat
 #&gt; 9  498 0.5160886
 #&gt; 10 481 0.5416535
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 4532 rows ]</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="inputs-and-formats.html#cb55-1" tabindex="-1"></a><span class="fu">big_scale</span>()(X2)       <span class="co"># mean and sd (for each column)</span></span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="inputs-and-formats.html#cb56-1" tabindex="-1"></a><span class="fu">big_scale</span>()(X2)       <span class="co"># mean and sd (for each column)</span></span></code></pre></div>
 <pre><code>#&gt;       center     scale
 #&gt; 1  0.6847195 0.6785891
 #&gt; 2  0.4119923 0.5693149
@@ -586,7 +587,7 @@ Note that the elements of an FBM are stored column-wise (as for a standard R mat
 #&gt; 9  0.9632495 0.7183931
 #&gt; 10 0.9303675 0.7359712
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 4532 rows ]</code></pre>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="inputs-and-formats.html#cb57-1" tabindex="-1"></a><span class="fu">snp_scaleBinom</span>()(X2)  <span class="co"># 2 * af (mean) and sqrt(2 * af * (1 - af)) (~sd)</span></span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="inputs-and-formats.html#cb58-1" tabindex="-1"></a><span class="fu">snp_scaleBinom</span>()(X2)  <span class="co"># 2 * af (mean) and sqrt(2 * af * (1 - af)) (~sd)</span></span></code></pre></div>
 <pre><code>#&gt;       center     scale
 #&gt; 1  0.6847195 0.6710433
 #&gt; 2  0.4119923 0.5719471
@@ -613,11 +614,11 @@ Note that the elements of an FBM are stored column-wise (as for a standard R mat
 </div>
 <div id="exercise" class="section level2 hasAnchor" number="2.6">
 <h2><span class="header-section-number">2.6</span> Exercise<a href="inputs-and-formats.html#exercise" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="inputs-and-formats.html#cb59-1" tabindex="-1"></a>zip <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb59-2"><a href="inputs-and-formats.html#cb59-2" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38019072&quot;</span>,</span>
-<span id="cb59-3"><a href="inputs-and-formats.html#cb59-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;GWAS_data.zip&quot;</span>)</span>
-<span id="cb59-4"><a href="inputs-and-formats.html#cb59-4" tabindex="-1"></a><span class="fu">unzip</span>(zip, <span class="at">exdir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">overwrite =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb59-5"><a href="inputs-and-formats.html#cb59-5" tabindex="-1"></a>bedfile <span class="ot">&lt;-</span> <span class="st">&quot;tmp-data/GWAS_data.bed&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="inputs-and-formats.html#cb60-1" tabindex="-1"></a>zip <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb60-2"><a href="inputs-and-formats.html#cb60-2" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38019072&quot;</span>,</span>
+<span id="cb60-3"><a href="inputs-and-formats.html#cb60-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;GWAS_data.zip&quot;</span>)</span>
+<span id="cb60-4"><a href="inputs-and-formats.html#cb60-4" tabindex="-1"></a><span class="fu">unzip</span>(zip, <span class="at">exdir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">overwrite =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb60-5"><a href="inputs-and-formats.html#cb60-5" tabindex="-1"></a>bedfile <span class="ot">&lt;-</span> <span class="st">&quot;tmp-data/GWAS_data.bed&quot;</span></span></code></pre></div>
 <div class="infobox exo">
 <p>Map this data with <code>bed()</code> and start exploring it a bit, e.g. what summaries you could compute, what functions you could use.</p>
 </div>

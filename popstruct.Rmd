@@ -90,13 +90,13 @@ PC4 is basically capturing variation in a block of LD (the peak you see for load
 You really want to avoid using PCs that capture LD e.g. as covariates in GWAS because it will cause some collider bias [@prive2021identifying; @grinde2024adjusting].
 ::::
 
-To avoid capturing LD in PCA, it has been recommended to perform some pruning (removing variants too correlated with one another) AND remove some known list of long-range LD regions (that can still be captured by PCA, even after a stringent pruning step) [@price2008long; @abdellaoui2013population]. But this is not enough; this is exactly what the UK Biobank did [@bycroft2018uk], and this how the PC loadings of the 40 PCs they provide look like:
+To avoid capturing LD in PCA, it has been recommended to both perform some pruning (removing variants too correlated with one another) and remove some known list of long-range LD regions (that can still be captured by PCA, even after a stringent pruning step) [@price2008long; @abdellaoui2013population]. But this is not enough; this is exactly what the UK Biobank did [@bycroft2018uk], and this how the PC loadings of the 40 PCs they provide look like:
 
 ```{r, echo=FALSE, out.width="50%"}
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/loadings-ukbb.jpeg?raw=true")
 ```
 
-**I recommend using only the first 16 PCs provided by the UK Biobank [@prive2020efficient].** If you want to compute PCs yourself, I recommend using the autoSVD functions I developed that perform an *automatic* detection and removal of long-range LD regions.
+**Therefore I recommend using only the first 16 PCs provided by the UK Biobank [@prive2020efficient].** If you want to compute PCs yourself, I recommend using the autoSVD functions I developed that perform some pruning followed by an *automatic* detection and removal of long-range LD regions.
 
 
 ## Best practices for PCA of genetic data

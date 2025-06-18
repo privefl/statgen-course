@@ -103,9 +103,9 @@ snp_manhattan(gwas2, CHR, POS, npoints = 50e3) +
 
 ***
 
-:::: {.infobox .exo}
 To report independent findings (instead of all variants in one peak), people have used LD clumping, which iteratively keeps the most associated variant and remove those that are too correlated with this one. Another strategy is to use GCTA-COJO [@yang2012conditional].
 
+:::: {.infobox .exo}
 Perform some LD clumping for all variants with a p-value lower than $10^{-5}$, using a stringent $r^2$ threshold of 0.05 over a 5 Mb window. How many variants are left?
 ::::
 
@@ -129,7 +129,7 @@ snp_manhattan(gwas, CHR, POS, npoints = 50e3, ind.highlight = ind_keep) +
 
 ***
 
-Some example code to run a GWAS on multiple nodes on an HPC cluster:
+For some example code to run a GWAS on multiple nodes on an HPC cluster:
 
 - [GWAS in iPSYCH](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/3-GWAS.R); you can perform the GWAS on multiple nodes in parallel that would each process a chunk of the variants only
 - [GWAS for very large data and multiple phenotypes](https://github.com/privefl/UKBB-PGS/blob/main/code/run-GWAS-large.R); you should perform the GWAS for all phenotypes for a "small" chunk of columns to avoid repeated access from disk, and can process these chunks on multiple nodes in parallel
@@ -139,28 +139,28 @@ Some example code to run a GWAS on multiple nodes on an HPC cluster:
 ## REGENIE 
 
 [regenie](https://rgcgithub.github.io/regenie/) [@mbatchou2021computationally] is a C++ program for whole genome regression modeling of large genome-wide association studies.
-
 It is developed and supported by a team of scientists at the Regeneron Genetics Center.
+It is fancier than simple linear/logistic regressions and is currently (one of if not) the state-of-the-art GWAS method.
 
-The method has the following properties:
+REGENIE has the following properties:
 
-- It works on quantitative and binary traits, including binary traits with unbalanced case-control ratios
+- It works on both quantitative and binary traits, including binary traits with unbalanced case-control ratios
 
 - It can handle population structure and relatedness
 
+- It can provide some power boost
+    
+- It is fast and memory efficient 🔥
+
 - It can process multiple phenotypes at once efficiently
 
-- For binary traits, it supports Firth logistic regression and an SPA test
+- For binary traits, it supports Firth logistic regression and an SPA test (useful in case of very unbalanced phenotypes)
 
-- It can perform gene/region-based tests (Burden, SBAT, SKAT/SKATO, ACATV/ACATO)
+- It can perform gene/region-based tests (burden, SBAT, SKAT/SKATO, ACATV/ACATO)
 
 - It can perform interaction tests (GxE, GxG) as well as conditional analyses
 
 - Meta-analysis of REGENIE summary statistics can be performed using REMETA
-    
-- It is fast and memory efficient 🔥
-
-- It can provide some power boost
     
 - It supports the BGEN, PLINK bed/bim/fam and PLINK2 pgen/pvar/psam genetic data formats
 
