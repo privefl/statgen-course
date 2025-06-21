@@ -23,14 +23,14 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-18" />
+<meta name="date" content="2025-06-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="fine-mapping-with-susie.html"/>
+<link rel="prev" href="some-other-analyses.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -166,7 +166,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#schedule-of-smartbiomed-summer-school"><i class="fa fa-check"></i><b>1.2</b> Schedule of SMARTbiomed Summer school</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i><b>1.3</b> Author</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#main-author"><i class="fa fa-check"></i><b>1.3</b> Main author</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.4</b> Contact</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.5</b> License</a></li>
 </ul></li>
@@ -204,6 +204,7 @@ div.csl-indent {
 <li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Example</a></li>
 <li class="chapter" data-level="5.2" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#regenie"><i class="fa fa-check"></i><b>5.2</b> REGENIE</a></li>
 <li class="chapter" data-level="5.3" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#genomic-control-and-ld-score-regression"><i class="fa fa-check"></i><b>5.3</b> Genomic control and LD score regression</a></li>
+<li class="chapter" data-level="5.4" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#some-post-gwas-analyses"><i class="fa fa-check"></i><b>5.4</b> Some post GWAS analyses</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html"><i class="fa fa-check"></i><b>6</b> GWAS summary statistics</a>
 <ul>
@@ -259,6 +260,7 @@ div.csl-indent {
 <li class="chapter" data-level="9.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>9.3.7</b> Reflections</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="some-other-analyses.html"><a href="some-other-analyses.html"><i class="fa fa-check"></i><b>10</b> Some other analyses</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -290,6 +292,9 @@ Abdellaoui, A., Hottenga, J.-J., Knijff, P. de, Nivard, M.G., Xiao, X., Scheet, 
 Aschard, H., Vilhjálmsson, B.J., Joshi, A.D., Price, A.L., &amp; Kraft, P. (2015). <a href="https://doi.org/10.1016%2Fj.ajhg.2014.12.021">Adjusting for heritable covariates can bias effect estimates in genome-wide association studies</a>. <em>The American Journal of Human Genetics</em>, <em>96</em>, 329–339.
 </div>
 <div class="csl-entry">
+Bulik-Sullivan, B., Finucane, H.K., Anttila, V., Gusev, A., Day, F.R., Loh, P.-R., et al. (2015). <a href="https://doi.org/10.1038/ng.3406">An atlas of genetic correlations across human diseases and traits</a>. <em>Nature Genetics</em>, <em>47</em>, 1236–1241.
+</div>
+<div class="csl-entry">
 Bulik-Sullivan, B.K., Loh, P.-R., Finucane, H.K., Ripke, S., Yang, J., Psychiatric Genomics Consortium, S.W.G. of the, et al. (2015). <a href="https://doi.org/10.1038/ng.3211"><span>LD</span> score regression distinguishes confounding from polygenicity in genome-wide association studies</a>. <em>Nature Genetics</em>, <em>47</em>, 291–295.
 </div>
 <div class="csl-entry">
@@ -314,6 +319,12 @@ Day, F.R., Loh, P.-R., Scott, R.A., Ong, K.K., &amp; Perry, J.R. (2016). <a href
 Ding, Y., Hou, K., Xu, Z., Pimplaskar, A., Petter, E., Boulier, K., et al. (2023). <a href="https://doi.org/10.1038/s41586-023-06079-4">Polygenic scoring accuracy varies across the genetic ancestry continuum</a>. <em>Nature</em>, <em>618</em>, 774–781.
 </div>
 <div class="csl-entry">
+Finucane, H.K., Bulik-Sullivan, B., Gusev, A., Trynka, G., Reshef, Y., Loh, P.-R., et al. (2015). <a href="https://doi.org/10.1038/ng.3404">Partitioning heritability by functional annotation using genome-wide association summary statistics</a>. <em>Nature Genetics</em>, <em>47</em>, 1228–1235.
+</div>
+<div class="csl-entry">
+Gamazon, E.R., Wheeler, H.E., Shah, K.P., Mozaffari, S.V., Aquino-Michaels, K., Carroll, R.J., et al. (2015). <a href="https://doi.org/10.1038/ng.3367">A gene-based association method for mapping traits using reference transcriptome data</a>. <em>Nature Genetics</em>, <em>47</em>, 1091–1098.
+</div>
+<div class="csl-entry">
 Gazal, S., Loh, P.-R., Finucane, H.K., Ganna, A., Schoech, A., Sunyaev, S., &amp; Price, A.L. (2018). <a href="https://doi.org/10.1038/s41588-018-0231-8">Functional architecture of low-frequency variants highlights strength of negative selection across coding and non-coding annotations</a>. <em>Nature Genetics</em>, <em>50</em>, 1600–1607.
 </div>
 <div class="csl-entry">
@@ -324,6 +335,12 @@ Grinde, K.E., Browning, B.L., Reiner, A.P., Thornton, T.A., &amp; Browning, S.R.
 </div>
 <div class="csl-entry">
 Grotzinger, A.D., Fuente, J. de la, Privé, F., Nivard, M.G., &amp; Tucker-Drob, E.M. (2023). <a href="https://doi.org/10.1016/j.biopsych.2022.05.029">Pervasive downward bias in estimates of liability-scale heritability in genome-wide association study meta-analysis: A simple solution</a>. <em>Biological Psychiatry</em>, <em>93</em>, 29–36.
+</div>
+<div class="csl-entry">
+Grotzinger, A.D., Rhemtulla, M., Vlaming, R. de, Ritchie, S.J., Mallard, T.T., Hill, W.D., et al. (2019). <a href="https://doi.org/10.1038/s41562-019-0566-x">Genomic structural equation modelling provides insights into the multivariate genetic architecture of complex traits</a>. <em>Nature Human Behaviour</em>, <em>3</em>, 513–525.
+</div>
+<div class="csl-entry">
+Gusev, A., Ko, A., Shi, H., Bhatia, G., Chung, W., Penninx, B.W., et al. (2016). <a href="https://doi.org/10.1038/ng.3506">Integrative approaches for large-scale transcriptome-wide association studies</a>. <em>Nature Genetics</em>, <em>48</em>, 245–252.
 </div>
 <div class="csl-entry">
 Hou, K., Ding, Y., Xu, Z., Wu, Y., Bhattacharya, A., Mester, R., et al. (2023). <a href="https://doi.org/10.1038/s41588-023-01338-6">Causal effects on complex traits are similar for common variants across segments of different continental ancestries within admixed individuals</a>. <em>Nature Genetics</em>, <em>55</em>, 549–558.
@@ -344,10 +361,16 @@ Kelemen, M., Xu, Y., Jiang, T., Zhao, J.H., Anderson, C.A., Wallace, C., et al. 
 Levey, D.F., Stein, M.B., Wendt, F.R., Pathak, G.A., Zhou, H., Aslan, M., et al. (2021). <a href="https://doi.org/10.1038/s41593-021-00860-2">Bi-ancestral depression <span>GWAS</span> in the <span>Million Veteran Program</span> and meta-analysis in&gt; 1.2 million individuals highlight new therapeutic directions</a>. <em>Nature Neuroscience</em>, <em>24</em>, 954–963.
 </div>
 <div class="csl-entry">
+Li, A., Liu, S., Bakshi, A., Jiang, L., Chen, W., Zheng, Z., et al. (2023). <a href="https://doi.org/10.1016/j.ajhg.2022.12.006"><span class="nocase">mBAT-combo</span>: A more powerful test to detect gene-trait associations from <span>GWAS</span> data</a>. <em>The American Journal of Human Genetics</em>, <em>110</em>, 30–43.
+</div>
+<div class="csl-entry">
 Lloyd-Jones, L.R., Zeng, J., Sidorenko, J., Yengo, L., Moser, G., Kemper, K.E., et al. (2019). <a href="https://doi.org/10.1038/s41467-019-12653-0">Improved polygenic prediction by <span>Bayesian</span> multiple regression on summary statistics</a>. <em>Nature Communications</em>, <em>10</em>, 5086.
 </div>
 <div class="csl-entry">
 Loh, P.-R., Kichaev, G., Gazal, S., Schoech, A.P., &amp; Price, A.L. (2018). <a href="https://doi.org/10.1038/s41588-018-0144-6">Mixed-model association for biobank-scale datasets</a>. <em>Nature Genetics</em>, <em>50</em>, 906–908.
+</div>
+<div class="csl-entry">
+Mägi, R., Horikoshi, M., Sofer, T., Mahajan, A., Kitajima, H., Franceschini, N., et al. (2017). <a href="https://doi.org/10.1093/hmg/ddx280">Trans-ethnic meta-regression of genome-wide association studies accounting for ancestry increases power for discovery and improves fine-mapping resolution</a>. <em>Human Molecular Genetics</em>, <em>26</em>, 3639–3650.
 </div>
 <div class="csl-entry">
 Mak, T.S.H., Porsch, R.M., Choi, S.W., Zhou, X., &amp; Sham, P.C. (2017). <a href="https://doi.org/10.1002/gepi.22050">Polygenic scores via penalized regression on summary statistics</a>. <em>Genetic Epidemiology</em>, <em>41</em>, 469–480.
@@ -410,13 +433,28 @@ Reed, E., Nunez, S., Kulp, D., Qian, J., Reilly, M.P., &amp; Foulkes, A.S. (2015
 Ruth, K.S., Day, F.R., Tyrrell, J., Thompson, D.J., Wood, A.R., Mahajan, A., et al. (2020). <a href="https://doi.org/10.1038/s41591-020-0751-5">Using human genetics to understand the disease impacts of testosterone in men and women</a>. <em>Nature Medicine</em>, <em>26</em>, 252–258.
 </div>
 <div class="csl-entry">
+Speed, D., &amp; Balding, D.J. (2019). <a href="https://doi.org/10.1038/s41588-018-0279-5"><span>SumHer</span> better estimates the <span>SNP</span> heritability of complex traits from summary statistics</a>. <em>Nature Genetics</em>, <em>51</em>, 277–284.
+</div>
+<div class="csl-entry">
 Suzuki, K., Hatzikotoulas, K., Southam, L., Taylor, H.J., Yin, X., Lorenz, K.M., et al. (2023). Multi-ancestry genome-wide study in &gt; 2.5 million individuals reveals heterogeneity in mechanistic pathways of type 2 diabetes and complications. <em>medRxiv</em>. Retrieved from <a href="https://doi.org/10.1101/2023.03.31.23287839">https://doi.org/10.1101/2023.03.31.23287839</a>
+</div>
+<div class="csl-entry">
+Turley, P., Walters, R.K., Maghzian, O., Okbay, A., Lee, J.J., Fontana, M.A., et al. (2018). <a href="https://doi.org/10.1038/s41588-017-0009-4">Multi-trait analysis of genome-wide association summary statistics using <span>MTAG</span></a>. <em>Nature Genetics</em>, <em>50</em>, 229–237.
+</div>
+<div class="csl-entry">
+Wallace, C. (2021). <a href="https://doi.org/10.1371/journal.pgen.1009440">A more accurate method for colocalisation analysis allowing for multiple causal variants</a>. <em>PLoS Genetics</em>, <em>17</em>, e1009440.
 </div>
 <div class="csl-entry">
 Wang, G., Sarkar, A., Carbonetto, P., &amp; Stephens, M. (2020). <a href="https://doi.org/10.1111/rssb.12388">A simple new approach to variable selection in regression, with application to genetic fine mapping</a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em>, <em>82</em>, 1273–1300.
 </div>
 <div class="csl-entry">
+Wang, X., Walker, A., Revez, J.A., Ni, G., Adams, M.J., McIntosh, A.M., et al. (2023). <a href="https://doi.org/10.1016/j.ajhg.2023.06.006">Polygenic risk prediction: Why and when out-of-sample prediction <span>R2</span> can exceed <span>SNP</span>-based heritability</a>. <em>The American Journal of Human Genetics</em>, <em>110</em>, 1207–1215.
+</div>
+<div class="csl-entry">
 Wang, Y., Guo, J., Ni, G., Yang, J., Visscher, P.M., &amp; Yengo, L. (2020). <a href="https://doi.org/10.1038/s41467-020-17719-y">Theoretical and empirical quantification of the accuracy of polygenic scores in ancestry divergent populations</a>. <em>Nature Communications</em>, <em>11</em>, 3865.
+</div>
+<div class="csl-entry">
+Willer, C.J., Li, Y., &amp; Abecasis, G.R. (2010). <a href="https://doi.org/10.1093/bioinformatics/btq340"><span>METAL</span>: Fast and efficient meta-analysis of genomewide association scans</a>. <em>Bioinformatics</em>, <em>26</em>, 2190–2191.
 </div>
 <div class="csl-entry">
 Yang, J., Ferreira, T., Morris, A.P., Medland, S.E., ANthropometric Traits (GIANT) Consortium, G.I. of, Consortium, D.G.R.A.M. (DIAGRAM), et al. (2012). <a href="https://doi.org/10.1038/ng.2213">Conditional and joint multiple-<span>SNP</span> analysis of <span>GWAS</span> summary statistics identifies additional variants influencing complex traits</a>. <em>Nature Genetics</em>, <em>44</em>, 369–375.
@@ -431,10 +469,16 @@ Yengo, L., Vedantam, S., Marouli, E., Sidorenko, J., Bartell, E., Sakaue, S., et
 Zabad, S., Haryan, C.A., Gravel, S., Misra, S., &amp; Li, Y. (2025). Towards whole-genome inference of polygenic scores with fast and memory-efficient algorithms. <em>The American Journal of Human Genetics</em>. Retrieved from <a href="https://doi.org/10.1016/j.ajhg.2025.05.002">https://doi.org/10.1016/j.ajhg.2025.05.002</a>
 </div>
 <div class="csl-entry">
+Zhang, C., Zhang, Y., Zhang, Y., &amp; Zhao, H. (2023). <a href="https://doi.org/10.1093/bib/bbad407">Benchmarking of local genetic correlation estimation methods using summary statistics from genome-wide association studies</a>. <em>Briefings in Bioinformatics</em>, <em>24</em>, bbad407.
+</div>
+<div class="csl-entry">
 Zheng, Z., Liu, S., Sidorenko, J., Wang, Y., Lin, T., Yengo, L., et al. (2024). <a href="https://doi.org/10.1038/s41588-024-01704-y">Leveraging functional genomic annotations and genome coverage to improve polygenic prediction of complex traits within and between ancestries</a>. <em>Nature Genetics</em>, <em>56</em>, 767–777.
 </div>
 <div class="csl-entry">
 Zhou, W., Kanai, M., Wu, K.-H.H., Rasheed, H., Tsuo, K., Hirbo, J.B., et al. (2022). <a href="https://doi.org/10.1016/j.xgen.2022.100192"><span class="nocase">Global Biobank Meta-analysis Initiative</span>: Powering genetic discovery across human disease</a>. <em>Cell Genomics</em>, <em>2</em>, 100192.
+</div>
+<div class="csl-entry">
+Zhu, Z., Zhang, F., Hu, H., Bakshi, A., Robinson, M.R., Powell, J.E., et al. (2016). <a href="https://doi.org/10.1038/ng.3538">Integration of summary data from <span>GWAS</span> and <span class="nocase">eQTL</span> studies predicts complex trait gene targets</a>. <em>Nature Genetics</em>, <em>48</em>, 481–487.
 </div>
 <div class="csl-entry">
 Zou, Y., Carbonetto, P., Wang, G., &amp; Stephens, M. (2022). <a href="https://doi.org/10.1371/journal.pgen.1010299">Fine-mapping from summary data with the <span class="nocase">"Sum of Single Effects"</span> model</a>. <em>PLoS Genetics</em>, <em>18</em>, e1010299.
@@ -446,7 +490,7 @@ Zou, Y., Carbonetto, P., Wang, G., &amp; Stephens, M. (2022). <a href="https://d
           </div>
         </div>
       </div>
-<a href="fine-mapping-with-susie.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="some-other-analyses.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>

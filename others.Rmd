@@ -1,0 +1,30 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Some other analyses
+
+Here we just mention some other types of analyses that haven't really been covered in the course, but that are useful to know that they exist. We simply mention a few tools; you can find a list with more [here](https://github.com/MichelNivard/awesome-complex-trait-genetics).
+
+- **Estimation of SNP-based heritability**: The proportion of phenotypic variance in a trait that can be explained by genetic variation captured by measured SNPs. A simple way to estimate it is with [LD Score regression (LDSC)](https://github.com/bulik/ldsc/wiki/Heritability-and-Genetic-Correlation) using GWAS summary statistics [@bulik2015ld]. R packages bigsnpr and GenomicSEM also provide some implementation of LDSC. There exist many other tools to estimate SNP-heritability, such as LDpred2-auto (mentioned before).
+
+- **Genetic Correlation**: LDSC can be also used to estimate the genome-wide genetic correlation between two traits using GWAS summary statistics [@bulik2015atlas], and is also implemented in R package GenomicSEM. Local genetic correlations (e.g. within LD blocks) can also be estimated [@zhang2023benchmarking].
+
+- **Partitioned heritability**: Heritability partitioned by functional annotation (which may be cell-type or state-specific), which can be estimated using [S-LDSC](https://github.com/bulik/ldsc/wiki/Partitioned-Heritability) [@finucane2015partitioning], [SumHer](https://dougspeed.com/heritability-enrichments/) [@speed2019sumher] and [SBayesRC](https://github.com/zhilizheng/SBayesRC) [@zheng2024leveraging].
+
+- **Gene-based tests**: These determine the genes associated with a trait from a GWAS by using proximity, such as mBAT-combo as an [R package](https://github.com/Share-AL-work/mBAT.combo) or a [command-line software](https://yanglab.westlake.edu.cn/software/gcta/#mBAT-combo) [@li2023mbat].
+
+- **Summary statistic imputation**: imputation of GWAS summary statistics help increase the SNP overlap between GWAS summary statistics and LD reference panels.
+
+- **Meta-analysis of GWAS**:
+  - same trait, different cohorts: [METAL](https://github.com/statgen/METAL) [@willer2010metal]
+  - multiple traits: [MTAG](https://github.com/JonJala/mtag) [@turley2018multi]
+  - multiple ancestries: [MR-MEGA](https://genomics.ut.ee/en/tools) [@magi2017trans]
+
+- **Colocalisation**: The same variant may be significant for two traits, but not necessarily be causal for both. Tools like [COLOC + SuSiE](https://chr1swallace.github.io/coloc/articles/a06_SuSiE.html) directly assess this, yielding probabilities the signal is driven by the same variant, or two different variants [@wallace2021more]. [SMR](https://yanglab.westlake.edu.cn/software/smr/#SMR&HEIDIanalysis) is a complementary approach designed for testing if a molQTL is also a causal variant for a trait, yielding an association statistic [@zhu2016integration].
+
+- **Gene expression signature of a trait**: Use GWAS summary stats with eQTL/gene expression data. Early tools include [FUSION](https://github.com/gusevlab/fusion_twas) [@gusev2016integrative] and [PrediXcan](https://github.com/hakyimlab/MetaXcan) [@gamazon2015gene], although many more have been developed since.
+
+- **Structural Equation Modelling**: [GenomicSEM](https://github.com/GenomicSEM/GenomicSEM/wiki) is a tool for structural equation modelling of GWAS summary statistics, allowing you to model the relationships between traits using their genetic architecture [@grotzinger2019genomic].

@@ -1,4 +1,4 @@
-rmd_files: ["index.Rmd", "input.Rmd", "preprocessing.Rmd", "popstruct.Rmd", "GWAS.Rmd", "sumstats.Rmd", "LD.Rmd", "PGS.Rmd", "finemapping.Rmd", "references.Rmd"]
+rmd_files: ["index.Rmd", "input.Rmd", "preprocessing.Rmd", "popstruct.Rmd", "GWAS.Rmd", "sumstats.Rmd", "LD.Rmd", "PGS.Rmd", "finemapping.Rmd", "others.Rmd", "references.Rmd"]
 output_dir: docs
 new_session: yes
 language:

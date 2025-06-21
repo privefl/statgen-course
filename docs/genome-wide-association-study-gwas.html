@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-18" />
+<meta name="date" content="2025-06-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -166,7 +166,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#schedule-of-smartbiomed-summer-school"><i class="fa fa-check"></i><b>1.2</b> Schedule of SMARTbiomed Summer school</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i><b>1.3</b> Author</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#main-author"><i class="fa fa-check"></i><b>1.3</b> Main author</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.4</b> Contact</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.5</b> License</a></li>
 </ul></li>
@@ -204,6 +204,7 @@ div.csl-indent {
 <li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Example</a></li>
 <li class="chapter" data-level="5.2" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#regenie"><i class="fa fa-check"></i><b>5.2</b> REGENIE</a></li>
 <li class="chapter" data-level="5.3" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#genomic-control-and-ld-score-regression"><i class="fa fa-check"></i><b>5.3</b> Genomic control and LD score regression</a></li>
+<li class="chapter" data-level="5.4" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#some-post-gwas-analyses"><i class="fa fa-check"></i><b>5.4</b> Some post GWAS analyses</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html"><i class="fa fa-check"></i><b>6</b> GWAS summary statistics</a>
 <ul>
@@ -259,6 +260,7 @@ div.csl-indent {
 <li class="chapter" data-level="9.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>9.3.7</b> Reflections</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="some-other-analyses.html"><a href="some-other-analyses.html"><i class="fa fa-check"></i><b>10</b> Some other analyses</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -407,8 +409,24 @@ However, it is no longer used because, with sufficient GWAS power and trait poly
 #&gt; range (`geom_point()`).</code></pre>
 <p><img src="GWAS_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <hr />
-<p>Then, the intercept of LD score regression was introduced to test for confounding <span class="citation">(<a href="#ref-bulik2015ld">Bulik-Sullivan et al., 2015</a>)</span>.
+<p>Then, the intercept of LD score regression was introduced to test for confounding <span class="citation">(<a href="#ref-bulik2015ld">B. K. Bulik-Sullivan et al., 2015</a>)</span>.
 However, note that it was observed that LD score regression intercepts tend to increase with SNP-heritability and GWAS sample size <span class="citation">(<a href="#ref-loh2018mixed">Loh, Kichaev, Gazal, Schoech, &amp; Price, 2018</a>)</span>.</p>
+</div>
+<div id="some-post-gwas-analyses" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Some post GWAS analyses<a href="genome-wide-association-study-gwas.html#some-post-gwas-analyses" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It is challenging to interpret a GWAS on its own as there are often many associations, many of which are in non-coding regions. There is a large collection of downstream analyses to aid in gaining biological understanding from your GWAS, some of which are based on GWAS summary statistics which will cover later in this course.</p>
+<ul>
+<li><p>There are several online tools/resources that allow you to quickly get a sense of the meaning of a variant or GWAS results. If you want to understand what is known about a particular variant, <a href="https://www.snpedia.com/index.php/SNPedia">SNPedia</a>, <a href="https://www.ncbi.nlm.nih.gov/snp/">dbSNP</a>, and <a href="https://platform.opentargets.org/">OpenTargets</a> are good places to start. Here you can find information on the peer-reviewed papers that mention this particular variant, its allele frequencies across populations, its predicted consequences, and associations with other traits.</p></li>
+<li><p><a href="https://www.gtexportal.org/home/">GTEx</a> is a database of the genetic regulation of gene expression in humans, and is also useful to get a sense of whether a variant of interest may influence the expression of a particular gene. Variants in non-coding regions are generally hypothesized to affect the trait through regulatory mechanisms. This database is not an exhaustive list of genetic regulation of gene expression – a variant may influence gene expression in certain cell or tissue types or contexts not captured in the data.</p></li>
+<li><p><a href="https://fuma.ctglab.nl/">FUMA</a> is a website where you can upload GWAS summary statistics and it will run a range of analyses to link genetic variants to genes. You can then further investigate these genes with pathways analyses on the same platform. To my knowledge, there is no good tool that can run a range of analyses locally in one go – this would certainly save me a lot of time and be more efficient!</p></li>
+<li><p>Resources for helping linking GWAS hits to eQTLs:</p>
+<ul>
+<li><a href="https://www.ebi.ac.uk/eqtl/">eQTL Catalogue</a></li>
+<li><a href="https://www.gtexportal.org/home/">GTEx</a></li>
+<li><a href="https://cellxgene.cziscience.com/">CellxGene</a></li>
+<li><a href="https://onek1k.org/">OneK1K</a></li>
+</ul></li>
+</ul>
 
 </div>
 </div>

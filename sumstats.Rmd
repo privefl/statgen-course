@@ -7,7 +7,7 @@ editor_options:
 # GWAS summary statistics
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("rsid", "se", "eq", "sd", "sdlin", "sdlog", "MungeSumstats", "HDL")
+WORDS_TO_IGNORE <- c("rsid", "se", "eq", "sd", "sdlin", "sdlog", "MungeSumstats", "HDL", "hg", "liftOver", "rsID")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -247,12 +247,20 @@ matched <- obj.bed$map %>%
   mutate(beta = 1) %>%
   snp_match(all_freq[1:5]) %>%
   print()
+```
 
+:::: {.infobox .caution}
+When matching between variants from two datasets, sometimes physical positions are in two different genome builds, usually it can be hg19 and hg38 (for newer datasets). You will need to either convert one of the two sets of positions with `snp_modifyBuild()` (that uses liftOver, not available for Windows) or by matching using rsIDs instead of positions (by using `join_by_pos = FALSE`).
+::::
+
+```{r, warning=FALSE, message=FALSE}
 # further subsetting on missing values
 counts <- bed_counts(obj.bed, ind.col = matched$`_NUM_ID_.ss`, ncores = NCORES)
 ind <- which((counts[4, ] / nrow(obj.bed)) < 0.05)
 matched2 <- matched[ind, ]
+```
 
+```{r, warning=FALSE, message=FALSE}
 # compute allele frequencies
 af <- bed_MAF(obj.bed, ind.col = matched2$`_NUM_ID_.ss`)$af
 af2 <- ifelse(matched2$beta > 0, af, 1 - af)

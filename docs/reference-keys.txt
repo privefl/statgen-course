@@ -8,7 +8,7 @@ fig:unnamed-chunk-6
 course-information
 prerequisites
 schedule-of-smartbiomed-summer-school
-author
+main-author
 contact
 license
 inputs-and-formats
@@ -36,6 +36,7 @@ genome-wide-association-study-gwas
 exo-gwas
 regenie
 genomic-control-and-ld-score-regression
+some-post-gwas-analyses
 gwas-summary-statistics
 format
 quality-control
@@ -72,3 +73,4 @@ read-in-data-and-fit-susie
 examine-results
 locus-2
 reflections
+some-other-analyses

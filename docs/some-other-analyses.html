@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Linkage Disequilibrium (LD) | Statistical Human Genetics course using R</title>
-  <meta name="description" content="Chapter 7 Linkage Disequilibrium (LD) | Statistical Human Genetics course using R" />
+  <title>Chapter 10 Some other analyses | Statistical Human Genetics course using R</title>
+  <meta name="description" content="Chapter 10 Some other analyses | Statistical Human Genetics course using R" />
   <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Linkage Disequilibrium (LD) | Statistical Human Genetics course using R" />
+  <meta property="og:title" content="Chapter 10 Some other analyses | Statistical Human Genetics course using R" />
   <meta property="og:type" content="book" />
   
   
   <meta name="github-repo" content="privefl/statgen-course" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Linkage Disequilibrium (LD) | Statistical Human Genetics course using R" />
+  <meta name="twitter:title" content="Chapter 10 Some other analyses | Statistical Human Genetics course using R" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="gwas-summary-statistics.html"/>
-<link rel="next" href="polygenic-risk-scores-pgs-or-prs.html"/>
+<link rel="prev" href="fine-mapping-with-susie.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -281,105 +281,73 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="linkage-disequilibrium-ld" class="section level1 hasAnchor" number="7">
-<h1><span class="header-section-number">Chapter 7</span> Linkage Disequilibrium (LD)<a href="linkage-disequilibrium-ld.html#linkage-disequilibrium-ld" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Most methods that rely on GWAS summary statistics also rely on an LD matrix (correlation matrix between genetic variants). It is used in algorithms to transform GWAS marginal (i.e. independent) effects into joint effects.</p>
-<p>Indeed, if we take the simple example of a linear regression <span class="math inline">\(y = X \beta + \epsilon\)</span>, the joint effects are given by <span class="math inline">\(\hat\beta = (X^T X)^{-1} X^T y\)</span>, where <span class="math inline">\(X^T y\)</span> are the marginal effects and <span class="math inline">\(X^T X\)</span> is the covariance matrix (up to some scaling).</p>
-<p>The GWAS data from which the GWAS summary statistics are derived is often not accessible, so that the LD matrix is usually derived from another dataset.
-<strong>This reference dataset needs to be as close as possible as the GWAS data (in terms of genetic ancestry) to provide a close estimation of LD.</strong>
-This is why I got interested in estimating the ancestry composition of a GWAS based on allele frequencies reported in GWAS summary statistics (as we’ve seen in <a href="gwas-summary-statistics.html#ssancestry">6.3</a>), at least to make sure that the reference data used to compute the LD is similar (in terms of genetic ancestry) to the original GWAS data.</p>
-<div id="derivation-of-an-ld-matrix" class="section level2 hasAnchor" number="7.1">
-<h2><span class="header-section-number">7.1</span> Derivation of an LD matrix<a href="linkage-disequilibrium-ld.html#derivation-of-an-ld-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Functions <code>snp_cor()</code> and <code>bed_cor()</code> from bigsnpr can be used to derive a sparse LD matrix. Both functions allow for some missing values in the input genotypes (although we will see that it might not be such a good idea).
-If we use e.g. one million variants, the LD matrix is a 1M x 1M matrix, which is too large to compute but also to store.</p>
-<p>In practice, we know that LD between two genetic variants tend to decay with an increasing distance between them <span class="citation">(<a href="#ref-pritchard2001linkage">Pritchard &amp; Przeworski, 2001</a>)</span>. In LDpred2 <span class="citation">(<a href="#ref-prive2020ldpred2">Privé, Arbel, et al., 2020</a>)</span>, I assume that variants distant from more than 3 cM are uncorrelated (same for variants on different chromosomes).
-Genetic positions in centimorgans (cM) are preferred over using physical positions in base pairs (bp) in this case.
-From this, it results in a windowed (sparse) LD matrix.</p>
-<p>In <a href="fine-mapping-with-susie.html#ldplink">9.3.3</a>, we will see how to alternatively use PLINK to derive an LD matrix.</p>
-<div class="infobox exo">
-<p>Reuse the same data as before to compute the LD matrix for variants on chromosome 22.</p>
-<p>Use <code>snp_asGeneticPos()</code> to convert to cM (do it for chromosome 22 only, to avoid downloading large files). And use <code>size = 3 / 1000</code> (because positions are divided by 1000 internally in bigsnpr).</p>
-<p>Do you get any different result using <code>snp_cor()</code> and <code>bed_cor()</code>; why?</p>
-</div>
-<details>
-<summary>
-Click to see solution
-</summary>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="linkage-disequilibrium-ld.html#cb163-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
-<pre><code>#&gt; Loading required package: bigstatsr</code></pre>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="linkage-disequilibrium-ld.html#cb165-1" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
-<span id="cb165-2"><a href="linkage-disequilibrium-ld.html#cb165-2" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="linkage-disequilibrium-ld.html#cb166-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb166-2"><a href="linkage-disequilibrium-ld.html#cb166-2" tabindex="-1"></a>ind_chr22 <span class="ot">&lt;-</span> <span class="fu">which</span>(obj.bed<span class="sc">$</span>map<span class="sc">$</span>chromosome <span class="sc">==</span> <span class="dv">22</span>)</span>
-<span id="cb166-3"><a href="linkage-disequilibrium-ld.html#cb166-3" tabindex="-1"></a>POS_chr22 <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map<span class="sc">$</span>physical.pos[ind_chr22]  <span class="co"># in bp</span></span>
-<span id="cb166-4"><a href="linkage-disequilibrium-ld.html#cb166-4" tabindex="-1"></a></span>
-<span id="cb166-5"><a href="linkage-disequilibrium-ld.html#cb166-5" tabindex="-1"></a><span class="co"># downloads 5.9 MB</span></span>
-<span id="cb166-6"><a href="linkage-disequilibrium-ld.html#cb166-6" tabindex="-1"></a>POS2_chr22 <span class="ot">&lt;-</span> <span class="fu">snp_asGeneticPos</span>(<span class="at">infos.chr =</span> <span class="fu">rep</span>(<span class="dv">22</span>, <span class="fu">length</span>(POS_chr22)), </span>
-<span id="cb166-7"><a href="linkage-disequilibrium-ld.html#cb166-7" tabindex="-1"></a>                               <span class="at">infos.pos =</span> POS_chr22, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="linkage-disequilibrium-ld.html#cb167-1" tabindex="-1"></a>cor1 <span class="ot">&lt;-</span> <span class="fu">bed_cor</span>(obj.bed, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb167-2"><a href="linkage-disequilibrium-ld.html#cb167-2" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)  <span class="co"># in cM</span></span></code></pre></div>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="linkage-disequilibrium-ld.html#cb168-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
-<span id="cb168-2"><a href="linkage-disequilibrium-ld.html#cb168-2" tabindex="-1"></a>G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes</span>
-<span id="cb168-3"><a href="linkage-disequilibrium-ld.html#cb168-3" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">dim</span>(G) <span class="sc">==</span> <span class="fu">dim</span>(obj.bed)))</span>
-<span id="cb168-4"><a href="linkage-disequilibrium-ld.html#cb168-4" tabindex="-1"></a>cor2 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb168-5"><a href="linkage-disequilibrium-ld.html#cb168-5" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
-<span id="cb168-6"><a href="linkage-disequilibrium-ld.html#cb168-6" tabindex="-1"></a><span class="fu">cbind</span>(cor2[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], cor1[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])  <span class="co"># not exactly the same; why?</span></span></code></pre></div>
-<pre><code>#&gt; 5 x 10 sparse Matrix of class &quot;dgCMatrix&quot;
-#&gt;                                                                 
-#&gt; [1,]  1.00000000 -0.05154381 -0.03629097 -0.02959808 -0.04231449
-#&gt; [2,] -0.05154381  1.00000000 -0.15134204 -0.15277138  0.15337533
-#&gt; [3,] -0.03629097 -0.15134204  1.00000000  0.92384555 -0.50516808
-#&gt; [4,] -0.02959808 -0.15277138  0.92384555  1.00000000 -0.45964191
-#&gt; [5,] -0.04231449  0.15337533 -0.50516808 -0.45964191  1.00000000
-#&gt;                                                                 
-#&gt; [1,]  1.00000000 -0.05251683 -0.03645858 -0.02979486 -0.04304076
-#&gt; [2,] -0.05251683  1.00000000 -0.15427297 -0.15639606  0.15833843
-#&gt; [3,] -0.03645858 -0.15427297  1.00000000  0.92937159 -0.51078705
-#&gt; [4,] -0.02979486 -0.15639606  0.92937159  1.00000000 -0.46606808
-#&gt; [5,] -0.04304076  0.15833843 -0.51078705 -0.46606808  1.00000000</code></pre>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="linkage-disequilibrium-ld.html#cb170-1" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> G<span class="sc">$</span><span class="fu">copy</span>(CODE_012)  <span class="co"># go back to having missing values</span></span>
-<span id="cb170-2"><a href="linkage-disequilibrium-ld.html#cb170-2" tabindex="-1"></a>cor3 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G2, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb170-3"><a href="linkage-disequilibrium-ld.html#cb170-3" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
-<span id="cb170-4"><a href="linkage-disequilibrium-ld.html#cb170-4" tabindex="-1"></a><span class="fu">all.equal</span>(cor3, cor1)</span></code></pre></div>
-<pre><code>#&gt; [1] TRUE</code></pre>
-</details>
-</div>
-<div id="subtleties-about-ld-matrices" class="section level2 hasAnchor" number="7.2">
-<h2><span class="header-section-number">7.2</span> Subtleties about LD matrices<a href="linkage-disequilibrium-ld.html#subtleties-about-ld-matrices" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="some-other-analyses" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Some other analyses<a href="some-other-analyses.html#some-other-analyses" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Here we just mention some other types of analyses that haven’t really been covered in the course, but that are useful to know that they exist. We simply mention a few tools; you can find a list with more <a href="https://github.com/MichelNivard/awesome-complex-trait-genetics">here</a>.</p>
 <ul>
-<li><p>LD matrices are often singular (non invertible), often with negative eigenvalues even, which causes stability and divergence issues in algorithms using them <span class="citation">(<a href="#ref-zabad2025towards">Zabad, Haryan, Gravel, Misra, &amp; Li, 2025</a>)</span></p>
+<li><p><strong>Estimation of SNP-based heritability</strong>: The proportion of phenotypic variance in a trait that can be explained by genetic variation captured by measured SNPs. A simple way to estimate it is with <a href="https://github.com/bulik/ldsc/wiki/Heritability-and-Genetic-Correlation">LD Score regression (LDSC)</a> using GWAS summary statistics <span class="citation">(<a href="#ref-bulik2015ld">B. K. Bulik-Sullivan et al., 2015</a>)</span>. R packages bigsnpr and GenomicSEM also provide some implementation of LDSC. There exist many other tools to estimate SNP-heritability, such as LDpred2-auto (mentioned before).</p></li>
+<li><p><strong>Genetic Correlation</strong>: LDSC can be also used to estimate the genome-wide genetic correlation between two traits using GWAS summary statistics <span class="citation">(<a href="#ref-bulik2015atlas">B. Bulik-Sullivan et al., 2015</a>)</span>, and is also implemented in R package GenomicSEM. Local genetic correlations (e.g. within LD blocks) can also be estimated <span class="citation">(<a href="#ref-zhang2023benchmarking">Zhang, Zhang, Zhang, &amp; Zhao, 2023</a>)</span>.</p></li>
+<li><p><strong>Partitioned heritability</strong>: Heritability partitioned by functional annotation (which may be cell-type or state-specific), which can be estimated using <a href="https://github.com/bulik/ldsc/wiki/Partitioned-Heritability">S-LDSC</a> <span class="citation">(<a href="#ref-finucane2015partitioning">Finucane et al., 2015</a>)</span>, <a href="https://dougspeed.com/heritability-enrichments/">SumHer</a> <span class="citation">(<a href="#ref-speed2019sumher">Speed &amp; Balding, 2019</a>)</span> and <a href="https://github.com/zhilizheng/SBayesRC">SBayesRC</a> <span class="citation">(<a href="#ref-zheng2024leveraging">Zheng et al., 2024</a>)</span>.</p></li>
+<li><p><strong>Gene-based tests</strong>: These determine the genes associated with a trait from a GWAS by using proximity, such as mBAT-combo as an <a href="https://github.com/Share-AL-work/mBAT.combo">R package</a> or a <a href="https://yanglab.westlake.edu.cn/software/gcta/#mBAT-combo">command-line software</a> <span class="citation">(<a href="#ref-li2023mbat">Li et al., 2023</a>)</span>.</p></li>
+<li><p><strong>Summary statistic imputation</strong>: imputation of GWAS summary statistics help increase the SNP overlap between GWAS summary statistics and LD reference panels.</p></li>
+<li><p><strong>Meta-analysis of GWAS</strong>:</p>
 <ul>
-<li><p>if the LD is computed using less individuals than the number of variants, this leads to some eigenvalues being 0 (singular)</p></li>
-<li><p>computing LD from data with missing values often leads to the LD matrix having negative eigenvalues (because not the same individuals are used for all correlations, when using pairwise complete observations); imputing before computing LD can solve this issue <span class="citation">(<a href="#ref-zabad2025towards">Zabad et al., 2025</a>)</span></p></li>
-<li><p>windowing often results in having negative eigenvalues; defining independent LD blocks <span class="citation">(<a href="#ref-prive2021optimal">Privé, 2021</a>)</span> in the LD matrix helps a lot <span class="citation">(<a href="#ref-prive2021identifying">Privé, Arbel, et al., 2022</a>)</span></p></li>
-<li><p>thresholding (discarding small absolute correlations) results in negative eigenvalues, so best to be avoided</p></li>
+<li>same trait, different cohorts: <a href="https://github.com/statgen/METAL">METAL</a> <span class="citation">(<a href="#ref-willer2010metal">Willer, Li, &amp; Abecasis, 2010</a>)</span></li>
+<li>multiple traits: <a href="https://github.com/JonJala/mtag">MTAG</a> <span class="citation">(<a href="#ref-turley2018multi">Turley et al., 2018</a>)</span></li>
+<li>multiple ancestries: <a href="https://genomics.ut.ee/en/tools">MR-MEGA</a> <span class="citation">(<a href="#ref-magi2017trans">Mägi et al., 2017</a>)</span></li>
 </ul></li>
-<li><p>one can regularize the LD matrix (e.g. by adding some positive value to the diagonal, or by scaling down off-diagonal elements, as done in many methods); but too much regularization will bias results <span class="citation">(<a href="#ref-prive2022inferring">Privé, Albiñana, Arbel, Pasaniuc, &amp; Vilhjálmsson, 2023</a>)</span></p></li>
-<li><p>computing LD from imputed data seem to provide an unbiased estimation <span class="citation">(<a href="#ref-prive2021identifying">Privé, Arbel, et al., 2022</a>)</span></p></li>
-<li><p>should partial correlations be used instead? (e.g. when there is some population structure in the data); this is still an open question I want to investigate</p></li>
+<li><p><strong>Colocalisation</strong>: The same variant may be significant for two traits, but not necessarily be causal for both. Tools like <a href="https://chr1swallace.github.io/coloc/articles/a06_SuSiE.html">COLOC + SuSiE</a> directly assess this, yielding probabilities the signal is driven by the same variant, or two different variants <span class="citation">(<a href="#ref-wallace2021more">Wallace, 2021</a>)</span>. <a href="https://yanglab.westlake.edu.cn/software/smr/#SMR&amp;HEIDIanalysis">SMR</a> is a complementary approach designed for testing if a molQTL is also a causal variant for a trait, yielding an association statistic <span class="citation">(<a href="#ref-zhu2016integration">Zhu et al., 2016</a>)</span>.</p></li>
+<li><p><strong>Gene expression signature of a trait</strong>: Use GWAS summary stats with eQTL/gene expression data. Early tools include <a href="https://github.com/gusevlab/fusion_twas">FUSION</a> <span class="citation">(<a href="#ref-gusev2016integrative">Gusev et al., 2016</a>)</span> and <a href="https://github.com/hakyimlab/MetaXcan">PrediXcan</a> <span class="citation">(<a href="#ref-gamazon2015gene">Gamazon et al., 2015</a>)</span>, although many more have been developed since.</p></li>
+<li><p><strong>Structural Equation Modelling</strong>: <a href="https://github.com/GenomicSEM/GenomicSEM/wiki">GenomicSEM</a> is a tool for structural equation modelling of GWAS summary statistics, allowing you to model the relationships between traits using their genetic architecture <span class="citation">(<a href="#ref-grotzinger2019genomic">Grotzinger et al., 2019</a>)</span>.</p></li>
 </ul>
 
 </div>
-</div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-pritchard2001linkage" class="csl-entry">
-Pritchard, J.K., &amp; Przeworski, M. (2001). <a href="https://doi.org/10.1086/321275">Linkage disequilibrium in humans: Models and data</a>. <em>The American Journal of Human Genetics</em>, <em>69</em>, 1–14.
+<div id="ref-bulik2015atlas" class="csl-entry">
+Bulik-Sullivan, B., Finucane, H.K., Anttila, V., Gusev, A., Day, F.R., Loh, P.-R., et al. (2015). <a href="https://doi.org/10.1038/ng.3406">An atlas of genetic correlations across human diseases and traits</a>. <em>Nature Genetics</em>, <em>47</em>, 1236–1241.
 </div>
-<div id="ref-prive2021optimal" class="csl-entry">
-Privé, F. (2021). <a href="https://doi.org/10.1093/bioinformatics/btab519"><span class="nocase">Optimal linkage disequilibrium splitting</span></a>. <em>Bioinformatics</em>, <em>38</em>, 255–256.
+<div id="ref-bulik2015ld" class="csl-entry">
+Bulik-Sullivan, B.K., Loh, P.-R., Finucane, H.K., Ripke, S., Yang, J., Psychiatric Genomics Consortium, S.W.G. of the, et al. (2015). <a href="https://doi.org/10.1038/ng.3211"><span>LD</span> score regression distinguishes confounding from polygenicity in genome-wide association studies</a>. <em>Nature Genetics</em>, <em>47</em>, 291–295.
 </div>
-<div id="ref-prive2022inferring" class="csl-entry">
-Privé, F., Albiñana, C., Arbel, J., Pasaniuc, B., &amp; Vilhjálmsson, B.J. (2023). <a href="https://doi.org/10.1016/j.ajhg.2023.10.010">Inferring disease architecture and predictive ability with <span class="nocase">LDpred2-auto</span></a>. <em>The American Journal of Human Genetics</em>, <em>110</em>, 2042–2055.
+<div id="ref-finucane2015partitioning" class="csl-entry">
+Finucane, H.K., Bulik-Sullivan, B., Gusev, A., Trynka, G., Reshef, Y., Loh, P.-R., et al. (2015). <a href="https://doi.org/10.1038/ng.3404">Partitioning heritability by functional annotation using genome-wide association summary statistics</a>. <em>Nature Genetics</em>, <em>47</em>, 1228–1235.
 </div>
-<div id="ref-prive2021identifying" class="csl-entry">
-Privé, F., Arbel, J., Aschard, H., &amp; Vilhjálmsson, B.J. (2022). <a href="https://doi.org/10.1016/j.xhgg.2022.100136">Identifying and correcting for misspecifications in <span>GWAS</span> summary statistics and polygenic scores</a>. <em>Human Genetics and Genomics Advances</em>, <em>3</em>, 100136.
+<div id="ref-gamazon2015gene" class="csl-entry">
+Gamazon, E.R., Wheeler, H.E., Shah, K.P., Mozaffari, S.V., Aquino-Michaels, K., Carroll, R.J., et al. (2015). <a href="https://doi.org/10.1038/ng.3367">A gene-based association method for mapping traits using reference transcriptome data</a>. <em>Nature Genetics</em>, <em>47</em>, 1091–1098.
 </div>
-<div id="ref-prive2020ldpred2" class="csl-entry">
-Privé, F., Arbel, J., &amp; Vilhjálmsson, B.J. (2020). <a href="https://doi.org/10.1093/bioinformatics/btaa1029"><span class="nocase"><span>LDpred2</span>: better, faster, stronger</span></a>. <em>Bioinformatics</em>, <em>36</em>, 5424–5431.
+<div id="ref-grotzinger2019genomic" class="csl-entry">
+Grotzinger, A.D., Rhemtulla, M., Vlaming, R. de, Ritchie, S.J., Mallard, T.T., Hill, W.D., et al. (2019). <a href="https://doi.org/10.1038/s41562-019-0566-x">Genomic structural equation modelling provides insights into the multivariate genetic architecture of complex traits</a>. <em>Nature Human Behaviour</em>, <em>3</em>, 513–525.
 </div>
-<div id="ref-zabad2025towards" class="csl-entry">
-Zabad, S., Haryan, C.A., Gravel, S., Misra, S., &amp; Li, Y. (2025). Towards whole-genome inference of polygenic scores with fast and memory-efficient algorithms. <em>The American Journal of Human Genetics</em>. Retrieved from <a href="https://doi.org/10.1016/j.ajhg.2025.05.002">https://doi.org/10.1016/j.ajhg.2025.05.002</a>
+<div id="ref-gusev2016integrative" class="csl-entry">
+Gusev, A., Ko, A., Shi, H., Bhatia, G., Chung, W., Penninx, B.W., et al. (2016). <a href="https://doi.org/10.1038/ng.3506">Integrative approaches for large-scale transcriptome-wide association studies</a>. <em>Nature Genetics</em>, <em>48</em>, 245–252.
+</div>
+<div id="ref-li2023mbat" class="csl-entry">
+Li, A., Liu, S., Bakshi, A., Jiang, L., Chen, W., Zheng, Z., et al. (2023). <a href="https://doi.org/10.1016/j.ajhg.2022.12.006"><span class="nocase">mBAT-combo</span>: A more powerful test to detect gene-trait associations from <span>GWAS</span> data</a>. <em>The American Journal of Human Genetics</em>, <em>110</em>, 30–43.
+</div>
+<div id="ref-magi2017trans" class="csl-entry">
+Mägi, R., Horikoshi, M., Sofer, T., Mahajan, A., Kitajima, H., Franceschini, N., et al. (2017). <a href="https://doi.org/10.1093/hmg/ddx280">Trans-ethnic meta-regression of genome-wide association studies accounting for ancestry increases power for discovery and improves fine-mapping resolution</a>. <em>Human Molecular Genetics</em>, <em>26</em>, 3639–3650.
+</div>
+<div id="ref-speed2019sumher" class="csl-entry">
+Speed, D., &amp; Balding, D.J. (2019). <a href="https://doi.org/10.1038/s41588-018-0279-5"><span>SumHer</span> better estimates the <span>SNP</span> heritability of complex traits from summary statistics</a>. <em>Nature Genetics</em>, <em>51</em>, 277–284.
+</div>
+<div id="ref-turley2018multi" class="csl-entry">
+Turley, P., Walters, R.K., Maghzian, O., Okbay, A., Lee, J.J., Fontana, M.A., et al. (2018). <a href="https://doi.org/10.1038/s41588-017-0009-4">Multi-trait analysis of genome-wide association summary statistics using <span>MTAG</span></a>. <em>Nature Genetics</em>, <em>50</em>, 229–237.
+</div>
+<div id="ref-wallace2021more" class="csl-entry">
+Wallace, C. (2021). <a href="https://doi.org/10.1371/journal.pgen.1009440">A more accurate method for colocalisation analysis allowing for multiple causal variants</a>. <em>PLoS Genetics</em>, <em>17</em>, e1009440.
+</div>
+<div id="ref-willer2010metal" class="csl-entry">
+Willer, C.J., Li, Y., &amp; Abecasis, G.R. (2010). <a href="https://doi.org/10.1093/bioinformatics/btq340"><span>METAL</span>: Fast and efficient meta-analysis of genomewide association scans</a>. <em>Bioinformatics</em>, <em>26</em>, 2190–2191.
+</div>
+<div id="ref-zhang2023benchmarking" class="csl-entry">
+Zhang, C., Zhang, Y., Zhang, Y., &amp; Zhao, H. (2023). <a href="https://doi.org/10.1093/bib/bbad407">Benchmarking of local genetic correlation estimation methods using summary statistics from genome-wide association studies</a>. <em>Briefings in Bioinformatics</em>, <em>24</em>, bbad407.
+</div>
+<div id="ref-zheng2024leveraging" class="csl-entry">
+Zheng, Z., Liu, S., Sidorenko, J., Wang, Y., Lin, T., Yengo, L., et al. (2024). <a href="https://doi.org/10.1038/s41588-024-01704-y">Leveraging functional genomic annotations and genome coverage to improve polygenic prediction of complex traits within and between ancestries</a>. <em>Nature Genetics</em>, <em>56</em>, 767–777.
+</div>
+<div id="ref-zhu2016integration" class="csl-entry">
+Zhu, Z., Zhang, F., Hu, H., Bakshi, A., Robinson, M.R., Powell, J.E., et al. (2016). <a href="https://doi.org/10.1038/ng.3538">Integration of summary data from <span>GWAS</span> and <span class="nocase">eQTL</span> studies predicts complex trait gene targets</a>. <em>Nature Genetics</em>, <em>48</em>, 481–487.
 </div>
 </div>
             </section>
@@ -387,8 +355,8 @@ Zabad, S., Haryan, C.A., Gravel, S., Misra, S., &amp; Li, Y. (2025). Towards who
           </div>
         </div>
       </div>
-<a href="gwas-summary-statistics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="polygenic-risk-scores-pgs-or-prs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="fine-mapping-with-susie.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

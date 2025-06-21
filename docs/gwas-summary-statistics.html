@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-18" />
+<meta name="date" content="2025-06-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -166,7 +166,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#schedule-of-smartbiomed-summer-school"><i class="fa fa-check"></i><b>1.2</b> Schedule of SMARTbiomed Summer school</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#author"><i class="fa fa-check"></i><b>1.3</b> Author</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#main-author"><i class="fa fa-check"></i><b>1.3</b> Main author</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.4</b> Contact</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.5</b> License</a></li>
 </ul></li>
@@ -204,6 +204,7 @@ div.csl-indent {
 <li class="chapter" data-level="5.1" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#exo-gwas"><i class="fa fa-check"></i><b>5.1</b> Example</a></li>
 <li class="chapter" data-level="5.2" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#regenie"><i class="fa fa-check"></i><b>5.2</b> REGENIE</a></li>
 <li class="chapter" data-level="5.3" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#genomic-control-and-ld-score-regression"><i class="fa fa-check"></i><b>5.3</b> Genomic control and LD score regression</a></li>
+<li class="chapter" data-level="5.4" data-path="genome-wide-association-study-gwas.html"><a href="genome-wide-association-study-gwas.html#some-post-gwas-analyses"><i class="fa fa-check"></i><b>5.4</b> Some post GWAS analyses</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="gwas-summary-statistics.html"><a href="gwas-summary-statistics.html"><i class="fa fa-check"></i><b>6</b> GWAS summary statistics</a>
 <ul>
@@ -259,6 +260,7 @@ div.csl-indent {
 <li class="chapter" data-level="9.3.7" data-path="fine-mapping-with-susie.html"><a href="fine-mapping-with-susie.html#reflections"><i class="fa fa-check"></i><b>9.3.7</b> Reflections</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="some-other-analyses.html"><a href="some-other-analyses.html"><i class="fa fa-check"></i><b>10</b> Some other analyses</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -489,23 +491,25 @@ Click to see solution
 #&gt; 5   1  949608  G  A    1           7     rs1921        5
 #&gt; 6   1 1018704  A  G   -1           8  rs9442372        6
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 301150 rows ]</code></pre>
+<div class="infobox caution">
+<p>When matching between variants from two datasets, sometimes physical positions are in two different genome builds, usually it can be hg19 and hg38 (for newer datasets). You will need to either convert one of the two sets of positions with <code>snp_modifyBuild()</code> (that uses liftOver, not available for Windows) or by matching using rsIDs instead of positions (by using <code>join_by_pos = FALSE</code>).</p>
+</div>
 <div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="gwas-summary-statistics.html#cb158-1" tabindex="-1"></a><span class="co"># further subsetting on missing values</span></span>
 <span id="cb158-2"><a href="gwas-summary-statistics.html#cb158-2" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">bed_counts</span>(obj.bed, <span class="at">ind.col =</span> matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)</span>
 <span id="cb158-3"><a href="gwas-summary-statistics.html#cb158-3" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">which</span>((counts[<span class="dv">4</span>, ] <span class="sc">/</span> <span class="fu">nrow</span>(obj.bed)) <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
-<span id="cb158-4"><a href="gwas-summary-statistics.html#cb158-4" tabindex="-1"></a>matched2 <span class="ot">&lt;-</span> matched[ind, ]</span>
-<span id="cb158-5"><a href="gwas-summary-statistics.html#cb158-5" tabindex="-1"></a></span>
-<span id="cb158-6"><a href="gwas-summary-statistics.html#cb158-6" tabindex="-1"></a><span class="co"># compute allele frequencies</span></span>
-<span id="cb158-7"><a href="gwas-summary-statistics.html#cb158-7" tabindex="-1"></a>af <span class="ot">&lt;-</span> <span class="fu">bed_MAF</span>(obj.bed, <span class="at">ind.col =</span> matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>)<span class="sc">$</span>af</span>
-<span id="cb158-8"><a href="gwas-summary-statistics.html#cb158-8" tabindex="-1"></a>af2 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(matched2<span class="sc">$</span>beta <span class="sc">&gt;</span> <span class="dv">0</span>, af, <span class="dv">1</span> <span class="sc">-</span> af)</span>
-<span id="cb158-9"><a href="gwas-summary-statistics.html#cb158-9" tabindex="-1"></a></span>
-<span id="cb158-10"><a href="gwas-summary-statistics.html#cb158-10" tabindex="-1"></a><span class="co"># get ancestry composition</span></span>
-<span id="cb158-11"><a href="gwas-summary-statistics.html#cb158-11" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">snp_ancestry_summary</span>(</span>
-<span id="cb158-12"><a href="gwas-summary-statistics.html#cb158-12" tabindex="-1"></a>  <span class="at">freq =</span> af2,</span>
-<span id="cb158-13"><a href="gwas-summary-statistics.html#cb158-13" tabindex="-1"></a>  <span class="at">info_freq_ref =</span> all_freq[matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)],</span>
-<span id="cb158-14"><a href="gwas-summary-statistics.html#cb158-14" tabindex="-1"></a>  <span class="at">projection =</span> projection[matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)],</span>
-<span id="cb158-15"><a href="gwas-summary-statistics.html#cb158-15" tabindex="-1"></a>  <span class="at">correction =</span> correction</span>
-<span id="cb158-16"><a href="gwas-summary-statistics.html#cb158-16" tabindex="-1"></a>)</span>
-<span id="cb158-17"><a href="gwas-summary-statistics.html#cb158-17" tabindex="-1"></a>res</span></code></pre></div>
+<span id="cb158-4"><a href="gwas-summary-statistics.html#cb158-4" tabindex="-1"></a>matched2 <span class="ot">&lt;-</span> matched[ind, ]</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="gwas-summary-statistics.html#cb159-1" tabindex="-1"></a><span class="co"># compute allele frequencies</span></span>
+<span id="cb159-2"><a href="gwas-summary-statistics.html#cb159-2" tabindex="-1"></a>af <span class="ot">&lt;-</span> <span class="fu">bed_MAF</span>(obj.bed, <span class="at">ind.col =</span> matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>)<span class="sc">$</span>af</span>
+<span id="cb159-3"><a href="gwas-summary-statistics.html#cb159-3" tabindex="-1"></a>af2 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(matched2<span class="sc">$</span>beta <span class="sc">&gt;</span> <span class="dv">0</span>, af, <span class="dv">1</span> <span class="sc">-</span> af)</span>
+<span id="cb159-4"><a href="gwas-summary-statistics.html#cb159-4" tabindex="-1"></a></span>
+<span id="cb159-5"><a href="gwas-summary-statistics.html#cb159-5" tabindex="-1"></a><span class="co"># get ancestry composition</span></span>
+<span id="cb159-6"><a href="gwas-summary-statistics.html#cb159-6" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">snp_ancestry_summary</span>(</span>
+<span id="cb159-7"><a href="gwas-summary-statistics.html#cb159-7" tabindex="-1"></a>  <span class="at">freq =</span> af2,</span>
+<span id="cb159-8"><a href="gwas-summary-statistics.html#cb159-8" tabindex="-1"></a>  <span class="at">info_freq_ref =</span> all_freq[matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)],</span>
+<span id="cb159-9"><a href="gwas-summary-statistics.html#cb159-9" tabindex="-1"></a>  <span class="at">projection =</span> projection[matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)],</span>
+<span id="cb159-10"><a href="gwas-summary-statistics.html#cb159-10" tabindex="-1"></a>  <span class="at">correction =</span> correction</span>
+<span id="cb159-11"><a href="gwas-summary-statistics.html#cb159-11" tabindex="-1"></a>)</span>
+<span id="cb159-12"><a href="gwas-summary-statistics.html#cb159-12" tabindex="-1"></a>res</span></code></pre></div>
 <pre><code>#&gt;       Africa (West)      Africa (South)       Africa (East) 
 #&gt;           0.0015918           0.0000000           0.0000000 
 #&gt;      Africa (North)         Middle East           Ashkenazi 
@@ -537,13 +541,13 @@ Click to see solution
 #&gt;           0.7286470           0.7290332           0.7343768 
 #&gt; attr(,&quot;cor_pred&quot;)
 #&gt; [1] 0.9990652</code></pre>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="gwas-summary-statistics.html#cb160-1" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">colnames</span>(all_freq)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]</span>
-<span id="cb160-2"><a href="gwas-summary-statistics.html#cb160-2" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Scandinavia&quot;</span>, <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Ireland&quot;</span>)]   <span class="ot">&lt;-</span> <span class="st">&quot;Europe (North West)&quot;</span></span>
-<span id="cb160-3"><a href="gwas-summary-statistics.html#cb160-3" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Europe (South East)&quot;</span>, <span class="st">&quot;Europe (North East)&quot;</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;Europe (East)&quot;</span></span>
-<span id="cb160-4"><a href="gwas-summary-statistics.html#cb160-4" tabindex="-1"></a>grp_fct <span class="ot">&lt;-</span> <span class="fu">factor</span>(group, <span class="fu">unique</span>(group))</span>
-<span id="cb160-5"><a href="gwas-summary-statistics.html#cb160-5" tabindex="-1"></a></span>
-<span id="cb160-6"><a href="gwas-summary-statistics.html#cb160-6" tabindex="-1"></a>final_res <span class="ot">&lt;-</span> <span class="fu">tapply</span>(res, grp_fct, sum)</span>
-<span id="cb160-7"><a href="gwas-summary-statistics.html#cb160-7" tabindex="-1"></a><span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> final_res, <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="gwas-summary-statistics.html#cb161-1" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">colnames</span>(all_freq)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]</span>
+<span id="cb161-2"><a href="gwas-summary-statistics.html#cb161-2" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Scandinavia&quot;</span>, <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Ireland&quot;</span>)]   <span class="ot">&lt;-</span> <span class="st">&quot;Europe (North West)&quot;</span></span>
+<span id="cb161-3"><a href="gwas-summary-statistics.html#cb161-3" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Europe (South East)&quot;</span>, <span class="st">&quot;Europe (North East)&quot;</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;Europe (East)&quot;</span></span>
+<span id="cb161-4"><a href="gwas-summary-statistics.html#cb161-4" tabindex="-1"></a>grp_fct <span class="ot">&lt;-</span> <span class="fu">factor</span>(group, <span class="fu">unique</span>(group))</span>
+<span id="cb161-5"><a href="gwas-summary-statistics.html#cb161-5" tabindex="-1"></a></span>
+<span id="cb161-6"><a href="gwas-summary-statistics.html#cb161-6" tabindex="-1"></a>final_res <span class="ot">&lt;-</span> <span class="fu">tapply</span>(res, grp_fct, sum)</span>
+<span id="cb161-7"><a href="gwas-summary-statistics.html#cb161-7" tabindex="-1"></a><span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> final_res, <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>#&gt;       Africa (West)      Africa (South)       Africa (East) 
 #&gt;                 0.2                 0.0                 0.0 
 #&gt;      Africa (North)         Middle East           Ashkenazi 

@@ -103,7 +103,7 @@ My contributions in @prive2019making:
 
 - going further by *stacking* with a (penalized) linear combination of all C+T models (instead of just choosing the best model) $\Rightarrow$ *SCT* (Stacked C+T)
 
-This can lead to achieving much better predictive performance compared to some standard use of C+T.
+This can lead to achieving much better predictive performance compared to some standard use of C+T. Over the past years, stacking has become a very popular methodology to improve PGS predictive performance, sometimes by combining many models from multiple methods. 
 
 
 ### Other methods
@@ -120,15 +120,15 @@ My opinion on these methods:
 
 - C+T is known to be suboptimal but works okay for traits with low polygenicity (the proportion of causal variants) and can be improved with proper tuning/stacking (cf. above)
 
-- lassosum is very good at getting very sparse solutions (lots of variants are not used in the PGS); C+T can be good for that as well (when a stringent p-value threshold is used)
+- lassosum is very good at getting very sparse solutions (lots of variants have a zero effect; they are not used in the PGS); C+T can be good for that as well (when a low p-value threshold is used; e.g. with $p_T < 0.01$, you can achieve a 95--99% sparsity)
 
-- LDpred2 is the best in my very biased opinion &#128521;; there is an "auto" option to directly infer hyper-parameters of the methods from the data, and many developments have been made regarding improving its robustness
+- LDpred2 is the best in my very biased opinion &#128521;; there is a "grid" option where you need to tune two hyper-parameters and an "auto" option to directly infer hyper-parameters of the method from the data, and many developments have been made regarding improving its robustness
 
 - SBayesR is very good with in-sample LD (i.e. from the GWAS data), otherwise it lacks robustness
 
-- SBayesRC uses functional annotations to help prioritize causal variants, which can help improve prediction, especially when applying the resulting PGS to other populations
+- SBayesRC uses external functional annotations to help prioritize causal variants, which can help improve prediction, especially when applying the resulting PGS to other populations
 
-- PRS-CS uses a lot of regularization internally, which makes it very robust, but sometimes at the expense of lower predictive ability; it is also slower than other methods
+- PRS-CS uses a lot of regularization internally, which makes it very robust, but sometimes at the expense of lower predictive ability; it is also usually slower than the other methods mentioned before
 
 ```{r, echo=FALSE, out.width="75%", fig.cap="Comparison of PGS methods from the LDpred2 paper. Since, developments have been made to ensure even better predictive performance of LDpred2 models."}
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/ldpred2-comparison.jpeg?raw=true")
@@ -139,11 +139,11 @@ knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figu
 
 What influences predictive power of PGS?
 
-- Predictive power $r^2$ is bounded by the heritability $h^2$ captured by the set of variants used (called SNP-heritability).
+- Predictive power $r^2$ is bounded by the heritability $h^2$ captured by the set of variants used (called SNP-heritability), except for some particular cases [@wang2023polygenic].
 
 - $r^2$ should increase with GWAS sample size $N$ (of course)
 
-- $r^2$ decreases with polygenicity (proportion of causal variants), because there are more small effects, harder to detect and estimate.    
+- $r^2$ decreases with polygenicity (the proportion of causal variants), because there are many smaller effects, harder to detect and estimate.    
 Let's denote $M_c$ the number of causal variants.
 
 The theoretical upper bound for the phenotypic variance that can be explained by PGS [@daetwyler2008accuracy]:
@@ -163,7 +163,7 @@ knitr::include_graphics("https://github.com/privefl/UKBB-PGS/blob/main/docs/figu
 
 <br>
 
-Basically, predictive performance drops with genetic distance from the training population [@prive2021high; @ding2023polygenic]:
+Basically, predictive performance drops with genetic distance (captured by distance in the PCA space here) from the training population [@prive2021high; @ding2023polygenic]:
 
 ```{r, echo=FALSE, out.width="75%"}
 knitr::include_graphics("https://github.com/privefl/UKBB-PGS/blob/main/docs/figures/ratio-dist-2.png?raw=true")
@@ -179,7 +179,7 @@ knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figu
 
 - effect of a causal variant should be similar for all populations [@hou2023causal; @hu2025fine]
 - all 3 variants have same effect in N.W. Europeans (perfect correlation)
-- in E. Asians, variant 1 retains only 60% of the causal effect
+- however, in E. Asians, variant 1 retains only 60% of the causal effect, and 40% in W. Africans
 
 
 ## Future of PGS
@@ -198,7 +198,7 @@ First, let's carefully look at [the LDpred2 tutorial](https://privefl.github.io/
 ### Preparing the data
 
 Let's first read the data produced in \@ref(exo-preprocessing):
-```{r}
+```{r, message=FALSE}
 library(bigsnpr)
 obj.bigsnp <- snp_attach("tmp-data/GWAS_data_sorted_QC.rds")
 G <- obj.bigsnp$genotypes
@@ -211,7 +211,7 @@ Let's use some GWAS summary statistics for CAD that I derived from the UK Bioban
 gz <- runonce::download_file(
   "https://figshare.com/ndownloader/files/38077323",
   dir = "tmp-data", fname = "sumstats_CAD_tuto.csv.gz")
-readLines(gz, n = 3)
+readLines(gz, n = 5)
 ```
 
 :::: {.infobox .exo}

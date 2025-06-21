@@ -7,7 +7,7 @@ editor_options:
 # Genome-Wide Association Study (GWAS)
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", "batchtools", "Slurm", "ACATO", "ACATV", "Conda", "GxE", "GxG", "Regeneron", "regenie", "REGENIE", "REMETA", "SBAT", "SKAT", "SKATO", "COJO", "GCTA", "GC", "HPC", "iteratively")
+WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", "batchtools", "Slurm", "ACATO", "ACATV", "Conda", "GxE", "GxG", "Regeneron", "regenie", "REGENIE", "REMETA", "SBAT", "SKAT", "SKATO", "COJO", "GCTA", "GC", "HPC", "iteratively", "Catalogue", "CellxGene", "dbSNP", "eQTL", "FUMA", "GTEx", "OneK", "OpenTargets", "SNPedia")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -182,3 +182,20 @@ snp_qq(gwas) +
 
 Then, the intercept of LD score regression was introduced to test for confounding [@bulik2015ld]. 
 However, note that it was observed that LD score regression intercepts tend to increase with SNP-heritability and GWAS sample size [@loh2018mixed].
+
+
+## Some post GWAS analyses
+
+It is challenging to interpret a GWAS on its own as there are often many associations, many of which are in non-coding regions. There is a large collection of downstream analyses to aid in gaining biological understanding from your GWAS, some of which are based on GWAS summary statistics which will cover later in this course.
+
+- There are several online tools/resources that allow you to quickly get a sense of the meaning of a variant or GWAS results. If you want to understand what is known about a particular variant, [SNPedia](https://www.snpedia.com/index.php/SNPedia), [dbSNP](https://www.ncbi.nlm.nih.gov/snp/), and [OpenTargets](https://platform.opentargets.org/) are good places to start. Here you can find information on the peer-reviewed papers that mention this particular variant, its allele frequencies across populations, its predicted consequences, and associations with other traits.
+
+- [GTEx](https://www.gtexportal.org/home/) is a database of the genetic regulation of gene expression in humans, and is also useful to get a sense of whether a variant of interest may influence the expression of a particular gene. Variants in non-coding regions are generally hypothesized to affect the trait through regulatory mechanisms. This database is not an exhaustive list of genetic regulation of gene expression – a variant may influence gene expression in certain cell or tissue types or contexts not captured in the data.
+
+- [FUMA](https://fuma.ctglab.nl/) is a website where you can upload GWAS summary statistics and it will run a range of analyses to link genetic variants to genes. You can then further investigate these genes with pathways analyses on the same platform. To my knowledge, there is no good tool that can run a range of analyses locally in one go – this would certainly save me a lot of time and be more efficient!
+
+- Resources for helping linking GWAS hits to eQTLs:
+  - [eQTL Catalogue](https://www.ebi.ac.uk/eqtl/)
+  - [GTEx](https://www.gtexportal.org/home/)
+  - [CellxGene](https://cellxgene.cziscience.com/)
+  - [OneK1K](https://onek1k.org/)

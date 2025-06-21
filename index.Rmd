@@ -22,6 +22,8 @@ source("knitr-options.R")
 source("spelling-check.R")
 ```
 
+**REMIND ME TO RECORD**
+
 ## Prerequisites
 
 - Have at least a basic knowledge of R,
@@ -70,7 +72,7 @@ source("spelling-check.R")
 | Friday 09:00–12:00                     | Finishing part 2 + general Q&A              |
 
 
-## Author
+## Main author
 
 [Florian Privé](https://privefl.github.io/) is a senior researcher in statistical human genetics, fond of Data Science and an R(cpp) enthusiast. You can find him on [Bluesky](https://bsky.app/profile/privefl.bsky.social) and [GitHub](https://github.com/privefl) as \@privefl.
 
