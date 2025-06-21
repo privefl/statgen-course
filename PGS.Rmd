@@ -188,7 +188,7 @@ knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figu
 
 - Use more variants to include more causal variants (currently, most methods use around 1M variants)
 
-- Integrate functional annotations and multi-ancestry data to prioritize causal variants
+- Integrate functional annotations and multi-ancestry data to prioritize causal variants and get better PGS for all populations
 
 
 ## Exercise with LDpred2 and lassosum2 {#exo-ldpred2}
@@ -231,7 +231,9 @@ sumstats <- bigreadr::fread2(
 
 # GWAS effective sample size for binary traits (4 / (1 / n_case + 1 / n_control))
 # For quantitative traits, just use the total sample size for `n_eff`.
-sumstats$n_eff <- 4 / (1 / 20791 + 1 / 323124)
+(Neff <- 4 / (1 / 20791 + 1 / 323124))
+quantile(8 / sumstats$beta_se^2, 0.999)  # one estimation
+sumstats$n_eff <- Neff
 ```
 
 </details>
@@ -240,12 +242,14 @@ sumstats$n_eff <- 4 / (1 / 20791 + 1 / 323124)
 
 Note that we recommend to use imputed HapMap3(+) variants when available, for which you can download some precomputed LD reference for European individuals based on the UK Biobank.
 Here, we will use the genotyped variants for this tutorial.
-Try to use an LD reference with at least 2000 individuals (I have only 1401 in this example).
+Try to use an LD reference with at least 2000 individuals (we have only 1401 in this example).
 [The LDpred2 tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html) provides more information.
 
 
 :::: {.infobox .exo}
 Match the variants in the GWAS summary statistics with the internal data we have here.
+
+What should you do for the allele frequencies?
 ::::
 
 <details>
@@ -278,7 +282,7 @@ Check the summary statistics; some quality control may be needed:
 ```{r}
 hist(info_snp$n_eff)    # all the same values, otherwise filter at 70% of max
 hist(info_snp$info)     # very good imputation; filter e.g. at 0.7 or 0.8
-summary(info_snp$freq)
+summary(info_snp$freq)  # can filter for MAF > 0.01 (i.e. AF > 0.01 & AF < 0.99)
 ```
 
 Then we can perform some quality control on the summary statistics by checking whether standard deviations (of genotypes) inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:
@@ -317,7 +321,7 @@ ggplot(slice_sample(data.frame(sd_af, sd_ss), n = 100e3)) +
        y = "Standard deviations derived from the summary statistics")
 ```
 
-You can still use the reference panel to do some quality control by comparing allele frequencies, which is useful to detect allelic errors (inversion of alleles and therefore effect sizes) and the other issues detected before:
+You can still use the reference panel to do some quality control by comparing allele frequencies, which is useful for detecting allelic errors (inversion of alleles so that the effect size should have the opposite sign) and the other issues detected before:
 ```{r}
 af_diff <- af_ref - info_snp$freq
 hist(af_diff, "FD", xlim = c(-0.1, 0.1))
@@ -329,7 +333,7 @@ Then you can filter
 is_bad2 <-
   sd_ss < (0.7 * sd_af) | sd_ss > (sd_af + 0.1) |
   sd_ss < 0.05 | sd_af < 0.05 |
-  info_snp$info < 0.7 | abs(af_diff) > 0.07
+  info_snp$info < 0.7 | abs(af_diff) > 0.07 # based on visual inspection
 mean(is_bad2)
 df_beta <- info_snp[!is_bad2, ]
 ```
@@ -389,7 +393,7 @@ file.size(corr$sbk) / 1024^3  # file size in GB
 ```
 
 :::: {.infobox .caution}
-Note that you will need at least the same memory as this file size (to keep it cached for faster processing) + some other memory for all the results returned. If you do not have enough memory, processing will be very slow (because you would read the data from disk all the time). If using HapMap3 variants, requesting 60 GB should be enough. For this small example, 8 GB of RAM on a laptop should be enough.
+Note that you will need at least the same memory as this file size (to keep it cached for faster processing) + some other memory for all the results returned by LDpred2. If you do not have enough memory, processing will be very slow (because you would read the data from disk all the time). If using HapMap3 variants, requesting 60 GB should be enough. For this small example, 8 GB of RAM on a laptop should be enough.
 ::::
 
 

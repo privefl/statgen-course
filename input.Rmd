@@ -265,6 +265,10 @@ Functions starting with `big_` are part of bigstatsr and work for any type of FB
 There are now many functions implemented in the packages. You can find a comprehensive list of available functions on the package website [of bigstatsr](https://privefl.github.io/bigstatsr/reference/index.html) and [of bigsnpr](https://privefl.github.io/bigsnpr/reference/index.html).
 ::::
 
+:::: {.infobox .exo}
+Take some time to have a look at the different functions available in both bigstatsr and bigsnpr.
+::::
+
 :::: {.infobox .question}
 What is the difference between functions starting with `snp_` vs `bed_`?
 ::::

@@ -9,7 +9,7 @@ editor_options:
 ```{r setup, include=FALSE}
 WORDS_TO_IGNORE <- c(
   "Alesha", "bigreadr", "bioavailable", "dplyr", "Gao" , "GCST", "ggplot",
-  "ggrepel", "Hatton", "PIPs", "pre", "rss", "SuSiE", "th")
+  "ggrepel", "Hatton", "PIPs", "pre", "rss", "SuSiE", "th", "COJO")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -79,7 +79,7 @@ str(fitted.one.iter)
 
 ### Plot the SuSiE results
 Plot both PIPs from SuSiE as well as the p-values from the regressions.
-```{r}
+```{r, out.width="95%"}
 b <- dat$true_coef[, 1]
 b[which(b != 0)] <- 1
 
@@ -96,7 +96,7 @@ susie_plot(fitted.one.iter, y = "PIP", b = b, max_cs = 0.4,
 susie_plot(fitted, y = "PIP", b = b, max_cs = 0.4, 
            main = "IBSS after 10 iterations", add_legend = FALSE, 
            ylim = c(0, 1), xlab = "variable (SNP)", col = "#767676")
-par(par_saved)
+par(par_saved)  # back to as before
 ```
 
 The "true" effects are highlighted in red. The strongest signal by p-value does not contain the causal variant, but is being tagged by two causal variants. The first iteration of SuSiE identifies the strongest signal by p-value, but by the 10th iteration the true causal variants are identified within two credible sets.
@@ -120,10 +120,10 @@ Let's look at bioavailable testosterone in females from [@ruth2020using].
 
 ### Import GWAS data
 
-First, download the GWAS summary statistics from [GWAS catalog](https://www.ebi.ac.uk/gwas/studies/GCST90012102). The accession for this study is GCST90012102. 
+Here we use (a subset of) the GWAS summary statistics originally accessible from [the GWAS Catalog](https://www.ebi.ac.uk/gwas/studies/GCST90012102) (accession number: GCST90012102). 
 
 ```{r}
-# real data
+# original data
 # tgz <- runonce::download_file(
 #   "https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST90012001-GCST90013000/GCST90012102/GCST90012102_buildGRCh37.tsv.gz",
 #   dir = "tmp-data")  # 419 MB
@@ -133,13 +133,13 @@ tgz <- runonce::download_file(
   "https://figshare.com/ndownloader/files/55262768", 
   dir = "tmp-data", fname = "FT_sumstats_small.tsv.gz")
 
-readLines(tgz, n = 3)
+readLines(tgz, n = 5)
 ```
 
-And some reference panel to compute LD from:
+And some reference panel (also subsetted for this tutorial) to compute LD from:
 
 ```{r, warning=FALSE}
-# real data
+# original data
 # gzip <- runonce::download_file(
 #   "https://vu.data.surfsara.nl/index.php/s/VZNByNwpD8qqINe/download",
 #   fname = "g1000_eur.zip", dir = "tmp-data")  # 488 MB
@@ -187,6 +187,7 @@ locus1 <- filter(FT_cleaned, chr == 1, pos > 7909373 - 5e5, pos < 7909373 + 5e5)
 
 # Plot locus
 ggplot(locus1, aes(x = pos, y = -log10(p_value))) +
+  theme_bw(13) +
   geom_point(alpha = 0.8, size = 1.3) +
   geom_point(aes(x = pos, y = -log10(p_value)), color = "red", size = 2,
              data = filter(locus1, rsid == "rs1989147")) +
@@ -195,11 +196,10 @@ ggplot(locus1, aes(x = pos, y = -log10(p_value))) +
 ```
 
 
-### Create LD matrix {#ldplink}
+### Create an LD matrix {#ldplink}
 
-As we are using GWAS summary statistics, we need information of the correlation between variants. Here we are using 1000 Genomes European for convenience. If you are performing this analysis yourself, it is advised to use a larger sample. 
-This requires PLINK to be installed and the 1000 Genomes European reference panel to be downloaded.
-Note we are calculating "r" not "r2".
+As we are using GWAS summary statistics, we need information of the correlation between variants. Here we are using 1000 Genomes European for convenience. If you are performing this analysis yourself, it is advised to use a larger sample. For fine-mapping, it is often recommended to use in-sample LD (LD computed from the original GWAS data).
+Here we use PLINK, but remember that you can also use functions from bigsnpr for computing LD and actually also from bigstatsr when you need all correlation values for a set of variants (see `big_cor()`).
 
 ```{r}
 # Export the SNPs in this locus
@@ -245,7 +245,9 @@ ggplot(locus1, aes(x = pos, y = -log10(p_value))) +
                    data = filter(locus1, cs == 1))
 ```
 
-**Challenge 1** *How does the PIP compare to the p-value? Generate a plot to show this.*
+:::: {.infobox .exo}
+How do the PIPs compare to the p-values? Generate a plot to show this.
+::::
 
 
 ### Locus 2
@@ -258,14 +260,22 @@ locus2 <- filter(FT_cleaned, chr == 19, pos > 45417638 - 5e5, pos < 46384830 + 5
 Now perform similar analyses on locus2.
 ::::
 
-**Challenge 2** *How does the PIP compare to the p-value? Generate a plot to show this.*  
+:::: {.infobox .exo}
+How do the PIPs compare to the p-values? Generate a plot to show this.
+:::: 
 
-**Challenge 3** *Why might there be no result in fitted_rss_2 for L=2?*  
+:::: {.infobox .exo}
+What if we changed to a 75% credible set for locus 2? Write some code to do this and plot. Can we trust this result?
+:::: 
 
-**Challenge 4** *What if we changed to a 75% credible set for locus 2? Write code to do this and plot. Can we trust this result?*  
+:::: {.infobox .question}
+Why might there be no result in fitted_rss_2 for L=2?
+:::: 
 
 ### Reflections
 
 - What can you do next with these results?
-- What is the advantages of using SuSiE over conditional approaches?
+
+- What is the advantages of using SuSiE over conditional approaches (such as LD clumping or COJO)?
+
 - What assumptions are we making when using SuSiE?

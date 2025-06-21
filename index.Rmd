@@ -67,7 +67,7 @@ source("spelling-check.R")
 | Tuesday 09:00–12:00 and 13:00–16:00    | Continuing part 1                           |
 | Wednesday 09:00–10:00                  | Finishing part 1 + general Q&A              |
 | Wednesday 10:30–12:00 and 13:00–15:30  | Language exchange workshop (with everyone)  |
-| Wednesday 16:00–17:00                  | Starting part 2 (chapters 6 to 9)           |
+| Wednesday 16:00–17:00                  | Starting part 2 (chapters 6 to 10)           |
 | Thursday 09:00–12:00 and 13:00–16:30   | Continuing part 2                           |
 | Friday 09:00–12:00                     | Finishing part 2 + general Q&A              |
 
