@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-21" />
+<meta name="date" content="2025-06-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -630,8 +630,8 @@ Click to see solution
 <span id="cb199-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb199-2" tabindex="-1"></a>beta_inf <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_inf</span>(corr, df_beta, ldsc_h2_est)</span>
 <span id="cb199-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb199-3" tabindex="-1"></a>pred_inf <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, beta_inf, <span class="at">ind.col =</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>)</span>
 <span id="cb199-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb199-4" tabindex="-1"></a><span class="fu">AUCBoot</span>(pred_inf, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
-<pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
-#&gt; 0.55119324 0.51948181 0.58289182 0.01615029</code></pre>
+<pre><code>#&gt;      Mean      2.5%     97.5%        Sd 
+#&gt; 0.5512552 0.5192296 0.5827642 0.0162499</code></pre>
 <p>For LDpred2(-grid), this is the grid we recommend to use:</p>
 <div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-1" tabindex="-1"></a><span class="co"># LDpred2-grid</span></span>
 <span id="cb201-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-2" tabindex="-1"></a>(h2_seq <span class="ot">&lt;-</span> <span class="fu">round</span>(ldsc_h2_est <span class="sc">*</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>, <span class="dv">1</span>, <span class="fl">1.4</span>), <span class="dv">4</span>))</span></code></pre></div>
@@ -697,14 +697,14 @@ Note that, in practice, you should use only individuals from the validation set 
 <span id="cb211-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb211-7" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span></span>
 <span id="cb211-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb211-8" tabindex="-1"></a>  beta_grid[, .]</span></code></pre></div>
 <pre><code>#&gt;         p     h2 sparse  sparsity    score id
-#&gt; 1 0.00530 0.0528   TRUE 0.6845440 4.151075  8
-#&gt; 2 0.00300 0.0528   TRUE 0.7666125 4.088284  7
-#&gt; 3 0.00170 0.0528   TRUE 0.8302227 4.070230  6
-#&gt; 4 0.00097 0.0528   TRUE 0.8802413 3.998747  5
-#&gt; 5 0.00940 0.0528   TRUE 0.5938192 3.909628  9
-#&gt; 6 0.01700 0.0528   TRUE 0.5063551 3.859559 10
-#&gt; 7 0.00010 0.0528   TRUE 0.9673626 3.790611  1
-#&gt; 8 0.00031 0.0528   TRUE 0.9378684 3.788622  3
+#&gt; 1 0.00300 0.0528   TRUE 0.7676407 4.061085  7
+#&gt; 2 0.00530 0.0528   TRUE 0.6858170 3.973074  8
+#&gt; 3 0.00097 0.0528   TRUE 0.8786354 3.956181  5
+#&gt; 4 0.00170 0.0528   TRUE 0.8305458 3.931605  6
+#&gt; 5 0.01700 0.0528   TRUE 0.5096257 3.876042 10
+#&gt; 6 0.00940 0.0528   TRUE 0.5932022 3.838807  9
+#&gt; 7 0.00018 0.0528   TRUE 0.9544173 3.819763  2
+#&gt; 8 0.00010 0.0528   TRUE 0.9671961 3.804488  1
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 8 rows ]</code></pre>
 <div class="infobox question">
 <p>What is the best model with less than 5% of variants used?</p>
@@ -722,14 +722,14 @@ Note that, in practice, you should use only individuals from the validation set 
 <p>Perform some quality control on the chains:</p>
 <div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb214-1" tabindex="-1"></a><span class="co"># `range` should be between 0 and 2</span></span>
 <span id="cb214-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb214-2" tabindex="-1"></a>(range <span class="ot">&lt;-</span> <span class="fu">sapply</span>(multi_auto, <span class="cf">function</span>(auto) <span class="fu">diff</span>(<span class="fu">range</span>(auto<span class="sc">$</span>corr_est))))</span></code></pre></div>
-<pre><code>#&gt;  [1] 0.05336694 0.05354288 0.05327198 0.05485309 0.05337021 0.05496931
-#&gt;  [7] 0.05439911 0.05262732 0.05200699 0.05483172 0.05402021 0.05529903
-#&gt; [13] 0.05500416 0.05528228 0.05553818 0.05354993 0.05382774 0.05280271
-#&gt; [19] 0.05490429 0.05481815 0.05381678 0.05442522 0.05437920 0.05392864
-#&gt; [25] 0.05350654 0.05412395 0.05231805 0.05504691 0.05328205 0.05196111</code></pre>
+<pre><code>#&gt;  [1] 0.05351896 0.05675050 0.05371428 0.05456144 0.05409215 0.05367211
+#&gt;  [7] 0.05570390 0.05440544 0.05456001 0.05422175 0.05431675 0.05525156
+#&gt; [13] 0.05430350 0.05613005 0.05462929 0.05374616 0.05375764 0.05432813
+#&gt; [19] 0.05566482 0.05507083 0.05483947 0.05443773 0.05519113 0.05438810
+#&gt; [25] 0.05491368 0.05441077 0.05325738 0.05589335 0.05324403 0.05423573</code></pre>
 <div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-1" tabindex="-1"></a>(keep <span class="ot">&lt;-</span> <span class="fu">which</span>(range <span class="sc">&gt;</span> (<span class="fl">0.95</span> <span class="sc">*</span> <span class="fu">quantile</span>(range, <span class="fl">0.95</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))))</span></code></pre></div>
-<pre><code>#&gt;  [1]  1  2  3  4  5  6  7  8 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
-#&gt; [24] 25 26 28 29</code></pre>
+<pre><code>#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+#&gt; [24] 24 25 26 27 28 29 30</code></pre>
 <p>To get the final effects / predictions, <strong>you should only use chains that pass this filtering</strong>:</p>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb218-1" tabindex="-1"></a>final_beta_auto <span class="ot">&lt;-</span></span>
 <span id="cb218-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb218-2" tabindex="-1"></a>  <span class="fu">rowMeans</span>(<span class="fu">sapply</span>(multi_auto[keep], <span class="cf">function</span>(auto) auto<span class="sc">$</span>beta_est))</span></code></pre></div>
@@ -739,7 +739,7 @@ Note that, in practice, you should use only individuals from the validation set 
 <span id="cb219-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-3" tabindex="-1"></a>                               <span class="at">ncores =</span> NCORES)</span>
 <span id="cb219-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-4" tabindex="-1"></a><span class="fu">AUCBoot</span>(final_pred_auto, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
 <pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
-#&gt; 0.56391631 0.53167760 0.59618882 0.01644721</code></pre>
+#&gt; 0.56421631 0.53256013 0.59599834 0.01632191</code></pre>
 </details>
 </div>
 <div id="lassosum2-grid-of-models" class="section level3 hasAnchor" number="8.5.3">
@@ -791,13 +791,13 @@ Click to see solution
 <span id="cb225-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb225-6" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span></span>
 <span id="cb225-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb225-7" tabindex="-1"></a>  beta_lassosum2[, .]</span></code></pre></div>
 <pre><code>#&gt;       lambda delta num_iter time  sparsity    score id
-#&gt; 1 0.00996541 0.001       51 0.18 0.9937624 4.112203  3
-#&gt; 2 0.00996541 0.010       51 0.14 0.9936938 4.106545 13
+#&gt; 1 0.00996541 0.001       51 0.19 0.9937624 4.112203  3
+#&gt; 2 0.00996541 0.010       51 0.19 0.9936938 4.106545 13
 #&gt; 3 0.00996541 0.100       45 0.14 0.9930475 4.053764 23
-#&gt; 4 0.01579411 0.001       51 0.09 0.9997062 3.977849  2
-#&gt; 5 0.00996541 1.000       14 0.05 0.9902959 3.976200 33
-#&gt; 6 0.01579411 0.010       51 0.10 0.9997062 3.973049 12
-#&gt; 7 0.01579411 0.100       35 0.06 0.9996181 3.900467 22
+#&gt; 4 0.01579411 0.001       51 0.11 0.9997062 3.977849  2
+#&gt; 5 0.00996541 1.000       14 0.06 0.9902959 3.976200 33
+#&gt; 6 0.01579411 0.010       51 0.11 0.9997062 3.973049 12
+#&gt; 7 0.01579411 0.100       35 0.08 0.9996181 3.900467 22
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 33 rows ]</code></pre>
 <p>We can choose the best-overall model from both LDpred2-grid and lassosum2:</p>
 <div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-1" tabindex="-1"></a>best_grid_overall <span class="ot">&lt;-</span> <span class="st">`</span><span class="at">if</span><span class="st">`</span>(<span class="fu">max</span>(params2<span class="sc">$</span>score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">&gt;</span> <span class="fu">max</span>(params<span class="sc">$</span>score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>

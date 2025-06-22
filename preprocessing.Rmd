@@ -17,7 +17,7 @@ In this chapter, I talk about conversion, quality control and imputation. Conver
 
 ## Conversion and quality control of PLINK files {#PLINK}
 
-PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in bigsnpr, for ease of use directly from R:
+PLINK is very efficient and effective at converting and performing quality control of multiple formats, so I provide some wrappers to PLINK in bigsnpr, for ease of use directly from R:
 
 - `download_plink()` and `download_plink2()` for downloading the latest stable versions of PLINK 1.9 and 2.0 [@chang2015second].
 
@@ -45,7 +45,7 @@ Note that most functions from bigstatsr and bigsnpr do NOT handle missing values
 Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g. the code from [this vignette](https://privefl.github.io/bigstatsr/articles/big-apply.html).
 
 In bigsnpr, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use the (much) slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient].
-If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as discussed in \@ref(getting-bigsnp).
+If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as shown in \@ref(getting-bigsnp).
 
 
 ## Example {#exo-preprocessing}
@@ -171,7 +171,9 @@ big_counts(G, ind.col = 1:8)
 ```
 
 :::: {.infobox .caution}
-`G` still has missing values, but `G2` does not. Note that both use the same underlying data (the same binary file `.bk` on disk), the difference is that they use a different code to decode the underlying data:
+`G` still has missing values, but `G2` does not. 
+
+Although both use the same underlying data (the same binary file `.bk` on disk), they use a different code to decode the underlying data:
 ::::
 
 ```{r}

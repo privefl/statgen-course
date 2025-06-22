@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-21" />
+<meta name="date" content="2025-06-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -324,7 +324,7 @@ What do you get? Use <code>snp_attach()</code> to get the data into R and explor
 Click to see solution
 </summary>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="inputs-and-formats.html#cb6-1" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBed2</span>(bedfile, <span class="at">backingfile =</span> <span class="fu">tempfile</span>()))  <span class="co"># get path to new file</span></span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpqO4yuN\\file5b407df1698c.rds&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpyYf5zl\\file59702a66616b.rds&quot;</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="inputs-and-formats.html#cb8-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)  <span class="co"># can then read in the bigSNP object in any R session</span></span>
 <span id="cb8-2"><a href="inputs-and-formats.html#cb8-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 517 rows and 4542 columns.</code></pre>
@@ -395,8 +395,9 @@ Click to see solution
 <span id="cb22-5"><a href="inputs-and-formats.html#cb22-5" tabindex="-1"></a>  <span class="st">&quot;https://enkre.net/cgi-bin/code/bgen/raw/dc7276e0f0e2e096f58d2dac645aa5711de2cd64c3b29a07a80575e175344f78?at=example.8bits.bgen.bgi&quot;</span>,</span>
 <span id="cb22-6"><a href="inputs-and-formats.html#cb22-6" tabindex="-1"></a>  <span class="at">fname =</span> <span class="st">&quot;example.bgen.bgi&quot;</span>)</span></code></pre></div>
 <div class="infobox exo">
-<p>Use <code>snp_readBGI()</code> to get information on the variants, and read the first 10 variants using <code>snp_readBGEN()</code> (pay attention to the specific format of <code>list_snp_id</code>) and <code>snp_attach()</code>.</p>
-<p>What extra information do you get about the variants?</p>
+<p>First, use <code>snp_readBGI()</code> to get information on the variants.</p>
+<p>Then read the first 10 variants using <code>snp_readBGEN()</code> (pay attention to the specific format of <code>list_snp_id</code>), and <code>snp_attach()</code>.</p>
+<p>What extra information about the variants do you get in the bigSNP object?</p>
 </div>
 <details>
 <summary>
@@ -422,7 +423,7 @@ Click to see solution
 <pre><code>#&gt;  [1] &quot;01_1001_A_G&quot; &quot;01_2000_A_G&quot; &quot;01_2001_A_G&quot; &quot;01_3000_A_G&quot; &quot;01_3001_A_G&quot;
 #&gt;  [6] &quot;01_4000_A_G&quot; &quot;01_4001_A_G&quot; &quot;01_5000_A_G&quot; &quot;01_5001_A_G&quot; &quot;01_6000_A_G&quot;</code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="inputs-and-formats.html#cb27-1" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBGEN</span>(bgen, <span class="at">backingfile =</span> <span class="fu">tempfile</span>(), <span class="at">list_snp_id =</span> <span class="fu">list</span>(snp_id)))</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpqO4yuN\\file5b40736d6ebf.rds&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpyYf5zl\\file59704465e16.rds&quot;</code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="inputs-and-formats.html#cb29-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
 <span id="cb29-2"><a href="inputs-and-formats.html#cb29-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 500 rows and 10 columns.</code></pre>

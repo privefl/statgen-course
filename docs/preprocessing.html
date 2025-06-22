@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-21" />
+<meta name="date" content="2025-06-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -286,7 +286,7 @@ div.csl-indent {
 <p>In this chapter, I talk about conversion, quality control and imputation. Conversion is also discussed in <a href="inputs-and-formats.html#getting-bigsnp">2.3</a>.</p>
 <div id="PLINK" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Conversion and quality control of PLINK files<a href="preprocessing.html#PLINK" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>PLINK is very efficient for conversion and quality control of multiple formats, so I provide some wrappers to PLINK in bigsnpr, for ease of use directly from R:</p>
+<p>PLINK is very efficient and effective at converting and performing quality control of multiple formats, so I provide some wrappers to PLINK in bigsnpr, for ease of use directly from R:</p>
 <ul>
 <li><p><code>download_plink()</code> and <code>download_plink2()</code> for downloading the latest stable versions of PLINK 1.9 and 2.0 <span class="citation">(<a href="#ref-chang2015second">Chang et al., 2015</a>)</span>.</p></li>
 <li><p><code>snp_plinkQC()</code> for quality control (QC) and conversion to bed/bim/fam.</p></li>
@@ -306,7 +306,7 @@ div.csl-indent {
 <p>Note that most functions from bigstatsr and bigsnpr do NOT handle missing values, except for some of the <code>bed_</code> functions.</p>
 <p>Simple imputation (e.g. by the mean) of a ‘double’ FBM can be performed by blocks using e.g. the code from <a href="https://privefl.github.io/bigstatsr/articles/big-apply.html">this vignette</a>.</p>
 <p>In bigsnpr, to perform simple imputation of genotyped data, you can use <code>snp_fastImputeSimple()</code>. You can also use the (much) slower <code>snp_fastImpute()</code> that uses XGBoost models to impute genotyped data <span class="citation">(<a href="#ref-prive2017efficient">Privé et al., 2018</a>)</span>.
-If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as discussed in <a href="inputs-and-formats.html#getting-bigsnp">2.3</a>.</p>
+If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as shown in <a href="inputs-and-formats.html#getting-bigsnp">2.3</a>.</p>
 </div>
 <div id="exo-preprocessing" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Example<a href="preprocessing.html#exo-preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -516,7 +516,8 @@ Click to see solution
 #&gt; 2       6   66   28   25   67    7  165  216
 #&gt; &lt;NA&gt;   17   15    0   18    1   78   64   69</code></pre>
 <div class="infobox caution">
-<p><code>G</code> still has missing values, but <code>G2</code> does not. Note that both use the same underlying data (the same binary file <code>.bk</code> on disk), the difference is that they use a different code to decode the underlying data:</p>
+<p><code>G</code> still has missing values, but <code>G2</code> does not.</p>
+<p>Although both use the same underlying data (the same binary file <code>.bk</code> on disk), they use a different code to decode the underlying data:</p>
 </div>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="preprocessing.html#cb86-1" tabindex="-1"></a>G<span class="sc">$</span>code256</span></code></pre></div>
 <pre><code>#&gt;  [1]  0  1  2 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
