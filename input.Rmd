@@ -7,10 +7,18 @@ editor_options:
 # Inputs and formats
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("nd", "bgen", "bgi", "Rcpp")
+WORDS_TO_IGNORE <- c("nd", "epigenetic", "omics", "reimplementing", "transcriptomic", "bgen", "bgi", "Rcpp")
 source("knitr-options.R")
 source("spelling-check.R")
 rm(X); gc(); file.remove(c("tmp-data/test.bk", "tmp-data/test.rds"))
+```
+
+Genetic data is represented as sequences of pairs of alleles (one from both parents). In the following figure, the reference alleles are shown in black, and the alternative alleles—arising from mutations—are shown in blue. 
+Here, three DNA positions show alternative alleles; these are called genetic variants. And we refer to them as common variants because the alternative allele is frequent enough in the population.
+We can encode this data into a numeric genotype matrix G by counting the number of alternative alleles per individual at each variant.
+
+```{r, echo=FALSE, out.width="65%"}
+knitr::include_graphics("images/overview_geneticvariants.png")
 ```
 
 ## Formats of genetic data
@@ -19,11 +27,25 @@ There exist many different data formats for genetic data:
 
 - *bed*/*bim*/*fam* files (also called PLINK1 files) that respectively store genotype calls only (0, 1, 2, or NA) in a very condensed way (binary using one byte only for 4 genotypes), information on the genetic variants (text), and information on the individuals (text). PLINK 1.9 and 2.0 [@chang2015second] provide many functions to work with this format.
 
+:::: {.infobox .caution}
+The *bed* format presented here is not the same as [the *BED* format](https://en.wikipedia.org/wiki/BED_(file_format)) (a text file format used to store genomic regions as coordinates and associated annotations).
+::::
+
 - *bgen* files (usually one per chromosome) that can store imputed probabilities (P(0), P(1), P(2)) that are often transformed to dosage information (expected values: P(1) + 2 P(2)). Each variant is stored compressed, which is very efficient, especially for low-frequency variants. They are accompanied by *bgen.bgi* files that store information on the genetic variants and the position of their corresponding data in the *bgen* files, and by a *sample* file that stores information on the individual IDs. This is the format used for the original UK Biobank imputed data [@bycroft2018uk].
 
 - *pgen*/*pvar*/*psam* files (also called PLINK2 files) that can store imputed data as well, and *pgen* files seem more compressed than *bgen* files. PLINK2 provides many functions to work with this format.
 
 - Many other formats that you can usually convert from using PLINK.
+
+
+## Main motivation for developing R packages bigstatsr and bigsnpr
+
+At the time, there was a notable lack of user-friendly and efficient R packages for genetic analyses, which posed challenges for researchers. 
+The existing workflows often required the use of disparate software tools with inconsistent input formats, reliance on text files for parameter settings, and limited compatibility with exploratory data analysis and familiar R packages. 
+Additionally, the development of new methods was hindered by the absence of tools supporting a simple matrix-like data structure. 
+To address these challenges, I initiated the development of the R package bigsnpr in 2016, reimplementing the statistical methods commonly used in genetic analyses within a cohesive and accessible R framework.
+
+At some point, I realized that many functions (e.g. to perform genome-wide association studies (GWAS), principal component analysis (PCA), summary statistics, etc.) were not specific to genotype data. Indeed, both association studies and PCA are applicable to other omics data, such as transcriptomic or epigenetic datasets. Therefore I decided to move all these functions that could be used on any data stored as a matrix into a new R package, bigstatsr. This is why there are two packages, where bigstatsr can basically be used by any field using data stored as large numeric matrices, while bigsnpr provides some tools more specific to genotype data, largely building on top of bigstatsr. The initial description of the two packages is available in @prive2017efficient.
 
 
 ## The bigSNP format from bigsnpr
@@ -42,6 +64,8 @@ Package bigsnpr also provides functions for directly working on bed files with a
 - To read a bigSNP object from *bed*/*bim*/*fam* files, you can use functions `snp_readBed()` and `snp_readBed2()` (the second can read a subset of individuals/variants and use parallelism).
 
 - To read dosages from *BGEN* files, you can use function `snp_readBGEN()`. This function takes around 40 minutes to read 1M variants for 400K individuals using 15 cores. Note that this function currently works only for BGEN v1.2 with probabilities stored as 8 bits (cf. [this issue](https://github.com/privefl/bigsnpr/issues/141#issuecomment-691285671)), which is the case for e.g. the UK Biobank files.
+
+- The previous functions create two new files: `<backingfile>.bk` (binary file that stores the content of the genetic matrix) and `<backingfile>.rds` (stores the R bigSNP object, including some information on how to link with the *bk* file).
 
 - To read any format used in genetics, you can always convert blocks of the data to text files using PLINK, read these using `bigreadr::fread2()`, and fill part of the resulting FBM. For example, see [the code I used to convert the iPSYCH imputed data from the RICOPILI pipeline to my bigSNP format](https://github.com/privefl/bigsnpr-extdoc/blob/main/example-code/1-ricopili-to-bigsnp.R).
 
@@ -65,7 +89,7 @@ What do you get? Use `snp_attach()` to get the data into R and explore it a bit.
 (rds <- snp_readBed2(bedfile, backingfile = tempfile()))  # get path to new file
 bigsnp <- snp_attach(rds)  # can then read in the bigSNP object in any R session
 (G <- bigsnp$genotypes)
-G[1:5, 1:5]
+G[1:5, 1:8]  # first 8 genotypes for first 5 individuals
 str(bigsnp$fam)
 str(bigsnp$map)
 ```
@@ -83,7 +107,7 @@ Map the bed file directly using `bed()`. Can you access the same data as with th
 <summary>Click to see solution</summary>
 ```{r}
 obj.bed <- bed(bedfile)
-obj.bed[1:5, 1:5]
+obj.bed[1:5, 1:8]  # first 8 genotypes for first 5 individuals
 str(obj.bed$fam)
 str(obj.bed$map)
 ```

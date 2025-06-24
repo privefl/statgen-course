@@ -13,6 +13,7 @@ contact
 license
 inputs-and-formats
 formats-of-genetic-data
+main-motivation-for-developing-r-packages-bigstatsr-and-bigsnpr
 the-bigsnp-format-from-bigsnpr
 getting-bigsnp
 the-fbm-format-from-bigstatsr

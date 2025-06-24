@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-22" />
+<meta name="date" content="2025-06-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -173,17 +173,18 @@ div.csl-indent {
 <li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#formats-of-genetic-data"><i class="fa fa-check"></i><b>2.1</b> Formats of genetic data</a></li>
-<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> The bigSNP format from bigsnpr</a></li>
-<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-bigsnp"><i class="fa fa-check"></i><b>2.3</b> Getting a bigSNP object</a></li>
-<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.4</b> The FBM format from bigstatsr</a></li>
-<li class="chapter" data-level="2.5" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#working-with-an-fbm"><i class="fa fa-check"></i><b>2.5</b> Working with an FBM</a>
+<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#main-motivation-for-developing-r-packages-bigstatsr-and-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> Main motivation for developing R packages bigstatsr and bigsnpr</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.3</b> The bigSNP format from bigsnpr</a></li>
+<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-bigsnp"><i class="fa fa-check"></i><b>2.4</b> Getting a bigSNP object</a></li>
+<li class="chapter" data-level="2.5" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.5</b> The FBM format from bigstatsr</a></li>
+<li class="chapter" data-level="2.6" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#working-with-an-fbm"><i class="fa fa-check"></i><b>2.6</b> Working with an FBM</a>
 <ul>
-<li class="chapter" data-level="2.5.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>2.5.1</b> Similar accessor as R matrices</a></li>
-<li class="chapter" data-level="2.5.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>2.5.2</b> Split-(par)Apply-Combine Strategy</a></li>
-<li class="chapter" data-level="2.5.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>2.5.3</b> Similar accessor as Rcpp matrices</a></li>
-<li class="chapter" data-level="2.5.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>2.5.4</b> Some summary functions are already implemented</a></li>
+<li class="chapter" data-level="2.6.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>2.6.1</b> Similar accessor as R matrices</a></li>
+<li class="chapter" data-level="2.6.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>2.6.2</b> Split-(par)Apply-Combine Strategy</a></li>
+<li class="chapter" data-level="2.6.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>2.6.3</b> Similar accessor as Rcpp matrices</a></li>
+<li class="chapter" data-level="2.6.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>2.6.4</b> Some summary functions are already implemented</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#exercise"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+<li class="chapter" data-level="2.7" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#exercise"><i class="fa fa-check"></i><b>2.7</b> Exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>3</b> Preprocessing</a>
 <ul>
@@ -283,7 +284,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="preprocessing" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Preprocessing<a href="preprocessing.html#preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>In this chapter, I talk about conversion, quality control and imputation. Conversion is also discussed in <a href="inputs-and-formats.html#getting-bigsnp">2.3</a>.</p>
+<p>In this chapter, I talk about conversion, quality control and imputation. Conversion is also discussed in <a href="inputs-and-formats.html#getting-bigsnp">2.4</a>.</p>
 <div id="PLINK" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Conversion and quality control of PLINK files<a href="preprocessing.html#PLINK" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>PLINK is very efficient and effective at converting and performing quality control of multiple formats, so I provide some wrappers to PLINK in bigsnpr, for ease of use directly from R:</p>
@@ -306,7 +307,7 @@ div.csl-indent {
 <p>Note that most functions from bigstatsr and bigsnpr do NOT handle missing values, except for some of the <code>bed_</code> functions.</p>
 <p>Simple imputation (e.g. by the mean) of a ‘double’ FBM can be performed by blocks using e.g. the code from <a href="https://privefl.github.io/bigstatsr/articles/big-apply.html">this vignette</a>.</p>
 <p>In bigsnpr, to perform simple imputation of genotyped data, you can use <code>snp_fastImputeSimple()</code>. You can also use the (much) slower <code>snp_fastImpute()</code> that uses XGBoost models to impute genotyped data <span class="citation">(<a href="#ref-prive2017efficient">Privé et al., 2018</a>)</span>.
-If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as shown in <a href="inputs-and-formats.html#getting-bigsnp">2.3</a>.</p>
+If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as shown in <a href="inputs-and-formats.html#getting-bigsnp">2.4</a>.</p>
 </div>
 <div id="exo-preprocessing" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Example<a href="preprocessing.html#exo-preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -534,7 +535,7 @@ Click to see solution
 <hr />
 <p>To always use <code>G2</code> (with the new <code>code256</code>) and the extended <code>obj.bigsnp$fam</code>, you need to save the new <code>obj.bigsnp</code> using</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="preprocessing.html#cb90-1" tabindex="-1"></a>obj.bigsnp<span class="sc">$</span>genotypes <span class="ot">&lt;-</span> G2</span>
-<span id="cb90-2"><a href="preprocessing.html#cb90-2" tabindex="-1"></a><span class="fu">snp_save</span>(obj.bigsnp)</span></code></pre></div>
+<span id="cb90-2"><a href="preprocessing.html#cb90-2" tabindex="-1"></a><span class="fu">snp_save</span>(obj.bigsnp)  <span class="co"># overwrite rds file with new object</span></span></code></pre></div>
 <p>You can then re-attach this data in another R session later using <code>snp_attach("tmp-data/GWAS_data_sorted_QC.rds")</code>.</p>
 
 </div>

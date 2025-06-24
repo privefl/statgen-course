@@ -141,7 +141,7 @@ What influences predictive power of PGS?
 
 - Predictive power $r^2$ is bounded by the heritability $h^2$ captured by the set of variants used (called SNP-heritability), except for some particular cases [@wang2023polygenic].
 
-- $r^2$ should increase with GWAS sample size $N$ (of course)
+- $r^2$ should increase with GWAS sample size $N$, even though it probably increases slower than expected [@henches2025polygenic], possibly due to meta-analyzing heterogeneous GWAS summary statistics 
 
 - $r^2$ decreases with polygenicity (the proportion of causal variants), because there are many smaller effects, harder to detect and estimate.    
 Let's denote $M_c$ the number of causal variants.

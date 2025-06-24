@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-22" />
+<meta name="date" content="2025-06-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -173,17 +173,18 @@ div.csl-indent {
 <li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#formats-of-genetic-data"><i class="fa fa-check"></i><b>2.1</b> Formats of genetic data</a></li>
-<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> The bigSNP format from bigsnpr</a></li>
-<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-bigsnp"><i class="fa fa-check"></i><b>2.3</b> Getting a bigSNP object</a></li>
-<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.4</b> The FBM format from bigstatsr</a></li>
-<li class="chapter" data-level="2.5" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#working-with-an-fbm"><i class="fa fa-check"></i><b>2.5</b> Working with an FBM</a>
+<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#main-motivation-for-developing-r-packages-bigstatsr-and-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> Main motivation for developing R packages bigstatsr and bigsnpr</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.3</b> The bigSNP format from bigsnpr</a></li>
+<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-bigsnp"><i class="fa fa-check"></i><b>2.4</b> Getting a bigSNP object</a></li>
+<li class="chapter" data-level="2.5" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.5</b> The FBM format from bigstatsr</a></li>
+<li class="chapter" data-level="2.6" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#working-with-an-fbm"><i class="fa fa-check"></i><b>2.6</b> Working with an FBM</a>
 <ul>
-<li class="chapter" data-level="2.5.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>2.5.1</b> Similar accessor as R matrices</a></li>
-<li class="chapter" data-level="2.5.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>2.5.2</b> Split-(par)Apply-Combine Strategy</a></li>
-<li class="chapter" data-level="2.5.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>2.5.3</b> Similar accessor as Rcpp matrices</a></li>
-<li class="chapter" data-level="2.5.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>2.5.4</b> Some summary functions are already implemented</a></li>
+<li class="chapter" data-level="2.6.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>2.6.1</b> Similar accessor as R matrices</a></li>
+<li class="chapter" data-level="2.6.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>2.6.2</b> Split-(par)Apply-Combine Strategy</a></li>
+<li class="chapter" data-level="2.6.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>2.6.3</b> Similar accessor as Rcpp matrices</a></li>
+<li class="chapter" data-level="2.6.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>2.6.4</b> Some summary functions are already implemented</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#exercise"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+<li class="chapter" data-level="2.7" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#exercise"><i class="fa fa-check"></i><b>2.7</b> Exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>3</b> Preprocessing</a>
 <ul>
@@ -284,7 +285,7 @@ div.csl-indent {
 <div id="linkage-disequilibrium-ld" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Linkage Disequilibrium (LD)<a href="linkage-disequilibrium-ld.html#linkage-disequilibrium-ld" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Most methods that rely on GWAS summary statistics also rely on an LD matrix (correlation matrix between genetic variants). It is used in algorithms to transform GWAS marginal (i.e. independent) effects into joint effects.</p>
-<p>Indeed, if we take the simple example of a linear regression <span class="math inline">\(y = X \beta + \epsilon\)</span>, the joint effects are given by <span class="math inline">\(\hat\beta = (X^T X)^{-1} X^T y\)</span>, where <span class="math inline">\(X^T y\)</span> are the marginal effects and <span class="math inline">\(X^T X\)</span> is the covariance matrix (up to some scaling).</p>
+<p>Indeed, if we take the simple example of a linear regression <span class="math inline">\(y = X \beta + \epsilon\)</span>, the joint effects are estimated by <span class="math inline">\(\hat\beta = (X^T X)^{-1} X^T y\)</span>, where <span class="math inline">\(X^T y\)</span> are the marginal effects and <span class="math inline">\(X^T X\)</span> is the covariance matrix (up to some scaling).</p>
 <p>The GWAS data from which the GWAS summary statistics are derived is often not accessible, so that the LD matrix is usually derived from another dataset.
 <strong>This reference dataset needs to be as close as possible as the GWAS data (in terms of genetic ancestry) to provide a close estimation of LD.</strong>
 This is why I got interested in estimating the ancestry composition of a GWAS based on allele frequencies reported in GWAS summary statistics (as we’ve seen in <a href="gwas-summary-statistics.html#ssancestry">6.3</a>), at least to make sure that the reference data used to compute the LD is similar (in terms of genetic ancestry) to the original GWAS data.</p>
@@ -305,25 +306,25 @@ From this, it results in a windowed (sparse) LD matrix.</p>
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="linkage-disequilibrium-ld.html#cb163-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="linkage-disequilibrium-ld.html#cb165-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
 <pre><code>#&gt; Loading required package: bigstatsr</code></pre>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="linkage-disequilibrium-ld.html#cb165-1" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
-<span id="cb165-2"><a href="linkage-disequilibrium-ld.html#cb165-2" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="linkage-disequilibrium-ld.html#cb166-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb166-2"><a href="linkage-disequilibrium-ld.html#cb166-2" tabindex="-1"></a>ind_chr22 <span class="ot">&lt;-</span> <span class="fu">which</span>(obj.bed<span class="sc">$</span>map<span class="sc">$</span>chromosome <span class="sc">==</span> <span class="dv">22</span>)</span>
-<span id="cb166-3"><a href="linkage-disequilibrium-ld.html#cb166-3" tabindex="-1"></a>POS_chr22 <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map<span class="sc">$</span>physical.pos[ind_chr22]  <span class="co"># in bp</span></span>
-<span id="cb166-4"><a href="linkage-disequilibrium-ld.html#cb166-4" tabindex="-1"></a></span>
-<span id="cb166-5"><a href="linkage-disequilibrium-ld.html#cb166-5" tabindex="-1"></a><span class="co"># downloads 5.9 MB</span></span>
-<span id="cb166-6"><a href="linkage-disequilibrium-ld.html#cb166-6" tabindex="-1"></a>POS2_chr22 <span class="ot">&lt;-</span> <span class="fu">snp_asGeneticPos</span>(<span class="at">infos.chr =</span> <span class="fu">rep</span>(<span class="dv">22</span>, <span class="fu">length</span>(POS_chr22)), </span>
-<span id="cb166-7"><a href="linkage-disequilibrium-ld.html#cb166-7" tabindex="-1"></a>                               <span class="at">infos.pos =</span> POS_chr22, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="linkage-disequilibrium-ld.html#cb167-1" tabindex="-1"></a>cor1 <span class="ot">&lt;-</span> <span class="fu">bed_cor</span>(obj.bed, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb167-2"><a href="linkage-disequilibrium-ld.html#cb167-2" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)  <span class="co"># in cM</span></span></code></pre></div>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="linkage-disequilibrium-ld.html#cb168-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
-<span id="cb168-2"><a href="linkage-disequilibrium-ld.html#cb168-2" tabindex="-1"></a>G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes</span>
-<span id="cb168-3"><a href="linkage-disequilibrium-ld.html#cb168-3" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">dim</span>(G) <span class="sc">==</span> <span class="fu">dim</span>(obj.bed)))</span>
-<span id="cb168-4"><a href="linkage-disequilibrium-ld.html#cb168-4" tabindex="-1"></a>cor2 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb168-5"><a href="linkage-disequilibrium-ld.html#cb168-5" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
-<span id="cb168-6"><a href="linkage-disequilibrium-ld.html#cb168-6" tabindex="-1"></a><span class="fu">cbind</span>(cor2[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], cor1[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])  <span class="co"># not exactly the same; why?</span></span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="linkage-disequilibrium-ld.html#cb167-1" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
+<span id="cb167-2"><a href="linkage-disequilibrium-ld.html#cb167-2" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="linkage-disequilibrium-ld.html#cb168-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb168-2"><a href="linkage-disequilibrium-ld.html#cb168-2" tabindex="-1"></a>ind_chr22 <span class="ot">&lt;-</span> <span class="fu">which</span>(obj.bed<span class="sc">$</span>map<span class="sc">$</span>chromosome <span class="sc">==</span> <span class="dv">22</span>)</span>
+<span id="cb168-3"><a href="linkage-disequilibrium-ld.html#cb168-3" tabindex="-1"></a>POS_chr22 <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map<span class="sc">$</span>physical.pos[ind_chr22]  <span class="co"># in bp</span></span>
+<span id="cb168-4"><a href="linkage-disequilibrium-ld.html#cb168-4" tabindex="-1"></a></span>
+<span id="cb168-5"><a href="linkage-disequilibrium-ld.html#cb168-5" tabindex="-1"></a><span class="co"># downloads 5.9 MB</span></span>
+<span id="cb168-6"><a href="linkage-disequilibrium-ld.html#cb168-6" tabindex="-1"></a>POS2_chr22 <span class="ot">&lt;-</span> <span class="fu">snp_asGeneticPos</span>(<span class="at">infos.chr =</span> <span class="fu">rep</span>(<span class="dv">22</span>, <span class="fu">length</span>(POS_chr22)), </span>
+<span id="cb168-7"><a href="linkage-disequilibrium-ld.html#cb168-7" tabindex="-1"></a>                               <span class="at">infos.pos =</span> POS_chr22, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="linkage-disequilibrium-ld.html#cb169-1" tabindex="-1"></a>cor1 <span class="ot">&lt;-</span> <span class="fu">bed_cor</span>(obj.bed, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb169-2"><a href="linkage-disequilibrium-ld.html#cb169-2" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)  <span class="co"># in cM</span></span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="linkage-disequilibrium-ld.html#cb170-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
+<span id="cb170-2"><a href="linkage-disequilibrium-ld.html#cb170-2" tabindex="-1"></a>G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb170-3"><a href="linkage-disequilibrium-ld.html#cb170-3" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">dim</span>(G) <span class="sc">==</span> <span class="fu">dim</span>(obj.bed)))</span>
+<span id="cb170-4"><a href="linkage-disequilibrium-ld.html#cb170-4" tabindex="-1"></a>cor2 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb170-5"><a href="linkage-disequilibrium-ld.html#cb170-5" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
+<span id="cb170-6"><a href="linkage-disequilibrium-ld.html#cb170-6" tabindex="-1"></a><span class="fu">cbind</span>(cor2[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], cor1[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])  <span class="co"># not exactly the same; why?</span></span></code></pre></div>
 <pre><code>#&gt; 5 x 10 sparse Matrix of class &quot;dgCMatrix&quot;
 #&gt;                                                                 
 #&gt; [1,]  1.00000000 -0.05154381 -0.03629097 -0.02959808 -0.04231449
@@ -337,10 +338,10 @@ Click to see solution
 #&gt; [3,] -0.03645858 -0.15427297  1.00000000  0.92937159 -0.51078705
 #&gt; [4,] -0.02979486 -0.15639606  0.92937159  1.00000000 -0.46606808
 #&gt; [5,] -0.04304076  0.15833843 -0.51078705 -0.46606808  1.00000000</code></pre>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="linkage-disequilibrium-ld.html#cb170-1" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> G<span class="sc">$</span><span class="fu">copy</span>(CODE_012)  <span class="co"># go back to having missing values</span></span>
-<span id="cb170-2"><a href="linkage-disequilibrium-ld.html#cb170-2" tabindex="-1"></a>cor3 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G2, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb170-3"><a href="linkage-disequilibrium-ld.html#cb170-3" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
-<span id="cb170-4"><a href="linkage-disequilibrium-ld.html#cb170-4" tabindex="-1"></a><span class="fu">all.equal</span>(cor3, cor1)</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="linkage-disequilibrium-ld.html#cb172-1" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> G<span class="sc">$</span><span class="fu">copy</span>(CODE_012)  <span class="co"># go back to having missing values</span></span>
+<span id="cb172-2"><a href="linkage-disequilibrium-ld.html#cb172-2" tabindex="-1"></a>cor3 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G2, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb172-3"><a href="linkage-disequilibrium-ld.html#cb172-3" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
+<span id="cb172-4"><a href="linkage-disequilibrium-ld.html#cb172-4" tabindex="-1"></a><span class="fu">all.equal</span>(cor3, cor1)</span></code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
 </details>
 </div>
@@ -355,7 +356,7 @@ Click to see solution
 <li><p>thresholding (discarding small absolute correlations) results in negative eigenvalues, so best to be avoided</p></li>
 </ul></li>
 <li><p>one can regularize the LD matrix (e.g. by adding some positive value to the diagonal, or by scaling down off-diagonal elements, as done in many methods); but too much regularization will bias results <span class="citation">(<a href="#ref-prive2022inferring">Privé, Albiñana, Arbel, Pasaniuc, &amp; Vilhjálmsson, 2023</a>)</span></p></li>
-<li><p>computing LD from imputed data seem to provide an unbiased estimation <span class="citation">(<a href="#ref-prive2021identifying">Privé, Arbel, et al., 2022</a>)</span></p></li>
+<li><p>computing LD from imputed data seems to provide an unbiased estimation <span class="citation">(<a href="#ref-prive2021identifying">Privé, Arbel, et al., 2022</a>)</span></p></li>
 <li><p>should partial correlations be used instead? (e.g. when there is some population structure in the data); this is still an open question I want to investigate</p></li>
 </ul>
 

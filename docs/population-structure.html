@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-22" />
+<meta name="date" content="2025-06-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -173,17 +173,18 @@ div.csl-indent {
 <li class="chapter" data-level="2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html"><i class="fa fa-check"></i><b>2</b> Inputs and formats</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#formats-of-genetic-data"><i class="fa fa-check"></i><b>2.1</b> Formats of genetic data</a></li>
-<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> The bigSNP format from bigsnpr</a></li>
-<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-bigsnp"><i class="fa fa-check"></i><b>2.3</b> Getting a bigSNP object</a></li>
-<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.4</b> The FBM format from bigstatsr</a></li>
-<li class="chapter" data-level="2.5" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#working-with-an-fbm"><i class="fa fa-check"></i><b>2.5</b> Working with an FBM</a>
+<li class="chapter" data-level="2.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#main-motivation-for-developing-r-packages-bigstatsr-and-bigsnpr"><i class="fa fa-check"></i><b>2.2</b> Main motivation for developing R packages bigstatsr and bigsnpr</a></li>
+<li class="chapter" data-level="2.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-bigsnp-format-from-bigsnpr"><i class="fa fa-check"></i><b>2.3</b> The bigSNP format from bigsnpr</a></li>
+<li class="chapter" data-level="2.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#getting-bigsnp"><i class="fa fa-check"></i><b>2.4</b> Getting a bigSNP object</a></li>
+<li class="chapter" data-level="2.5" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#the-fbm-format-from-bigstatsr"><i class="fa fa-check"></i><b>2.5</b> The FBM format from bigstatsr</a></li>
+<li class="chapter" data-level="2.6" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#working-with-an-fbm"><i class="fa fa-check"></i><b>2.6</b> Working with an FBM</a>
 <ul>
-<li class="chapter" data-level="2.5.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>2.5.1</b> Similar accessor as R matrices</a></li>
-<li class="chapter" data-level="2.5.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>2.5.2</b> Split-(par)Apply-Combine Strategy</a></li>
-<li class="chapter" data-level="2.5.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>2.5.3</b> Similar accessor as Rcpp matrices</a></li>
-<li class="chapter" data-level="2.5.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>2.5.4</b> Some summary functions are already implemented</a></li>
+<li class="chapter" data-level="2.6.1" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-r-matrices"><i class="fa fa-check"></i><b>2.6.1</b> Similar accessor as R matrices</a></li>
+<li class="chapter" data-level="2.6.2" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#split-parapply-combine-strategy"><i class="fa fa-check"></i><b>2.6.2</b> Split-(par)Apply-Combine Strategy</a></li>
+<li class="chapter" data-level="2.6.3" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#similar-accessor-as-rcpp-matrices"><i class="fa fa-check"></i><b>2.6.3</b> Similar accessor as Rcpp matrices</a></li>
+<li class="chapter" data-level="2.6.4" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#some-summary-functions-are-already-implemented"><i class="fa fa-check"></i><b>2.6.4</b> Some summary functions are already implemented</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#exercise"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+<li class="chapter" data-level="2.7" data-path="inputs-and-formats.html"><a href="inputs-and-formats.html#exercise"><i class="fa fa-check"></i><b>2.7</b> Exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>3</b> Preprocessing</a>
 <ul>
@@ -285,6 +286,9 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 4</span> Population structure<a href="population-structure.html#population-structure" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="principal-component-analysis-pca" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Principal Component Analysis (PCA)<a href="population-structure.html#principal-component-analysis-pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>PCA is a matrix factorization method designed to identify orthogonal components that sequentially capture the maximum possible variance in the data.
+It is closely related to Singular Value Decomposition (SVD), in which a data matrix <span class="math inline">\(G\)</span> is approximated as <span class="math inline">\(G \approx U D V^T\)</span>, where <span class="math inline">\(U\)</span> and <span class="math inline">\(V\)</span> have orthonormal columns and <span class="math inline">\(D\)</span> is a diagonal matrix of singular values.
+In this formulation, the principal component (PC) scores are given by <span class="math inline">\(U D = G V\)</span>, representing the projection of <span class="math inline">\(G\)</span> onto the PCA space, while the columns of <span class="math inline">\(V\)</span> correspond to the PC loadings.</p>
 <p>PCA on the genotype matrix can be used to capture population structure.
 However, PCA can actually capture different kinds of structure <span class="citation">(<a href="#ref-prive2020efficient">Privé, Luu, Blum, et al., 2020</a>)</span>:</p>
 <ul>
@@ -324,7 +328,7 @@ Click to see solution
 <pre><code>#&gt;    user  system elapsed 
 #&gt;    0.73    0.27   59.08 
 #&gt; Code finished running at 2025-06-10 13:33:51 CEST</code></pre>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="population-structure.html#cb96-1" tabindex="-1"></a><span class="fu">plot</span>(svd)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="population-structure.html#cb96-1" tabindex="-1"></a><span class="fu">plot</span>(svd)  <span class="co"># scree plot -&gt; singular values</span></span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="population-structure.html#cb97-1" tabindex="-1"></a><span class="fu">plot</span>(svd, <span class="at">type =</span> <span class="st">&quot;scores&quot;</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-2-2.png" width="70%" style="display: block; margin: auto;" /></p>
@@ -341,11 +345,11 @@ Click to see solution
 <span id="cb100-6"><a href="population-structure.html#cb100-6" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
 <span id="cb100-7"><a href="population-structure.html#cb100-7" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">6</span>)))</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<p>PC4 is basically capturing variation in a block of LD (the peak you see for loadings of PC4) and is then very correlated to genetic variants in this region.</p>
+<p>PC4 is basically capturing variation in a block of LD (the peak you see for loadings of PC4) and is then very correlated to genetic variants in this region (especially <code>the_max</code>).</p>
 </details>
 <hr />
 <div class="infobox caution">
-<p>You really want to avoid using PCs that capture LD e.g. as covariates in GWAS because it will cause some collider bias <span class="citation">(<a href="#ref-grinde2024adjusting">Grinde, Browning, Reiner, Thornton, &amp; Browning, 2024</a>; <a href="#ref-prive2021identifying">Privé, Arbel, Aschard, &amp; Vilhjálmsson, 2022</a>)</span>.</p>
+<p>You really want to avoid using PCs that capture LD e.g. as covariates in GWAS because it can cause some collider bias <span class="citation">(<a href="#ref-grinde2024adjusting">Grinde, Browning, Reiner, Thornton, &amp; Browning, 2024</a>; <a href="#ref-prive2021identifying">Privé, Arbel, Aschard, &amp; Vilhjálmsson, 2022</a>)</span>.</p>
 </div>
 <p>To avoid capturing LD in PCA, it has been recommended to both perform some pruning (removing variants too correlated with one another) and remove some known list of long-range LD regions (that can still be captured by PCA, even after a stringent pruning step) <span class="citation">(<a href="#ref-abdellaoui2013population">Abdellaoui et al., 2013</a>; <a href="#ref-price2008long">Price et al., 2008</a>)</span>. But this is not enough; this is exactly what the UK Biobank did <span class="citation">(<a href="#ref-bycroft2018uk">Bycroft et al., 2018</a>)</span>, and this how the PC loadings of the 40 PCs they provide look like:</p>
 <p><img src="https://github.com/privefl/thesis-docs/blob/master/figures/loadings-ukbb.jpeg?raw=true" width="50%" style="display: block; margin: auto;" /></p>
@@ -397,6 +401,9 @@ Click to see solution
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="population-structure.html#cb108-1" tabindex="-1"></a><span class="fu">plot</span>(obj.svd, <span class="at">type =</span> <span class="st">&quot;loadings&quot;</span>, <span class="at">loadings =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">coeff =</span> <span class="fl">0.5</span>)</span></code></pre></div>
 <p><img src="popstruct_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>No peaks, but loadings of PC4 are a bit odd.</p>
+<div class="infobox question">
+<p>Why do I use hex bins to plot PC loadings?</p>
+</div>
 <p>If you expect the individuals to mostly come from one population (e.g. in a national biobank), you can simply use a robust distance to identify a homogeneous subset of individuals, then look at the histogram of log-distances to choose a threshold based on visual inspection (here I would probably choose 4.5).</p>
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="population-structure.html#cb109-1" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">predict</span>(obj.svd)</span>
 <span id="cb109-2"><a href="population-structure.html#cb109-2" tabindex="-1"></a>ldist <span class="ot">&lt;-</span> <span class="fu">log</span>(bigutilsr<span class="sc">::</span><span class="fu">dist_ogk</span>(PC[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]))</span>
@@ -423,7 +430,7 @@ Click to see solution
 </div>
 <div id="ancestry" class="section level2 hasAnchor" number="4.5">
 <h2><span class="header-section-number">4.5</span> Ancestry inference<a href="population-structure.html#ancestry" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>It would be nice if we could get a better sense of the ancestry of these individuals.
+<p>It would be useful to get an idea of the ancestry composition of these individuals.
 To achieve this, we can project this data onto the PCA space of many known population groups defined in <span class="citation">Privé (<a href="#ref-prive2021using">2022</a>)</span> (based on the UK Biobank and some individuals from the 1000 Genomes).</p>
 <div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="population-structure.html#cb112-1" tabindex="-1"></a>all_freq <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
 <span id="cb112-2"><a href="population-structure.html#cb112-2" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
@@ -515,7 +522,7 @@ Click to see solution
 #&gt; 6   1 1018704  A  G   -1           8  rs9442372        6
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 301150 rows ]</code></pre>
 <div class="infobox caution">
-<p>Some datasets may have the convention that <code>a0 = allele1, a1 = allele2</code>, therefore all effects or allele frequencies are reversed (after matching).</p>
+<p>Some datasets may have the convention that <code>a0 = allele1, a1 = allele2</code>, therefore all effects and allele frequencies are reversed (after matching).</p>
 </div>
 <div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="population-structure.html#cb119-1" tabindex="-1"></a><span class="co"># further subsetting on missing values</span></span>
 <span id="cb119-2"><a href="population-structure.html#cb119-2" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">bed_counts</span>(obj.bed, <span class="at">ind.col =</span> matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)</span>
@@ -541,27 +548,34 @@ Click to see solution
 <p>When is it needed to use the <code>correction</code>? Why can’t we use these provided PC loadings to project the UK Biobank individuals?</p>
 </div>
 <hr />
+<div class="infobox exo">
+<p>For all individuals, compute the squared distances from all centers in the PCA space.</p>
+<p>Then, assign each individual to the closest <code>group</code>, if close enough (using <code>thr_sq_dist</code>).</p>
+</div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="population-structure.html#cb123-1" tabindex="-1"></a>THR <span class="ot">&lt;-</span> <span class="fl">0.002</span>  <span class="co"># you can adjust this threshold</span></span>
+<span id="cb123-2"><a href="population-structure.html#cb123-2" tabindex="-1"></a>thr_sq_dist <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">dist</span>(all_centers)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> THR <span class="sc">/</span> <span class="fl">0.16</span></span>
+<span id="cb123-3"><a href="population-structure.html#cb123-3" tabindex="-1"></a></span>
+<span id="cb123-4"><a href="population-structure.html#cb123-4" tabindex="-1"></a><span class="co"># gather some groups</span></span>
+<span id="cb123-5"><a href="population-structure.html#cb123-5" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">colnames</span>(all_freq)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]</span>
+<span id="cb123-6"><a href="population-structure.html#cb123-6" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Scandinavia&quot;</span>, <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Ireland&quot;</span>)]   <span class="ot">&lt;-</span> <span class="st">&quot;Europe (North West)&quot;</span></span>
+<span id="cb123-7"><a href="population-structure.html#cb123-7" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Europe (South East)&quot;</span>, <span class="st">&quot;Europe (North East)&quot;</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;Europe (East)&quot;</span></span></code></pre></div>
+<details>
+<summary>
+Click to see solution
+</summary>
 <p>We can then assign each individual to their closest center:</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="population-structure.html#cb123-1" tabindex="-1"></a><span class="co"># distance of individuals from each reference population (the center)</span></span>
-<span id="cb123-2"><a href="population-structure.html#cb123-2" tabindex="-1"></a>all_sq_dist <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_centers, <span class="dv">1</span>, <span class="cf">function</span>(one_center) {</span>
-<span id="cb123-3"><a href="population-structure.html#cb123-3" tabindex="-1"></a>  <span class="fu">rowSums</span>(<span class="fu">sweep</span>(all_proj, <span class="dv">2</span>, one_center, <span class="st">&#39;-&#39;</span>)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb123-4"><a href="population-structure.html#cb123-4" tabindex="-1"></a>})</span>
-<span id="cb123-5"><a href="population-structure.html#cb123-5" tabindex="-1"></a></span>
-<span id="cb123-6"><a href="population-structure.html#cb123-6" tabindex="-1"></a>THR <span class="ot">&lt;-</span> <span class="fl">0.002</span>  <span class="co"># you can adjust this threshold</span></span>
-<span id="cb123-7"><a href="population-structure.html#cb123-7" tabindex="-1"></a>thr_sq_dist <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">dist</span>(all_centers)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> THR <span class="sc">/</span> <span class="fl">0.16</span></span>
-<span id="cb123-8"><a href="population-structure.html#cb123-8" tabindex="-1"></a></span>
-<span id="cb123-9"><a href="population-structure.html#cb123-9" tabindex="-1"></a><span class="co"># gather some groups</span></span>
-<span id="cb123-10"><a href="population-structure.html#cb123-10" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">colnames</span>(all_freq)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]</span>
-<span id="cb123-11"><a href="population-structure.html#cb123-11" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Scandinavia&quot;</span>, <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Ireland&quot;</span>)]   <span class="ot">&lt;-</span> <span class="st">&quot;Europe (North West)&quot;</span></span>
-<span id="cb123-12"><a href="population-structure.html#cb123-12" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Europe (South East)&quot;</span>, <span class="st">&quot;Europe (North East)&quot;</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;Europe (East)&quot;</span></span>
-<span id="cb123-13"><a href="population-structure.html#cb123-13" tabindex="-1"></a></span>
-<span id="cb123-14"><a href="population-structure.html#cb123-14" tabindex="-1"></a><span class="co"># assign to closest cluster, when close enough</span></span>
-<span id="cb123-15"><a href="population-structure.html#cb123-15" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_sq_dist, <span class="dv">1</span>, <span class="cf">function</span>(sq_dist) {</span>
-<span id="cb123-16"><a href="population-structure.html#cb123-16" tabindex="-1"></a>  ind <span class="ot">&lt;-</span> <span class="fu">which.min</span>(sq_dist)</span>
-<span id="cb123-17"><a href="population-structure.html#cb123-17" tabindex="-1"></a>  <span class="cf">if</span> (sq_dist[ind] <span class="sc">&lt;</span> thr_sq_dist) group[ind] <span class="cf">else</span> <span class="cn">NA</span></span>
-<span id="cb123-18"><a href="population-structure.html#cb123-18" tabindex="-1"></a>})</span>
-<span id="cb123-19"><a href="population-structure.html#cb123-19" tabindex="-1"></a></span>
-<span id="cb123-20"><a href="population-structure.html#cb123-20" tabindex="-1"></a><span class="fu">table</span>(cluster, <span class="at">exclude =</span> <span class="cn">NULL</span>)  <span class="co"># 3 NAs -&gt; almost all assigned</span></span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="population-structure.html#cb124-1" tabindex="-1"></a><span class="co"># distance of individuals from each reference population (the center)</span></span>
+<span id="cb124-2"><a href="population-structure.html#cb124-2" tabindex="-1"></a>all_sq_dist <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_centers, <span class="dv">1</span>, <span class="cf">function</span>(one_center) {</span>
+<span id="cb124-3"><a href="population-structure.html#cb124-3" tabindex="-1"></a>  <span class="fu">rowSums</span>(<span class="fu">sweep</span>(all_proj, <span class="dv">2</span>, one_center, <span class="st">&#39;-&#39;</span>)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb124-4"><a href="population-structure.html#cb124-4" tabindex="-1"></a>})</span>
+<span id="cb124-5"><a href="population-structure.html#cb124-5" tabindex="-1"></a></span>
+<span id="cb124-6"><a href="population-structure.html#cb124-6" tabindex="-1"></a><span class="co"># assign to closest cluster, when close enough</span></span>
+<span id="cb124-7"><a href="population-structure.html#cb124-7" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">apply</span>(all_sq_dist, <span class="dv">1</span>, <span class="cf">function</span>(sq_dist) {</span>
+<span id="cb124-8"><a href="population-structure.html#cb124-8" tabindex="-1"></a>  ind <span class="ot">&lt;-</span> <span class="fu">which.min</span>(sq_dist)</span>
+<span id="cb124-9"><a href="population-structure.html#cb124-9" tabindex="-1"></a>  <span class="cf">if</span> (sq_dist[ind] <span class="sc">&lt;</span> thr_sq_dist) group[ind] <span class="cf">else</span> <span class="cn">NA</span></span>
+<span id="cb124-10"><a href="population-structure.html#cb124-10" tabindex="-1"></a>})</span></code></pre></div>
+</details>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="population-structure.html#cb125-1" tabindex="-1"></a><span class="fu">table</span>(cluster, <span class="at">exclude =</span> <span class="cn">NULL</span>)  <span class="co"># 3 NAs -&gt; almost all assigned</span></span></code></pre></div>
 <pre><code>#&gt; cluster
 #&gt;           Ashkenazi       Europe (East) Europe (North West) 
 #&gt;                 110                 148                 872 
@@ -569,15 +583,15 @@ Click to see solution
 #&gt;                  45                 219                   4 
 #&gt;                &lt;NA&gt; 
 #&gt;                   3</code></pre>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="population-structure.html#cb125-1" tabindex="-1"></a><span class="fu">plot_grid2</span>(<span class="at">plotlist =</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="cf">function</span>(k) {</span>
-<span id="cb125-2"><a href="population-structure.html#cb125-2" tabindex="-1"></a>  k1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb125-3"><a href="population-structure.html#cb125-3" tabindex="-1"></a>  k2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k</span>
-<span id="cb125-4"><a href="population-structure.html#cb125-4" tabindex="-1"></a>  <span class="fu">qplot</span>(PC[, k1], PC[, k2], <span class="at">color =</span> cluster, <span class="at">size =</span> <span class="fu">I</span>(<span class="dv">2</span>)) <span class="sc">+</span></span>
-<span id="cb125-5"><a href="population-structure.html#cb125-5" tabindex="-1"></a>    <span class="fu">theme_bigstatsr</span>(<span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb125-6"><a href="population-structure.html#cb125-6" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k1), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k2), <span class="at">color =</span> <span class="st">&quot;Assigned group&quot;</span>) <span class="sc">+</span></span>
-<span id="cb125-7"><a href="population-structure.html#cb125-7" tabindex="-1"></a>    <span class="fu">coord_equal</span>()</span>
-<span id="cb125-8"><a href="population-structure.html#cb125-8" tabindex="-1"></a>}), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">legend_ratio =</span> <span class="fl">0.25</span>, <span class="at">title_ratio =</span> <span class="dv">0</span>)</span></code></pre></div>
-<p><img src="popstruct_files/figure-html/unnamed-chunk-20-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="population-structure.html#cb127-1" tabindex="-1"></a><span class="fu">plot_grid2</span>(<span class="at">plotlist =</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="cf">function</span>(k) {</span>
+<span id="cb127-2"><a href="population-structure.html#cb127-2" tabindex="-1"></a>  k1 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb127-3"><a href="population-structure.html#cb127-3" tabindex="-1"></a>  k2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> k</span>
+<span id="cb127-4"><a href="population-structure.html#cb127-4" tabindex="-1"></a>  <span class="fu">qplot</span>(PC[, k1], PC[, k2], <span class="at">color =</span> cluster, <span class="at">size =</span> <span class="fu">I</span>(<span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb127-5"><a href="population-structure.html#cb127-5" tabindex="-1"></a>    <span class="fu">theme_bigstatsr</span>(<span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb127-6"><a href="population-structure.html#cb127-6" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k1), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, k2), <span class="at">color =</span> <span class="st">&quot;Assigned group&quot;</span>) <span class="sc">+</span></span>
+<span id="cb127-7"><a href="population-structure.html#cb127-7" tabindex="-1"></a>    <span class="fu">coord_equal</span>()</span>
+<span id="cb127-8"><a href="population-structure.html#cb127-8" tabindex="-1"></a>}), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">legend_ratio =</span> <span class="fl">0.25</span>, <span class="at">title_ratio =</span> <span class="dv">0</span>)</span></code></pre></div>
+<p><img src="popstruct_files/figure-html/unnamed-chunk-22-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>These are mostly European individuals.
 PC4 is definitively a bit odd.</p>
 <div class="infobox exo">

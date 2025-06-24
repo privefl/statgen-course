@@ -103,7 +103,7 @@ snp_manhattan(gwas2, CHR, POS, npoints = 50e3) +
 
 ***
 
-To report independent findings (instead of all variants in one peak), people have used LD clumping, which iteratively keeps the most associated variant and remove those that are too correlated with this one. Another strategy is to use GCTA-COJO [@yang2012conditional].
+To report independent findings (instead of all variants in one peak), researchers have used LD clumping, which iteratively keeps the most associated variant and remove those that are too correlated with this one. Another strategy is to use GCTA-COJO [@yang2012conditional].
 
 :::: {.infobox .exo}
 Perform some LD clumping for all variants with a p-value lower than $10^{-5}$, using a stringent $r^2$ threshold of 0.05 over a 5 Mb window. How many variants are left?
@@ -143,6 +143,8 @@ It is developed and supported by a team of scientists at the Regeneron Genetics 
 It is fancier than simple linear/logistic regressions and is currently (one of if not) the state-of-the-art GWAS method.
 
 REGENIE has the following properties:
+    
+- It supports the BGEN, PLINK bed/bim/fam and PLINK2 pgen/pvar/psam genetic data formats
 
 - It works on both quantitative and binary traits, including binary traits with unbalanced case-control ratios
 
@@ -161,8 +163,6 @@ REGENIE has the following properties:
 - It can perform interaction tests (GxE, GxG) as well as conditional analyses
 
 - Meta-analysis of REGENIE summary statistics can be performed using REMETA
-    
-- It supports the BGEN, PLINK bed/bim/fam and PLINK2 pgen/pvar/psam genetic data formats
 
 - It can be installed with Conda
 

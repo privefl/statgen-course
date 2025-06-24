@@ -188,7 +188,7 @@ G2$code256
 To always use `G2` (with the new `code256`) and the extended `obj.bigsnp$fam`, you need to save the new `obj.bigsnp` using
 ```{r}
 obj.bigsnp$genotypes <- G2
-snp_save(obj.bigsnp)
+snp_save(obj.bigsnp)  # overwrite rds file with new object
 ```
 
 You can then re-attach this data in another R session later using `snp_attach("tmp-data/GWAS_data_sorted_QC.rds")`.  

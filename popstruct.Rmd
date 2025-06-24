@@ -7,12 +7,16 @@ editor_options:
 # Population structure
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("pca", "loadings", "pcadapt", "autoSVD")
+WORDS_TO_IGNORE <- c("pca", "loadings", "pcadapt", "autoSVD", "orthonormal")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
 
 ## Principal Component Analysis (PCA)
+
+PCA is a matrix factorization method designed to identify orthogonal components that sequentially capture the maximum possible variance in the data. 
+It is closely related to Singular Value Decomposition (SVD), in which a data matrix $G$ is approximated as $G \approx U D V^T$, where $U$ and $V$ have orthonormal columns and $D$ is a diagonal matrix of singular values. 
+In this formulation, the principal component (PC) scores are given by $U D = G V$, representing the projection of $G$ onto the PCA space, while the columns of $V$ correspond to the PC loadings.
 
 PCA on the genotype matrix can be used to capture population structure.
 However, PCA can actually capture different kinds of structure [@prive2020efficient]:
@@ -62,7 +66,7 @@ Look at PC scores and PC loadings with `plot()`. What do you see for PC4? Color 
 svd <- runonce::save_run(
   big_randomSVD(G, fun.scaling = big_scale(), ncores = NCORES),
   file = "tmp-data/svd_with_ld.rds")
-plot(svd)
+plot(svd)  # scree plot -> singular values
 plot(svd, type = "scores")
 plot(svd, type = "scores", scores = 3:4)
 plot(svd, type = "loadings", loadings = 1:10, coef = 0.4)
@@ -80,14 +84,14 @@ plot(svd, type = "scores", scores = 3:4) +
         legend.text = element_text(margin = margin(r = 6)))
 ```
 
-PC4 is basically capturing variation in a block of LD (the peak you see for loadings of PC4) and is then very correlated to genetic variants in this region.
+PC4 is basically capturing variation in a block of LD (the peak you see for loadings of PC4) and is then very correlated to genetic variants in this region (especially `the_max`).
 
 </details>
 
 ***
 
 :::: {.infobox .caution}
-You really want to avoid using PCs that capture LD e.g. as covariates in GWAS because it will cause some collider bias [@prive2021identifying; @grinde2024adjusting].
+You really want to avoid using PCs that capture LD e.g. as covariates in GWAS because it can cause some collider bias [@prive2021identifying; @grinde2024adjusting].
 ::::
 
 To avoid capturing LD in PCA, it has been recommended to both perform some pruning (removing variants too correlated with one another) and remove some known list of long-range LD regions (that can still be captured by PCA, even after a stringent pruning step) [@price2008long; @abdellaoui2013population]. But this is not enough; this is exactly what the UK Biobank did [@bycroft2018uk], and this how the PC loadings of the 40 PCs they provide look like:
@@ -163,6 +167,10 @@ plot(obj.svd, type = "loadings", loadings = 1:6, coeff = 0.5)
 
 No peaks, but loadings of PC4 are a bit odd.
 
+:::: {.infobox .question}
+Why do I use hex bins to plot PC loadings?
+::::
+
 If you expect the individuals to mostly come from one population (e.g. in a national biobank), you can simply use a robust distance to identify a homogeneous subset of individuals, then look at the histogram of log-distances to choose a threshold based on visual inspection (here I would probably choose 4.5).
 
 ```{r}
@@ -191,7 +199,7 @@ plot_grid2(plotlist = lapply(1:4, function(k) {
 
 ## Ancestry inference {#ancestry}
 
-It would be nice if we could get a better sense of the ancestry of these individuals.
+It would be useful to get an idea of the ancestry composition of these individuals.
 To achieve this, we can project this data onto the PCA space of many known population groups defined in @prive2021using (based on the UK Biobank and some individuals from the 1000 Genomes).
 
 ```{r}
@@ -237,7 +245,7 @@ matched <- obj.bed$map %>%
 ```
 
 :::: {.infobox .caution}
-Some datasets may have the convention that `a0 = allele1, a1 = allele2`, therefore all effects or allele frequencies are reversed (after matching).
+Some datasets may have the convention that `a0 = allele1, a1 = allele2`, therefore all effects and allele frequencies are reversed (after matching).
 ::::
 
 ```{r}
@@ -276,13 +284,13 @@ When is it needed to use the `correction`? Why can't we use these provided PC lo
 
 ***
 
-We can then assign each individual to their closest center:
-```{r}
-# distance of individuals from each reference population (the center)
-all_sq_dist <- apply(all_centers, 1, function(one_center) {
-  rowSums(sweep(all_proj, 2, one_center, '-')^2)
-})
+:::: {.infobox .exo}
+For all individuals, compute the squared distances from all centers in the PCA space.
 
+Then, assign each individual to the closest `group`, if close enough (using `thr_sq_dist`).
+::::
+
+```{r}
 THR <- 0.002  # you can adjust this threshold
 thr_sq_dist <- max(dist(all_centers)^2) * THR / 0.16
 
@@ -290,13 +298,28 @@ thr_sq_dist <- max(dist(all_centers)^2) * THR / 0.16
 group <- colnames(all_freq)[-(1:5)]
 group[group %in% c("Scandinavia", "United Kingdom", "Ireland")]   <- "Europe (North West)"
 group[group %in% c("Europe (South East)", "Europe (North East)")] <- "Europe (East)"
+```
+
+<details>
+<summary>Click to see solution</summary>
+
+We can then assign each individual to their closest center:
+```{r}
+# distance of individuals from each reference population (the center)
+all_sq_dist <- apply(all_centers, 1, function(one_center) {
+  rowSums(sweep(all_proj, 2, one_center, '-')^2)
+})
 
 # assign to closest cluster, when close enough
 cluster <- apply(all_sq_dist, 1, function(sq_dist) {
   ind <- which.min(sq_dist)
   if (sq_dist[ind] < thr_sq_dist) group[ind] else NA
 })
+```
 
+</details>
+
+```{r}
 table(cluster, exclude = NULL)  # 3 NAs -> almost all assigned
 ```
 

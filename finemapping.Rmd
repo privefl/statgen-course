@@ -187,7 +187,7 @@ locus1 <- filter(FT_cleaned, chr == 1, pos > 7909373 - 5e5, pos < 7909373 + 5e5)
 
 # Plot locus
 ggplot(locus1, aes(x = pos, y = -log10(p_value))) +
-  theme_bw(13) +
+  theme_bw(14) +
   geom_point(alpha = 0.8, size = 1.3) +
   geom_point(aes(x = pos, y = -log10(p_value)), color = "red", size = 2,
              data = filter(locus1, rsid == "rs1989147")) +
@@ -239,6 +239,7 @@ locus1 <- cbind(locus1, locus1_susie[-1])
 
 # Plot
 ggplot(locus1, aes(x = pos, y = -log10(p_value))) +
+  theme_bw(14) +
   geom_point(alpha = 0.8, size = 1.3) +
   geom_point(color = "red", size = 2, data = filter(locus1, cs == 1)) +
   geom_label_repel(aes(label = rsid), size = 2, max.overlaps = 45,

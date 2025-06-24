@@ -14,7 +14,7 @@ source("spelling-check.R")
 
 Most methods that rely on GWAS summary statistics also rely on an LD matrix (correlation matrix between genetic variants). It is used in algorithms to transform GWAS marginal (i.e. independent) effects into joint effects. 
 
-Indeed, if we take the simple example of a linear regression $y = X \beta + \epsilon$, the joint effects are given by $\hat\beta = (X^T X)^{-1} X^T y$, where $X^T y$ are the marginal effects and $X^T X$ is the covariance matrix (up to some scaling).
+Indeed, if we take the simple example of a linear regression $y = X \beta + \epsilon$, the joint effects are estimated by $\hat\beta = (X^T X)^{-1} X^T y$, where $X^T y$ are the marginal effects and $X^T X$ is the covariance matrix (up to some scaling).
 
 The GWAS data from which the GWAS summary statistics are derived is often not accessible, so that the LD matrix is usually derived from another dataset. 
 **This reference dataset needs to be as close as possible as the GWAS data (in terms of genetic ancestry) to provide a close estimation of LD.**
@@ -97,6 +97,6 @@ all.equal(cor3, cor1)
 
 - one can regularize the LD matrix (e.g. by adding some positive value to the diagonal, or by scaling down off-diagonal elements, as done in many methods); but too much regularization will bias results [@prive2022inferring]
 
-- computing LD from imputed data seem to provide an unbiased estimation [@prive2021identifying]
+- computing LD from imputed data seems to provide an unbiased estimation [@prive2021identifying]
 
 - should partial correlations be used instead? (e.g. when there is some population structure in the data); this is still an open question I want to investigate
