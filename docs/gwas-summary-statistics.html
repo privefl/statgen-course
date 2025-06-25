@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-24" />
+<meta name="date" content="2025-06-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -290,21 +290,21 @@ Over the past decade, GWAS summary statistics have become essential for many gen
 Collaboration among researchers in large consortia has facilitated meta-analyses of GWAS summary statistics from numerous study sites, resulting in unprecedentedly large GWAS sample sizes <span class="citation">(<a href="#ref-levey2021bi">Levey et al., 2021</a>; <a href="#ref-okbay2022polygenic">Okbay et al., 2022</a>; <a href="#ref-suzuki2023multi">Suzuki et al., 2023</a>; <a href="#ref-yengo2022saturated">Yengo et al., 2022</a>; <a href="#ref-zhou2021global">Zhou et al., 2022</a>)</span>.</p>
 <div id="format" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Format<a href="gwas-summary-statistics.html#format" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This an example of GWAS summary statistics (a subset of it at least).</p>
-<div class="infobox caution">
-<p>Fields included in GWAS summary statistics and their specific names in the header of the file can change very much from one file to the other; this is why tools like MungeSumstats have been developed <span class="citation">(<a href="#ref-murphy2021mungesumstats">Murphy, Schilder, &amp; Skene, 2021</a>)</span>.</p>
-</div>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="gwas-summary-statistics.html#cb144-1" tabindex="-1"></a>tgz <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb144-2"><a href="gwas-summary-statistics.html#cb144-2" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/55262768&quot;</span>, </span>
-<span id="cb144-3"><a href="gwas-summary-statistics.html#cb144-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;FT_sumstats_small.tsv.gz&quot;</span>)</span>
-<span id="cb144-4"><a href="gwas-summary-statistics.html#cb144-4" tabindex="-1"></a></span>
-<span id="cb144-5"><a href="gwas-summary-statistics.html#cb144-5" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">readLines</span>(tgz, <span class="at">n =</span> <span class="dv">6</span>))</span></code></pre></div>
+<p>This an example of GWAS summary statistics (a subset of it at least):</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="gwas-summary-statistics.html#cb148-1" tabindex="-1"></a>tgz <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb148-2"><a href="gwas-summary-statistics.html#cb148-2" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/55262768&quot;</span>, </span>
+<span id="cb148-3"><a href="gwas-summary-statistics.html#cb148-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;FT_sumstats_small.tsv.gz&quot;</span>)</span>
+<span id="cb148-4"><a href="gwas-summary-statistics.html#cb148-4" tabindex="-1"></a></span>
+<span id="cb148-5"><a href="gwas-summary-statistics.html#cb148-5" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">readLines</span>(tgz, <span class="at">n =</span> <span class="dv">6</span>))</span></code></pre></div>
 <pre><code>#&gt; variant_id   chromosome  base_pair_location  effect_allele   other_allele    effect_allele_frequency imputation_quality  beta    standard_error  p_value
 #&gt; rs72858371   1   6409383 T   C   0.986224    0.977552    -0.00615364 0.0108886   0.64
 #&gt; rs72633437   1   6409494 C   T   0.906138    0.988959    0.00289667  0.00434703  0.39
 #&gt; rs151043271  1   6409495 G   A   0.998537    0.732147    -0.0244749  0.0386808   0.4
 #&gt; rs58484986   1   6409653 C   G   0.986228    0.976894    -0.00623617 0.0108958   0.63
 #&gt; rs60772726   1   6409662 A   T   0.986228    0.976844    -0.00625052 0.0108957   0.63</code></pre>
+<div class="infobox caution">
+<p>Fields included in GWAS summary statistics and their specific names in the header of the file can change very much from one file to the other; this is why tools like MungeSumstats have been developed <span class="citation">(<a href="#ref-murphy2021mungesumstats">Murphy, Schilder, &amp; Skene, 2021</a>)</span>.</p>
+</div>
 <p>They often include</p>
 <ul>
 <li><p>Information to match variants (chromosome, physical position, alleles, rsid).</p></li>
@@ -319,9 +319,6 @@ Collaboration among researchers in large consortia has facilitated meta-analyses
 <li><p><span class="math inline">\(f_j\)</span> — the allele frequency of variant <span class="math inline">\(j\)</span>,</p></li>
 <li><p><span class="math inline">\(\text{INFO}_j\)</span> — the imputation INFO score (imputation quality) of variant <span class="math inline">\(j\)</span></p></li>
 </ul>
-<div class="infobox question">
-<p>Why would different variants have different GWAS sample sizes?</p>
-</div>
 <div class="infobox exo">
 <p>Read-in these GWAS summary statistics and derive the p-values again, using the other columns. Recall that the Z-score squared is <span class="math inline">\(\chi^2\)</span>-distributed with one degree of freedom.</p>
 </div>
@@ -329,7 +326,7 @@ Collaboration among researchers in large consortia has facilitated meta-analyses
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="gwas-summary-statistics.html#cb146-1" tabindex="-1"></a>(sumstats <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(tgz))</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="gwas-summary-statistics.html#cb150-1" tabindex="-1"></a>(sumstats <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(tgz))</span></code></pre></div>
 <pre><code>#&gt;    variant_id chromosome base_pair_location effect_allele other_allele
 #&gt; 1  rs72858371          1            6409383             T            C
 #&gt; 2  rs72633437          1            6409494             C            T
@@ -349,9 +346,9 @@ Click to see solution
 #&gt; 4    0.63
 #&gt; 5    0.63
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 41805 rows ]</code></pre>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="gwas-summary-statistics.html#cb148-1" tabindex="-1"></a>chi2 <span class="ot">&lt;-</span> <span class="fu">with</span>(sumstats, (beta <span class="sc">/</span> standard_error)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb148-2"><a href="gwas-summary-statistics.html#cb148-2" tabindex="-1"></a>pval <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(chi2, <span class="at">df =</span> <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb148-3"><a href="gwas-summary-statistics.html#cb148-3" tabindex="-1"></a><span class="fu">plot</span>(pval, sumstats<span class="sc">$</span>p_value, <span class="at">log =</span> <span class="st">&quot;xy&quot;</span>); <span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="gwas-summary-statistics.html#cb152-1" tabindex="-1"></a>chi2 <span class="ot">&lt;-</span> <span class="fu">with</span>(sumstats, (beta <span class="sc">/</span> standard_error)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb152-2"><a href="gwas-summary-statistics.html#cb152-2" tabindex="-1"></a>pval <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(chi2, <span class="at">df =</span> <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb152-3"><a href="gwas-summary-statistics.html#cb152-3" tabindex="-1"></a><span class="fu">plot</span>(pval, sumstats<span class="sc">$</span>p_value, <span class="at">log =</span> <span class="st">&quot;xy&quot;</span>); <span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <img src="sumstats_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" />
 </details>
 </div>
@@ -386,108 +383,118 @@ where <span class="math inline">\(n_\text{eff} = \frac{4}{1 / n_\text{ca} + 1 / 
 \end{equation}\]</span></li>
 </ol>
 <hr />
+<div class="infobox question">
+<p>Why would different variants have different GWAS sample sizes?</p>
+</div>
 <p>With this QC, you can detect differences in per-variant GWAS sample sizes</p>
 <p><img src="https://github.com/privefl/thesis-docs/blob/master/figures/simu-qc-plot.jpg?raw=true" width="72%" style="display: block; margin: auto;" /></p>
 <p>When <span class="math inline">\(n_j\)</span> are missing, you can use this to perform some QC (e.g. at 70% of max n) or to impute <span class="math inline">\(n_j\)</span>.</p>
 <hr />
 <p>You can detect bias in total effective GWAS sample size</p>
 <p><img src="https://github.com/privefl/thesis-docs/blob/master/figures/cad_quick_qc.png?raw=true" width="72%" style="display: block; margin: auto;" /></p>
-<p><span class="math inline">\(N_\text{eff} = \frac{4}{1 / N_\text{ca} + 1 / N_\text{co}}\)</span></p>
+<div class="infobox question">
+<p>Here I used <span class="math inline">\(N_\text{eff} = \frac{4}{1 / N_\text{ca} + 1 / N_\text{co}}\)</span> in <a href="gwas-summary-statistics.html#eq:sdlog">(6.2)</a>, where <span class="math inline">\(N_\text{ca}\)</span> is the total number of cases and <span class="math inline">\(N_\text{co}\)</span> is the total number of controls.</p>
+<p>What is the problem with this approach when you have a meta-analysis?<br />
+(have a look at the following table with sample sizes for all studies comprising the meta-analysis)</p>
+</div>
 <p><img src="https://github.com/privefl/thesis-docs/blob/master/figures/cad_neff_perstudy.png?raw=true" width="30%" style="display: block; margin: auto;" /></p>
-<p>For example, overestimating the sample size leads to underestimating the SNP heritability in many methods such as LD score regression <span class="citation">(<a href="#ref-grotzinger2023pervasive">Grotzinger et al., 2023</a>)</span>.</p>
+<p>For example, overestimating the sample size leads to underestimating the SNP-heritability in many methods such as LD score regression <span class="citation">(<a href="#ref-grotzinger2023pervasive">Grotzinger et al., 2023</a>)</span>.</p>
 <hr />
 <p>You can detect and QC low imputation INFO scores, &amp; other issues</p>
 <p><img src="https://github.com/privefl/thesis-docs/blob/master/figures/brca_onco_qc.png?raw=true" width="100%" style="display: block; margin: auto;" /></p>
+<div class="infobox question">
+<p>Any idea what’s going on for outliers in the second figure?</p>
+</div>
 <hr />
-<p>Beware that multi-ancestry INFO scores are overestimated (e.g. in the UK Biobank)</p>
+<p>Beware that multi-ancestry INFO scores are overestimated (e.g. in the UK Biobank), because the formula used to derive INFO scores assumes an homogeneous population.</p>
 <p><img src="https://github.com/privefl/thesis-docs/blob/master/figures/overestim-info.png?raw=true" width="65%" style="display: block; margin: auto;" /></p>
 <hr />
 <div class="infobox exo">
 <p>Use the following GWAS results for HDL and allele frequencies to estimate standard deviations and compare both estimates. How can you estimate <code>sd(y)</code>?</p>
 </div>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="gwas-summary-statistics.html#cb149-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
-<span id="cb149-2"><a href="gwas-summary-statistics.html#cb149-2" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
-<span id="cb149-3"><a href="gwas-summary-statistics.html#cb149-3" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span>
-<span id="cb149-4"><a href="gwas-summary-statistics.html#cb149-4" tabindex="-1"></a>obj.svd <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>)</span>
-<span id="cb149-5"><a href="gwas-summary-statistics.html#cb149-5" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">predict</span>(obj.svd)</span>
-<span id="cb149-6"><a href="gwas-summary-statistics.html#cb149-6" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">as.matrix</span>(obj.bigsnp<span class="sc">$</span>fam[<span class="fu">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>)]), PC[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>])</span>
-<span id="cb149-7"><a href="gwas-summary-statistics.html#cb149-7" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
-<span id="cb149-8"><a href="gwas-summary-statistics.html#cb149-8" tabindex="-1"></a>y <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>hdl</span>
-<span id="cb149-9"><a href="gwas-summary-statistics.html#cb149-9" tabindex="-1"></a>ind.gwas <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(y) <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(covar))</span>
-<span id="cb149-10"><a href="gwas-summary-statistics.html#cb149-10" tabindex="-1"></a>gwas <span class="ot">&lt;-</span> <span class="fu">big_univLinReg</span>(G, y[ind.gwas], <span class="at">ind.train =</span> ind.gwas,</span>
-<span id="cb149-11"><a href="gwas-summary-statistics.html#cb149-11" tabindex="-1"></a>                       <span class="at">covar.train =</span> covar[ind.gwas, ], <span class="at">ncores =</span> NCORES)</span>
-<span id="cb149-12"><a href="gwas-summary-statistics.html#cb149-12" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">length</span>(ind.gwas)</span>
-<span id="cb149-13"><a href="gwas-summary-statistics.html#cb149-13" tabindex="-1"></a>af <span class="ot">&lt;-</span> <span class="fu">big_colstats</span>(G, <span class="at">ind.row =</span> ind.gwas, <span class="at">ncores =</span> NCORES)<span class="sc">$</span>sum <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> N)</span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="gwas-summary-statistics.html#cb153-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
+<span id="cb153-2"><a href="gwas-summary-statistics.html#cb153-2" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
+<span id="cb153-3"><a href="gwas-summary-statistics.html#cb153-3" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span>
+<span id="cb153-4"><a href="gwas-summary-statistics.html#cb153-4" tabindex="-1"></a>obj.svd <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;tmp-data/PCA_GWAS_data.rds&quot;</span>)</span>
+<span id="cb153-5"><a href="gwas-summary-statistics.html#cb153-5" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">predict</span>(obj.svd)</span>
+<span id="cb153-6"><a href="gwas-summary-statistics.html#cb153-6" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">as.matrix</span>(obj.bigsnp<span class="sc">$</span>fam[<span class="fu">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>)]), PC[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>])</span>
+<span id="cb153-7"><a href="gwas-summary-statistics.html#cb153-7" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb153-8"><a href="gwas-summary-statistics.html#cb153-8" tabindex="-1"></a>y <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>hdl</span>
+<span id="cb153-9"><a href="gwas-summary-statistics.html#cb153-9" tabindex="-1"></a>ind.gwas <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(y) <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(covar))</span>
+<span id="cb153-10"><a href="gwas-summary-statistics.html#cb153-10" tabindex="-1"></a>gwas <span class="ot">&lt;-</span> <span class="fu">big_univLinReg</span>(G, y[ind.gwas], <span class="at">ind.train =</span> ind.gwas,</span>
+<span id="cb153-11"><a href="gwas-summary-statistics.html#cb153-11" tabindex="-1"></a>                       <span class="at">covar.train =</span> covar[ind.gwas, ], <span class="at">ncores =</span> NCORES)</span>
+<span id="cb153-12"><a href="gwas-summary-statistics.html#cb153-12" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">length</span>(ind.gwas)</span>
+<span id="cb153-13"><a href="gwas-summary-statistics.html#cb153-13" tabindex="-1"></a>af <span class="ot">&lt;-</span> <span class="fu">big_colstats</span>(G, <span class="at">ind.row =</span> ind.gwas, <span class="at">ncores =</span> NCORES)<span class="sc">$</span>sum <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> N)</span></code></pre></div>
 <details>
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="gwas-summary-statistics.html#cb150-1" tabindex="-1"></a>sd_y <span class="ot">&lt;-</span> <span class="fu">with</span>(gwas, <span class="fu">quantile</span>(<span class="fu">sqrt</span>(<span class="fl">0.5</span> <span class="sc">*</span> (N <span class="sc">*</span> std.err<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> estim<span class="sc">^</span><span class="dv">2</span>)), <span class="fl">0.01</span>))</span>
-<span id="cb150-2"><a href="gwas-summary-statistics.html#cb150-2" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">sd</span>(y[ind.gwas]), sd_y)</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="gwas-summary-statistics.html#cb154-1" tabindex="-1"></a>sd_y <span class="ot">&lt;-</span> <span class="fu">with</span>(gwas, <span class="fu">quantile</span>(<span class="fu">sqrt</span>(<span class="fl">0.5</span> <span class="sc">*</span> (N <span class="sc">*</span> std.err<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> estim<span class="sc">^</span><span class="dv">2</span>)), <span class="fl">0.01</span>))</span>
+<span id="cb154-2"><a href="gwas-summary-statistics.html#cb154-2" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">sd</span>(y[ind.gwas]), sd_y)</span></code></pre></div>
 <pre><code>#&gt;                1% 
 #&gt; 12.96917 11.84793</code></pre>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="gwas-summary-statistics.html#cb152-1" tabindex="-1"></a>sd_ss <span class="ot">&lt;-</span> sd_y <span class="sc">/</span> <span class="fu">with</span>(gwas, <span class="fu">sqrt</span>(N <span class="sc">*</span> std.err<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> estim<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb152-2"><a href="gwas-summary-statistics.html#cb152-2" tabindex="-1"></a>sd_af <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> af <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> af))</span>
-<span id="cb152-3"><a href="gwas-summary-statistics.html#cb152-3" tabindex="-1"></a></span>
-<span id="cb152-4"><a href="gwas-summary-statistics.html#cb152-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="gwas-summary-statistics.html#cb156-1" tabindex="-1"></a>sd_ss <span class="ot">&lt;-</span> sd_y <span class="sc">/</span> <span class="fu">with</span>(gwas, <span class="fu">sqrt</span>(N <span class="sc">*</span> std.err<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> estim<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb156-2"><a href="gwas-summary-statistics.html#cb156-2" tabindex="-1"></a>sd_af <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> af <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> af))</span>
+<span id="cb156-3"><a href="gwas-summary-statistics.html#cb156-3" tabindex="-1"></a></span>
+<span id="cb156-4"><a href="gwas-summary-statistics.html#cb156-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
 <pre><code>#&gt; Warning: package &#39;ggplot2&#39; was built under R version 4.2.3</code></pre>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="gwas-summary-statistics.html#cb154-1" tabindex="-1"></a><span class="fu">ggplot</span>(dplyr<span class="sc">::</span><span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_af, sd_ss), <span class="at">n =</span> <span class="fl">100e3</span>)) <span class="sc">+</span></span>
-<span id="cb154-2"><a href="gwas-summary-statistics.html#cb154-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_af, sd_ss), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb154-3"><a href="gwas-summary-statistics.html#cb154-3" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb154-4"><a href="gwas-summary-statistics.html#cb154-4" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb154-5"><a href="gwas-summary-statistics.html#cb154-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations derived from the allele frequencies&quot;</span>,</span>
-<span id="cb154-6"><a href="gwas-summary-statistics.html#cb154-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="gwas-summary-statistics.html#cb158-1" tabindex="-1"></a><span class="fu">ggplot</span>(dplyr<span class="sc">::</span><span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_af, sd_ss), <span class="at">n =</span> <span class="fl">100e3</span>)) <span class="sc">+</span></span>
+<span id="cb158-2"><a href="gwas-summary-statistics.html#cb158-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_af, sd_ss), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb158-3"><a href="gwas-summary-statistics.html#cb158-3" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb158-4"><a href="gwas-summary-statistics.html#cb158-4" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb158-5"><a href="gwas-summary-statistics.html#cb158-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations derived from the allele frequencies&quot;</span>,</span>
+<span id="cb158-6"><a href="gwas-summary-statistics.html#cb158-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>)</span></code></pre></div>
 <p><img src="sumstats_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="gwas-summary-statistics.html#cb155-1" tabindex="-1"></a>nb_na <span class="ot">&lt;-</span> <span class="fu">big_counts</span>(G<span class="sc">$</span><span class="fu">copy</span>(CODE_012), <span class="at">ind.row =</span> ind.gwas)[<span class="dv">4</span>, ]</span>
-<span id="cb155-2"><a href="gwas-summary-statistics.html#cb155-2" tabindex="-1"></a><span class="fu">ggplot</span>(dplyr<span class="sc">::</span><span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_af, sd_ss, nb_na), <span class="at">n =</span> <span class="fl">100e3</span>)) <span class="sc">+</span></span>
-<span id="cb155-3"><a href="gwas-summary-statistics.html#cb155-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_af, sd_ss, <span class="at">color =</span> nb_na), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb155-4"><a href="gwas-summary-statistics.html#cb155-4" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb155-5"><a href="gwas-summary-statistics.html#cb155-5" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">trans =</span> <span class="st">&quot;sqrt&quot;</span>) <span class="sc">+</span></span>
-<span id="cb155-6"><a href="gwas-summary-statistics.html#cb155-6" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb155-7"><a href="gwas-summary-statistics.html#cb155-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations derived from the allele frequencies&quot;</span>,</span>
-<span id="cb155-8"><a href="gwas-summary-statistics.html#cb155-8" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="gwas-summary-statistics.html#cb159-1" tabindex="-1"></a>nb_na <span class="ot">&lt;-</span> <span class="fu">big_counts</span>(G<span class="sc">$</span><span class="fu">copy</span>(CODE_012), <span class="at">ind.row =</span> ind.gwas)[<span class="dv">4</span>, ]</span>
+<span id="cb159-2"><a href="gwas-summary-statistics.html#cb159-2" tabindex="-1"></a><span class="fu">ggplot</span>(dplyr<span class="sc">::</span><span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_af, sd_ss, nb_na), <span class="at">n =</span> <span class="fl">100e3</span>)) <span class="sc">+</span></span>
+<span id="cb159-3"><a href="gwas-summary-statistics.html#cb159-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_af, sd_ss, <span class="at">color =</span> nb_na), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb159-4"><a href="gwas-summary-statistics.html#cb159-4" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb159-5"><a href="gwas-summary-statistics.html#cb159-5" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">trans =</span> <span class="st">&quot;sqrt&quot;</span>) <span class="sc">+</span></span>
+<span id="cb159-6"><a href="gwas-summary-statistics.html#cb159-6" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb159-7"><a href="gwas-summary-statistics.html#cb159-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations derived from the allele frequencies&quot;</span>,</span>
+<span id="cb159-8"><a href="gwas-summary-statistics.html#cb159-8" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>)</span></code></pre></div>
 <p><img src="sumstats_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </details>
 <hr />
 <p>We will practice more QC on GWAS summary statistics in <a href="polygenic-risk-scores-pgs-or-prs.html#exo-ldpred2">8.5</a>.</p>
-<p>I provide some example R script in <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html">the LDpred2 tutorial</a> that implements this QC. You can also find some other scripts with examples how to prepare several GWAS summary statistics <a href="https://github.com/privefl/paper-misspec/tree/main/code">here</a>.</p>
+<p>I provide some <a href="https://github.com/privefl/paper-infer/blob/main/code/example-with-provided-LD.R">example R script</a> in <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html">the LDpred2 tutorial</a> that implements this QC. You can also find some other scripts with examples how to prepare several GWAS summary statistics <a href="https://github.com/privefl/paper-misspec/tree/main/code">here</a>.</p>
 <p>I am currently working on implementing a method that performs a complementary QC, as well as the imputation of GWAS summary statistics (i.e. GWAS results for more variants).</p>
 </div>
 <div id="ssancestry" class="section level2 hasAnchor" number="6.3">
 <h2><span class="header-section-number">6.3</span> Ancestry inference<a href="gwas-summary-statistics.html#ssancestry" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In <a href="population-structure.html#ancestry">4.5</a>, we’ve seen how to infer ancestry for individual-level data using reference data provided in <span class="citation">Privé (<a href="#ref-prive2021using">2022</a>)</span>; we can also use this to infer the ancestry composition of a GWAS dataset using only allele frequencies from the GWAS summary statistics. The tutorial accompanying <span class="citation">Privé (<a href="#ref-prive2021using">2022</a>)</span> is <a href="https://privefl.github.io/bigsnpr/articles/ancestry.html">here</a>.</p>
 <div class="infobox exo">
-<p>Reuse some of the code from <a href="population-structure.html#ancestry">4.5</a> and allele frequencies (that you should compute) to get the ancestry composition of this dataset using function <code>snp_ancestry_summary()</code>.</p>
+<p>Reuse some of the code from <a href="population-structure.html#ancestry">4.5</a> (and/or from the tutorial) and allele frequencies (that you should compute) to get the ancestry composition of this dataset using function <code>snp_ancestry_summary()</code>.</p>
 </div>
 <details>
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="gwas-summary-statistics.html#cb156-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
-<span id="cb156-2"><a href="gwas-summary-statistics.html#cb156-2" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
-<span id="cb156-3"><a href="gwas-summary-statistics.html#cb156-3" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="gwas-summary-statistics.html#cb157-1" tabindex="-1"></a>all_freq <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
-<span id="cb157-2"><a href="gwas-summary-statistics.html#cb157-2" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb157-3"><a href="gwas-summary-statistics.html#cb157-3" tabindex="-1"></a>    <span class="st">&quot;https://figshare.com/ndownloader/files/38019027&quot;</span>,  <span class="co"># subset for the tutorial (46 MB)</span></span>
-<span id="cb157-4"><a href="gwas-summary-statistics.html#cb157-4" tabindex="-1"></a>    <span class="co"># &quot;https://figshare.com/ndownloader/files/31620968&quot;,  # for real analyses (849 MB)</span></span>
-<span id="cb157-5"><a href="gwas-summary-statistics.html#cb157-5" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;ref_freqs.csv.gz&quot;</span>))</span>
-<span id="cb157-6"><a href="gwas-summary-statistics.html#cb157-6" tabindex="-1"></a></span>
-<span id="cb157-7"><a href="gwas-summary-statistics.html#cb157-7" tabindex="-1"></a>projection <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
-<span id="cb157-8"><a href="gwas-summary-statistics.html#cb157-8" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb157-9"><a href="gwas-summary-statistics.html#cb157-9" tabindex="-1"></a>    <span class="st">&quot;https://figshare.com/ndownloader/files/38019024&quot;</span>,  <span class="co"># subset for the tutorial (44 MB)</span></span>
-<span id="cb157-10"><a href="gwas-summary-statistics.html#cb157-10" tabindex="-1"></a>    <span class="co"># &quot;https://figshare.com/ndownloader/files/31620953&quot;,  # for real analyses (847 MB)</span></span>
-<span id="cb157-11"><a href="gwas-summary-statistics.html#cb157-11" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;projection.csv.gz&quot;</span>))</span>
-<span id="cb157-12"><a href="gwas-summary-statistics.html#cb157-12" tabindex="-1"></a></span>
-<span id="cb157-13"><a href="gwas-summary-statistics.html#cb157-13" tabindex="-1"></a><span class="co"># coefficients to correct for overfitting of PCA</span></span>
-<span id="cb157-14"><a href="gwas-summary-statistics.html#cb157-14" tabindex="-1"></a>correction <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">1.008</span>, <span class="fl">1.021</span>, <span class="fl">1.034</span>, <span class="fl">1.052</span>, <span class="fl">1.074</span>, <span class="fl">1.099</span>,</span>
-<span id="cb157-15"><a href="gwas-summary-statistics.html#cb157-15" tabindex="-1"></a>                <span class="fl">1.123</span>, <span class="fl">1.15</span>, <span class="fl">1.195</span>, <span class="fl">1.256</span>, <span class="fl">1.321</span>, <span class="fl">1.382</span>, <span class="fl">1.443</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="gwas-summary-statistics.html#cb158-1" tabindex="-1"></a><span class="co"># match variants between the two datasets</span></span>
-<span id="cb158-2"><a href="gwas-summary-statistics.html#cb158-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb158-3"><a href="gwas-summary-statistics.html#cb158-3" tabindex="-1"></a>matched <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map <span class="sc">%&gt;%</span></span>
-<span id="cb158-4"><a href="gwas-summary-statistics.html#cb158-4" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">chr =</span> chromosome, <span class="at">pos =</span> physical.pos, <span class="at">a1 =</span> allele1, <span class="at">a0 =</span> allele2) <span class="sc">%&gt;%</span></span>
-<span id="cb158-5"><a href="gwas-summary-statistics.html#cb158-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">beta =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb158-6"><a href="gwas-summary-statistics.html#cb158-6" tabindex="-1"></a>  <span class="fu">snp_match</span>(all_freq[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]) <span class="sc">%&gt;%</span></span>
-<span id="cb158-7"><a href="gwas-summary-statistics.html#cb158-7" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="gwas-summary-statistics.html#cb160-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
+<span id="cb160-2"><a href="gwas-summary-statistics.html#cb160-2" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
+<span id="cb160-3"><a href="gwas-summary-statistics.html#cb160-3" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="gwas-summary-statistics.html#cb161-1" tabindex="-1"></a>all_freq <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
+<span id="cb161-2"><a href="gwas-summary-statistics.html#cb161-2" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb161-3"><a href="gwas-summary-statistics.html#cb161-3" tabindex="-1"></a>    <span class="st">&quot;https://figshare.com/ndownloader/files/38019027&quot;</span>,  <span class="co"># subset for the tutorial (46 MB)</span></span>
+<span id="cb161-4"><a href="gwas-summary-statistics.html#cb161-4" tabindex="-1"></a>    <span class="co"># &quot;https://figshare.com/ndownloader/files/31620968&quot;,  # for real analyses (849 MB)</span></span>
+<span id="cb161-5"><a href="gwas-summary-statistics.html#cb161-5" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;ref_freqs.csv.gz&quot;</span>))</span>
+<span id="cb161-6"><a href="gwas-summary-statistics.html#cb161-6" tabindex="-1"></a></span>
+<span id="cb161-7"><a href="gwas-summary-statistics.html#cb161-7" tabindex="-1"></a>projection <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
+<span id="cb161-8"><a href="gwas-summary-statistics.html#cb161-8" tabindex="-1"></a>  runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb161-9"><a href="gwas-summary-statistics.html#cb161-9" tabindex="-1"></a>    <span class="st">&quot;https://figshare.com/ndownloader/files/38019024&quot;</span>,  <span class="co"># subset for the tutorial (44 MB)</span></span>
+<span id="cb161-10"><a href="gwas-summary-statistics.html#cb161-10" tabindex="-1"></a>    <span class="co"># &quot;https://figshare.com/ndownloader/files/31620953&quot;,  # for real analyses (847 MB)</span></span>
+<span id="cb161-11"><a href="gwas-summary-statistics.html#cb161-11" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;projection.csv.gz&quot;</span>))</span>
+<span id="cb161-12"><a href="gwas-summary-statistics.html#cb161-12" tabindex="-1"></a></span>
+<span id="cb161-13"><a href="gwas-summary-statistics.html#cb161-13" tabindex="-1"></a><span class="co"># coefficients to correct for overfitting of PCA</span></span>
+<span id="cb161-14"><a href="gwas-summary-statistics.html#cb161-14" tabindex="-1"></a>correction <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">1.008</span>, <span class="fl">1.021</span>, <span class="fl">1.034</span>, <span class="fl">1.052</span>, <span class="fl">1.074</span>, <span class="fl">1.099</span>,</span>
+<span id="cb161-15"><a href="gwas-summary-statistics.html#cb161-15" tabindex="-1"></a>                <span class="fl">1.123</span>, <span class="fl">1.15</span>, <span class="fl">1.195</span>, <span class="fl">1.256</span>, <span class="fl">1.321</span>, <span class="fl">1.382</span>, <span class="fl">1.443</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="gwas-summary-statistics.html#cb162-1" tabindex="-1"></a><span class="co"># match variants between the two datasets</span></span>
+<span id="cb162-2"><a href="gwas-summary-statistics.html#cb162-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb162-3"><a href="gwas-summary-statistics.html#cb162-3" tabindex="-1"></a>matched <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map <span class="sc">%&gt;%</span></span>
+<span id="cb162-4"><a href="gwas-summary-statistics.html#cb162-4" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">chr =</span> chromosome, <span class="at">pos =</span> physical.pos, <span class="at">a1 =</span> allele1, <span class="at">a0 =</span> allele2) <span class="sc">%&gt;%</span></span>
+<span id="cb162-5"><a href="gwas-summary-statistics.html#cb162-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">beta =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb162-6"><a href="gwas-summary-statistics.html#cb162-6" tabindex="-1"></a>  <span class="fu">snp_match</span>(all_freq[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb162-7"><a href="gwas-summary-statistics.html#cb162-7" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div>
 <pre><code>#&gt;   chr     pos a0 a1 beta _NUM_ID_.ss       rsid _NUM_ID_
 #&gt; 1   1  752566  G  A   -1           2  rs3094315        1
 #&gt; 2   1  785989  T  C   -1           4  rs2980300        2
@@ -499,22 +506,22 @@ Click to see solution
 <div class="infobox caution">
 <p>When matching between variants from two datasets, sometimes physical positions are in two different genome builds, usually it can be hg19 and hg38 (for newer datasets). You will need to either convert one of the two sets of positions with <code>snp_modifyBuild()</code> (that uses liftOver, not available for Windows) or by matching using rsIDs instead of positions (by using <code>join_by_pos = FALSE</code>).</p>
 </div>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="gwas-summary-statistics.html#cb160-1" tabindex="-1"></a><span class="co"># further subsetting on missing values</span></span>
-<span id="cb160-2"><a href="gwas-summary-statistics.html#cb160-2" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">bed_counts</span>(obj.bed, <span class="at">ind.col =</span> matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)</span>
-<span id="cb160-3"><a href="gwas-summary-statistics.html#cb160-3" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">which</span>((counts[<span class="dv">4</span>, ] <span class="sc">/</span> <span class="fu">nrow</span>(obj.bed)) <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
-<span id="cb160-4"><a href="gwas-summary-statistics.html#cb160-4" tabindex="-1"></a>matched2 <span class="ot">&lt;-</span> matched[ind, ]</span></code></pre></div>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="gwas-summary-statistics.html#cb161-1" tabindex="-1"></a><span class="co"># compute allele frequencies</span></span>
-<span id="cb161-2"><a href="gwas-summary-statistics.html#cb161-2" tabindex="-1"></a>af <span class="ot">&lt;-</span> <span class="fu">bed_MAF</span>(obj.bed, <span class="at">ind.col =</span> matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>)<span class="sc">$</span>af</span>
-<span id="cb161-3"><a href="gwas-summary-statistics.html#cb161-3" tabindex="-1"></a>af2 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(matched2<span class="sc">$</span>beta <span class="sc">&gt;</span> <span class="dv">0</span>, af, <span class="dv">1</span> <span class="sc">-</span> af)</span>
-<span id="cb161-4"><a href="gwas-summary-statistics.html#cb161-4" tabindex="-1"></a></span>
-<span id="cb161-5"><a href="gwas-summary-statistics.html#cb161-5" tabindex="-1"></a><span class="co"># get ancestry composition</span></span>
-<span id="cb161-6"><a href="gwas-summary-statistics.html#cb161-6" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">snp_ancestry_summary</span>(</span>
-<span id="cb161-7"><a href="gwas-summary-statistics.html#cb161-7" tabindex="-1"></a>  <span class="at">freq =</span> af2,</span>
-<span id="cb161-8"><a href="gwas-summary-statistics.html#cb161-8" tabindex="-1"></a>  <span class="at">info_freq_ref =</span> all_freq[matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)],</span>
-<span id="cb161-9"><a href="gwas-summary-statistics.html#cb161-9" tabindex="-1"></a>  <span class="at">projection =</span> projection[matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)],</span>
-<span id="cb161-10"><a href="gwas-summary-statistics.html#cb161-10" tabindex="-1"></a>  <span class="at">correction =</span> correction</span>
-<span id="cb161-11"><a href="gwas-summary-statistics.html#cb161-11" tabindex="-1"></a>)</span>
-<span id="cb161-12"><a href="gwas-summary-statistics.html#cb161-12" tabindex="-1"></a>res</span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="gwas-summary-statistics.html#cb164-1" tabindex="-1"></a><span class="co"># further subsetting on missing values</span></span>
+<span id="cb164-2"><a href="gwas-summary-statistics.html#cb164-2" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">bed_counts</span>(obj.bed, <span class="at">ind.col =</span> matched<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)</span>
+<span id="cb164-3"><a href="gwas-summary-statistics.html#cb164-3" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">which</span>((counts[<span class="dv">4</span>, ] <span class="sc">/</span> <span class="fu">nrow</span>(obj.bed)) <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb164-4"><a href="gwas-summary-statistics.html#cb164-4" tabindex="-1"></a>matched2 <span class="ot">&lt;-</span> matched[ind, ]</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="gwas-summary-statistics.html#cb165-1" tabindex="-1"></a><span class="co"># compute allele frequencies</span></span>
+<span id="cb165-2"><a href="gwas-summary-statistics.html#cb165-2" tabindex="-1"></a>af <span class="ot">&lt;-</span> <span class="fu">bed_MAF</span>(obj.bed, <span class="at">ind.col =</span> matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_.ss</span><span class="st">`</span>)<span class="sc">$</span>af</span>
+<span id="cb165-3"><a href="gwas-summary-statistics.html#cb165-3" tabindex="-1"></a>af2 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(matched2<span class="sc">$</span>beta <span class="sc">&gt;</span> <span class="dv">0</span>, af, <span class="dv">1</span> <span class="sc">-</span> af)</span>
+<span id="cb165-4"><a href="gwas-summary-statistics.html#cb165-4" tabindex="-1"></a></span>
+<span id="cb165-5"><a href="gwas-summary-statistics.html#cb165-5" tabindex="-1"></a><span class="co"># get ancestry composition</span></span>
+<span id="cb165-6"><a href="gwas-summary-statistics.html#cb165-6" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">snp_ancestry_summary</span>(</span>
+<span id="cb165-7"><a href="gwas-summary-statistics.html#cb165-7" tabindex="-1"></a>  <span class="at">freq =</span> af2,</span>
+<span id="cb165-8"><a href="gwas-summary-statistics.html#cb165-8" tabindex="-1"></a>  <span class="at">info_freq_ref =</span> all_freq[matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)],</span>
+<span id="cb165-9"><a href="gwas-summary-statistics.html#cb165-9" tabindex="-1"></a>  <span class="at">projection =</span> projection[matched2<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)],</span>
+<span id="cb165-10"><a href="gwas-summary-statistics.html#cb165-10" tabindex="-1"></a>  <span class="at">correction =</span> correction</span>
+<span id="cb165-11"><a href="gwas-summary-statistics.html#cb165-11" tabindex="-1"></a>)</span>
+<span id="cb165-12"><a href="gwas-summary-statistics.html#cb165-12" tabindex="-1"></a>res</span></code></pre></div>
 <pre><code>#&gt;       Africa (West)      Africa (South)       Africa (East) 
 #&gt;           0.0015918           0.0000000           0.0000000 
 #&gt;      Africa (North)         Middle East           Ashkenazi 
@@ -546,13 +553,14 @@ Click to see solution
 #&gt;           0.7286470           0.7290332           0.7343768 
 #&gt; attr(,&quot;cor_pred&quot;)
 #&gt; [1] 0.9990652</code></pre>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="gwas-summary-statistics.html#cb163-1" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">colnames</span>(all_freq)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]</span>
-<span id="cb163-2"><a href="gwas-summary-statistics.html#cb163-2" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Scandinavia&quot;</span>, <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Ireland&quot;</span>)]   <span class="ot">&lt;-</span> <span class="st">&quot;Europe (North West)&quot;</span></span>
-<span id="cb163-3"><a href="gwas-summary-statistics.html#cb163-3" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Europe (South East)&quot;</span>, <span class="st">&quot;Europe (North East)&quot;</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;Europe (East)&quot;</span></span>
-<span id="cb163-4"><a href="gwas-summary-statistics.html#cb163-4" tabindex="-1"></a>grp_fct <span class="ot">&lt;-</span> <span class="fu">factor</span>(group, <span class="fu">unique</span>(group))</span>
-<span id="cb163-5"><a href="gwas-summary-statistics.html#cb163-5" tabindex="-1"></a></span>
-<span id="cb163-6"><a href="gwas-summary-statistics.html#cb163-6" tabindex="-1"></a>final_res <span class="ot">&lt;-</span> <span class="fu">tapply</span>(res, grp_fct, sum)</span>
-<span id="cb163-7"><a href="gwas-summary-statistics.html#cb163-7" tabindex="-1"></a><span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> final_res, <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="gwas-summary-statistics.html#cb167-1" tabindex="-1"></a><span class="co"># combine some close groups</span></span>
+<span id="cb167-2"><a href="gwas-summary-statistics.html#cb167-2" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">colnames</span>(all_freq)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)]</span>
+<span id="cb167-3"><a href="gwas-summary-statistics.html#cb167-3" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Scandinavia&quot;</span>, <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Ireland&quot;</span>)]   <span class="ot">&lt;-</span> <span class="st">&quot;Europe (North West)&quot;</span></span>
+<span id="cb167-4"><a href="gwas-summary-statistics.html#cb167-4" tabindex="-1"></a>group[group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Europe (South East)&quot;</span>, <span class="st">&quot;Europe (North East)&quot;</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;Europe (East)&quot;</span></span>
+<span id="cb167-5"><a href="gwas-summary-statistics.html#cb167-5" tabindex="-1"></a></span>
+<span id="cb167-6"><a href="gwas-summary-statistics.html#cb167-6" tabindex="-1"></a>grp_fct <span class="ot">&lt;-</span> <span class="fu">factor</span>(group, <span class="fu">unique</span>(group))  <span class="co"># use factors to keep order</span></span>
+<span id="cb167-7"><a href="gwas-summary-statistics.html#cb167-7" tabindex="-1"></a>final_res <span class="ot">&lt;-</span> <span class="fu">tapply</span>(res, grp_fct, sum)</span>
+<span id="cb167-8"><a href="gwas-summary-statistics.html#cb167-8" tabindex="-1"></a><span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> final_res, <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>#&gt;       Africa (West)      Africa (South)       Africa (East) 
 #&gt;                 0.2                 0.0                 0.0 
 #&gt;      Africa (North)         Middle East           Ashkenazi 

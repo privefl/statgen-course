@@ -10,7 +10,7 @@ Here we just mention some other types of analyses that haven't really been cover
 
 - **Estimation of SNP-based heritability**: The proportion of phenotypic variance in a trait that can be explained by genetic variation captured by measured SNPs. A simple way to estimate it is with [LD Score regression (LDSC)](https://github.com/bulik/ldsc/wiki/Heritability-and-Genetic-Correlation) using GWAS summary statistics [@bulik2015ld]. R packages bigsnpr and GenomicSEM also provide some implementation of LDSC. There exist many other tools to estimate SNP-heritability, such as LDpred2-auto (mentioned before).
 
-- **Genetic Correlation**: LDSC can be also used to estimate the genome-wide genetic correlation between two traits using GWAS summary statistics [@bulik2015atlas], and is also implemented in R package GenomicSEM. Local genetic correlations (e.g. within LD blocks) can also be estimated [@zhang2023benchmarking].
+- **Genetic Correlation**: LDSC can be also used to estimate the genome-wide genetic correlation between two traits using GWAS summary statistics [@bulik2015atlas], and is also implemented in R package GenomicSEM. Local genetic correlations (e.g. within LD blocks) can also be estimated [@zhang2023benchmarking; @darlay2025exploring].
 
 - **Partitioned heritability**: Heritability partitioned by functional annotation (which may be cell-type or state-specific), which can be estimated using [S-LDSC](https://github.com/bulik/ldsc/wiki/Partitioned-Heritability) [@finucane2015partitioning], [SumHer](https://dougspeed.com/heritability-enrichments/) [@speed2019sumher] and [SBayesRC](https://github.com/zhilizheng/SBayesRC) [@zheng2024leveraging].
 

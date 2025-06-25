@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-24" />
+<meta name="date" content="2025-06-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -306,25 +306,25 @@ From this, it results in a windowed (sparse) LD matrix.</p>
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="linkage-disequilibrium-ld.html#cb165-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="linkage-disequilibrium-ld.html#cb169-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span></code></pre></div>
 <pre><code>#&gt; Loading required package: bigstatsr</code></pre>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="linkage-disequilibrium-ld.html#cb167-1" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
-<span id="cb167-2"><a href="linkage-disequilibrium-ld.html#cb167-2" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="linkage-disequilibrium-ld.html#cb168-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb168-2"><a href="linkage-disequilibrium-ld.html#cb168-2" tabindex="-1"></a>ind_chr22 <span class="ot">&lt;-</span> <span class="fu">which</span>(obj.bed<span class="sc">$</span>map<span class="sc">$</span>chromosome <span class="sc">==</span> <span class="dv">22</span>)</span>
-<span id="cb168-3"><a href="linkage-disequilibrium-ld.html#cb168-3" tabindex="-1"></a>POS_chr22 <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map<span class="sc">$</span>physical.pos[ind_chr22]  <span class="co"># in bp</span></span>
-<span id="cb168-4"><a href="linkage-disequilibrium-ld.html#cb168-4" tabindex="-1"></a></span>
-<span id="cb168-5"><a href="linkage-disequilibrium-ld.html#cb168-5" tabindex="-1"></a><span class="co"># downloads 5.9 MB</span></span>
-<span id="cb168-6"><a href="linkage-disequilibrium-ld.html#cb168-6" tabindex="-1"></a>POS2_chr22 <span class="ot">&lt;-</span> <span class="fu">snp_asGeneticPos</span>(<span class="at">infos.chr =</span> <span class="fu">rep</span>(<span class="dv">22</span>, <span class="fu">length</span>(POS_chr22)), </span>
-<span id="cb168-7"><a href="linkage-disequilibrium-ld.html#cb168-7" tabindex="-1"></a>                               <span class="at">infos.pos =</span> POS_chr22, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="linkage-disequilibrium-ld.html#cb169-1" tabindex="-1"></a>cor1 <span class="ot">&lt;-</span> <span class="fu">bed_cor</span>(obj.bed, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb169-2"><a href="linkage-disequilibrium-ld.html#cb169-2" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)  <span class="co"># in cM</span></span></code></pre></div>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="linkage-disequilibrium-ld.html#cb170-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
-<span id="cb170-2"><a href="linkage-disequilibrium-ld.html#cb170-2" tabindex="-1"></a>G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes</span>
-<span id="cb170-3"><a href="linkage-disequilibrium-ld.html#cb170-3" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">dim</span>(G) <span class="sc">==</span> <span class="fu">dim</span>(obj.bed)))</span>
-<span id="cb170-4"><a href="linkage-disequilibrium-ld.html#cb170-4" tabindex="-1"></a>cor2 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb170-5"><a href="linkage-disequilibrium-ld.html#cb170-5" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
-<span id="cb170-6"><a href="linkage-disequilibrium-ld.html#cb170-6" tabindex="-1"></a><span class="fu">cbind</span>(cor2[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], cor1[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])  <span class="co"># not exactly the same; why?</span></span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="linkage-disequilibrium-ld.html#cb171-1" tabindex="-1"></a>obj.bed <span class="ot">&lt;-</span> <span class="fu">bed</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.bed&quot;</span>)</span>
+<span id="cb171-2"><a href="linkage-disequilibrium-ld.html#cb171-2" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="linkage-disequilibrium-ld.html#cb172-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb172-2"><a href="linkage-disequilibrium-ld.html#cb172-2" tabindex="-1"></a>ind_chr22 <span class="ot">&lt;-</span> <span class="fu">which</span>(obj.bed<span class="sc">$</span>map<span class="sc">$</span>chromosome <span class="sc">==</span> <span class="dv">22</span>)</span>
+<span id="cb172-3"><a href="linkage-disequilibrium-ld.html#cb172-3" tabindex="-1"></a>POS_chr22 <span class="ot">&lt;-</span> obj.bed<span class="sc">$</span>map<span class="sc">$</span>physical.pos[ind_chr22]  <span class="co"># in bp</span></span>
+<span id="cb172-4"><a href="linkage-disequilibrium-ld.html#cb172-4" tabindex="-1"></a></span>
+<span id="cb172-5"><a href="linkage-disequilibrium-ld.html#cb172-5" tabindex="-1"></a><span class="co"># downloads 5.9 MB</span></span>
+<span id="cb172-6"><a href="linkage-disequilibrium-ld.html#cb172-6" tabindex="-1"></a>POS2_chr22 <span class="ot">&lt;-</span> <span class="fu">snp_asGeneticPos</span>(<span class="at">infos.chr =</span> <span class="fu">rep</span>(<span class="dv">22</span>, <span class="fu">length</span>(POS_chr22)), </span>
+<span id="cb172-7"><a href="linkage-disequilibrium-ld.html#cb172-7" tabindex="-1"></a>                               <span class="at">infos.pos =</span> POS_chr22, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="linkage-disequilibrium-ld.html#cb173-1" tabindex="-1"></a>cor1 <span class="ot">&lt;-</span> <span class="fu">bed_cor</span>(obj.bed, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb173-2"><a href="linkage-disequilibrium-ld.html#cb173-2" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)  <span class="co"># in cM</span></span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="linkage-disequilibrium-ld.html#cb174-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
+<span id="cb174-2"><a href="linkage-disequilibrium-ld.html#cb174-2" tabindex="-1"></a>G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb174-3"><a href="linkage-disequilibrium-ld.html#cb174-3" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">dim</span>(G) <span class="sc">==</span> <span class="fu">dim</span>(obj.bed)))</span>
+<span id="cb174-4"><a href="linkage-disequilibrium-ld.html#cb174-4" tabindex="-1"></a>cor2 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb174-5"><a href="linkage-disequilibrium-ld.html#cb174-5" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
+<span id="cb174-6"><a href="linkage-disequilibrium-ld.html#cb174-6" tabindex="-1"></a><span class="fu">cbind</span>(cor2[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], cor1[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])  <span class="co"># not exactly the same; why?</span></span></code></pre></div>
 <pre><code>#&gt; 5 x 10 sparse Matrix of class &quot;dgCMatrix&quot;
 #&gt;                                                                 
 #&gt; [1,]  1.00000000 -0.05154381 -0.03629097 -0.02959808 -0.04231449
@@ -338,10 +338,10 @@ Click to see solution
 #&gt; [3,] -0.03645858 -0.15427297  1.00000000  0.92937159 -0.51078705
 #&gt; [4,] -0.02979486 -0.15639606  0.92937159  1.00000000 -0.46606808
 #&gt; [5,] -0.04304076  0.15833843 -0.51078705 -0.46606808  1.00000000</code></pre>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="linkage-disequilibrium-ld.html#cb172-1" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> G<span class="sc">$</span><span class="fu">copy</span>(CODE_012)  <span class="co"># go back to having missing values</span></span>
-<span id="cb172-2"><a href="linkage-disequilibrium-ld.html#cb172-2" tabindex="-1"></a>cor3 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G2, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb172-3"><a href="linkage-disequilibrium-ld.html#cb172-3" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
-<span id="cb172-4"><a href="linkage-disequilibrium-ld.html#cb172-4" tabindex="-1"></a><span class="fu">all.equal</span>(cor3, cor1)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="linkage-disequilibrium-ld.html#cb176-1" tabindex="-1"></a>G2 <span class="ot">&lt;-</span> G<span class="sc">$</span><span class="fu">copy</span>(CODE_012)  <span class="co"># go back to having missing values</span></span>
+<span id="cb176-2"><a href="linkage-disequilibrium-ld.html#cb176-2" tabindex="-1"></a>cor3 <span class="ot">&lt;-</span> <span class="fu">snp_cor</span>(G2, <span class="at">ind.col =</span> ind_chr22, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb176-3"><a href="linkage-disequilibrium-ld.html#cb176-3" tabindex="-1"></a>                <span class="at">infos.pos =</span> POS2_chr22, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
+<span id="cb176-4"><a href="linkage-disequilibrium-ld.html#cb176-4" tabindex="-1"></a><span class="fu">all.equal</span>(cor3, cor1)</span></code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
 </details>
 </div>

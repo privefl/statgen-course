@@ -7,7 +7,7 @@ editor_options:
 # Genome-Wide Association Study (GWAS)
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", "batchtools", "Slurm", "ACATO", "ACATV", "Conda", "GxE", "GxG", "Regeneron", "regenie", "REGENIE", "REMETA", "SBAT", "SKAT", "SKATO", "COJO", "GCTA", "GC", "HPC", "iteratively", "Catalogue", "CellxGene", "dbSNP", "eQTL", "FUMA", "GTEx", "OneK", "OpenTargets", "SNPedia")
+WORDS_TO_IGNORE <- c("gwas", "HDL", "https", "LDL", "lipoprotein", "batchtools", "Slurm", "ACATO", "ACATV", "Conda", "GxE", "GxG", "Regeneron", "regenie", "REGENIE", "REMETA", "SBAT", "SKAT", "SKATO", "COJO", "GCTA", "GC", "HPC", "iteratively", "Catalogue", "CellxGene", "dbSNP", "eQTL", "FUMA", "GTEx", "OneK", "OpenTargets", "SNPedia", "kb")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -43,6 +43,10 @@ For the set of covariates, we will use sex, age, and the first 6 PCs:
 ```{r}
 covar <- cbind(as.matrix(obj.bigsnp$fam[c("sex", "age")]), PC[, 1:6])
 ```
+
+:::: {.infobox .info}
+PCs are used as covariates in GWAS to correct for population structure [@price2006principal].
+::::
 
 :::: {.infobox .caution}
 You probably should not account for other information such as cholesterol as they are heritable covariates, which can lead to collider bias [@aschard2015adjusting; @day2016robust].
@@ -106,7 +110,7 @@ snp_manhattan(gwas2, CHR, POS, npoints = 50e3) +
 To report independent findings (instead of all variants in one peak), researchers have used LD clumping, which iteratively keeps the most associated variant and remove those that are too correlated with this one. Another strategy is to use GCTA-COJO [@yang2012conditional].
 
 :::: {.infobox .exo}
-Perform some LD clumping for all variants with a p-value lower than $10^{-5}$, using a stringent $r^2$ threshold of 0.05 over a 5 Mb window. How many variants are left?
+Perform some LD clumping for all variants with a p-value lower than $10^{-5}$, using a stringent $r^2$ threshold of 0.05 over a 5 Mb (= 5000 kb) window. How many variants are left?
 ::::
 
 <details>
@@ -115,7 +119,7 @@ Perform some LD clumping for all variants with a p-value lower than $10^{-5}$, u
 ```{r, out.width="95%", fig.asp=0.5, fig.width=10, dev='png'}
 lpval <- -predict(gwas)  # -log10(pval)
 ind_keep <- snp_clumping(G, CHR, S = lpval, thr.r2 = 0.05,
-                         size = 5e6, infos.pos = POS, 
+                         size = 5000, infos.pos = POS, 
                          exclude = which(lpval < -log10(1e-5)),
                          ncores = NCORES)
 obj.bigsnp$map[ind_keep, ]
@@ -199,3 +203,5 @@ It is challenging to interpret a GWAS on its own as there are often many associa
   - [GTEx](https://www.gtexportal.org/home/)
   - [CellxGene](https://cellxgene.cziscience.com/)
   - [OneK1K](https://onek1k.org/)
+
+- Read more in [this PowerPoint presentation](other-files/Resources-for-Post-GWAS-Analysis.pptx).

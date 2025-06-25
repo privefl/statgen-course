@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-24" />
+<meta name="date" content="2025-06-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -287,7 +287,7 @@ div.csl-indent {
 <p>Here we just mention some other types of analyses that haven’t really been covered in the course, but that are useful to know that they exist. We simply mention a few tools; you can find a list with more <a href="https://github.com/MichelNivard/awesome-complex-trait-genetics">here</a>.</p>
 <ul>
 <li><p><strong>Estimation of SNP-based heritability</strong>: The proportion of phenotypic variance in a trait that can be explained by genetic variation captured by measured SNPs. A simple way to estimate it is with <a href="https://github.com/bulik/ldsc/wiki/Heritability-and-Genetic-Correlation">LD Score regression (LDSC)</a> using GWAS summary statistics <span class="citation">(<a href="#ref-bulik2015ld">B. K. Bulik-Sullivan et al., 2015</a>)</span>. R packages bigsnpr and GenomicSEM also provide some implementation of LDSC. There exist many other tools to estimate SNP-heritability, such as LDpred2-auto (mentioned before).</p></li>
-<li><p><strong>Genetic Correlation</strong>: LDSC can be also used to estimate the genome-wide genetic correlation between two traits using GWAS summary statistics <span class="citation">(<a href="#ref-bulik2015atlas">B. Bulik-Sullivan et al., 2015</a>)</span>, and is also implemented in R package GenomicSEM. Local genetic correlations (e.g. within LD blocks) can also be estimated <span class="citation">(<a href="#ref-zhang2023benchmarking">Zhang, Zhang, Zhang, &amp; Zhao, 2023</a>)</span>.</p></li>
+<li><p><strong>Genetic Correlation</strong>: LDSC can be also used to estimate the genome-wide genetic correlation between two traits using GWAS summary statistics <span class="citation">(<a href="#ref-bulik2015atlas">B. Bulik-Sullivan et al., 2015</a>)</span>, and is also implemented in R package GenomicSEM. Local genetic correlations (e.g. within LD blocks) can also be estimated <span class="citation">(<a href="#ref-darlay2025exploring">Darlay et al., 2025</a>; <a href="#ref-zhang2023benchmarking">Zhang, Zhang, Zhang, &amp; Zhao, 2023</a>)</span>.</p></li>
 <li><p><strong>Partitioned heritability</strong>: Heritability partitioned by functional annotation (which may be cell-type or state-specific), which can be estimated using <a href="https://github.com/bulik/ldsc/wiki/Partitioned-Heritability">S-LDSC</a> <span class="citation">(<a href="#ref-finucane2015partitioning">Finucane et al., 2015</a>)</span>, <a href="https://dougspeed.com/heritability-enrichments/">SumHer</a> <span class="citation">(<a href="#ref-speed2019sumher">Speed &amp; Balding, 2019</a>)</span> and <a href="https://github.com/zhilizheng/SBayesRC">SBayesRC</a> <span class="citation">(<a href="#ref-zheng2024leveraging">Zheng et al., 2024</a>)</span>.</p></li>
 <li><p><strong>Gene-based tests</strong>: These determine the genes associated with a trait from a GWAS by using proximity, such as mBAT-combo as an <a href="https://github.com/Share-AL-work/mBAT.combo">R package</a> or a <a href="https://yanglab.westlake.edu.cn/software/gcta/#mBAT-combo">command-line software</a> <span class="citation">(<a href="#ref-li2023mbat">Li et al., 2023</a>)</span>.</p></li>
 <li><p><strong>Summary statistic imputation</strong>: imputation of GWAS summary statistics help increase the SNP overlap between GWAS summary statistics and LD reference panels.</p></li>
@@ -310,6 +310,9 @@ Bulik-Sullivan, B., Finucane, H.K., Anttila, V., Gusev, A., Day, F.R., Loh, P.-R
 </div>
 <div id="ref-bulik2015ld" class="csl-entry">
 Bulik-Sullivan, B.K., Loh, P.-R., Finucane, H.K., Ripke, S., Yang, J., Psychiatric Genomics Consortium, S.W.G. of the, et al. (2015). <a href="https://doi.org/10.1038/ng.3211"><span>LD</span> score regression distinguishes confounding from polygenicity in genome-wide association studies</a>. <em>Nature Genetics</em>, <em>47</em>, 291–295.
+</div>
+<div id="ref-darlay2025exploring" class="csl-entry">
+Darlay, R., Shah, R.L., Dodds, R.M., Nair, A.T., Pearson, E.R., Witham, M.D., et al. (2025). <a href="https://doi.org/10.1002/gepi.70012">Exploring similarities and differences between methods that exploit patterns of local genetic correlation to identify shared causal loci through application to genome-wide association studies of multiple long term conditions</a>. <em>Genetic Epidemiology</em>, <em>49</em>, e70012.
 </div>
 <div id="ref-finucane2015partitioning" class="csl-entry">
 Finucane, H.K., Bulik-Sullivan, B., Gusev, A., Trynka, G., Reshef, Y., Loh, P.-R., et al. (2015). <a href="https://doi.org/10.1038/ng.3404">Partitioning heritability by functional annotation using genome-wide association summary statistics</a>. <em>Nature Genetics</em>, <em>47</em>, 1228–1235.

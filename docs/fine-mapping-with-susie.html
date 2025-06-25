@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-24" />
+<meta name="date" content="2025-06-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -301,13 +301,13 @@ div.csl-indent {
 </div>
 <div id="load-libraries" class="section level3 hasAnchor" number="9.1.2">
 <h3><span class="header-section-number">9.1.2</span> Load libraries<a href="fine-mapping-with-susie.html#load-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="fine-mapping-with-susie.html#cb230-1" tabindex="-1"></a><span class="fu">library</span>(susieR)</span>
-<span id="cb230-2"><a href="fine-mapping-with-susie.html#cb230-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb230-3"><a href="fine-mapping-with-susie.html#cb230-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb230-4"><a href="fine-mapping-with-susie.html#cb230-4" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb230-5"><a href="fine-mapping-with-susie.html#cb230-5" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
-<span id="cb230-6"><a href="fine-mapping-with-susie.html#cb230-6" tabindex="-1"></a><span class="fu">library</span>(bigreadr)</span>
-<span id="cb230-7"><a href="fine-mapping-with-susie.html#cb230-7" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7236</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="fine-mapping-with-susie.html#cb234-1" tabindex="-1"></a><span class="fu">library</span>(susieR)</span>
+<span id="cb234-2"><a href="fine-mapping-with-susie.html#cb234-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb234-3"><a href="fine-mapping-with-susie.html#cb234-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb234-4"><a href="fine-mapping-with-susie.html#cb234-4" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb234-5"><a href="fine-mapping-with-susie.html#cb234-5" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
+<span id="cb234-6"><a href="fine-mapping-with-susie.html#cb234-6" tabindex="-1"></a><span class="fu">library</span>(bigreadr)</span>
+<span id="cb234-7"><a href="fine-mapping-with-susie.html#cb234-7" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7236</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="simulated-example" class="section level2 hasAnchor" number="9.2">
@@ -315,9 +315,9 @@ div.csl-indent {
 <p>This example uses simulated data to illustrate the use of SuSiE for fine-mapping over stage-wise selection.</p>
 <div id="load-data" class="section level3 hasAnchor" number="9.2.1">
 <h3><span class="header-section-number">9.2.1</span> Load data<a href="fine-mapping-with-susie.html#load-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="fine-mapping-with-susie.html#cb231-1" tabindex="-1"></a><span class="co"># This data is included in the susieR package</span></span>
-<span id="cb231-2"><a href="fine-mapping-with-susie.html#cb231-2" tabindex="-1"></a>dat <span class="ot">&lt;-</span> N2finemapping</span>
-<span id="cb231-3"><a href="fine-mapping-with-susie.html#cb231-3" tabindex="-1"></a><span class="fu">str</span>(dat)</span></code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="fine-mapping-with-susie.html#cb235-1" tabindex="-1"></a><span class="co"># This data is included in the susieR package</span></span>
+<span id="cb235-2"><a href="fine-mapping-with-susie.html#cb235-2" tabindex="-1"></a>dat <span class="ot">&lt;-</span> N2finemapping</span>
+<span id="cb235-3"><a href="fine-mapping-with-susie.html#cb235-3" tabindex="-1"></a><span class="fu">str</span>(dat)</span></code></pre></div>
 <pre><code>#&gt; List of 8
 #&gt;  $ X                : num [1:574, 1:1002] 0.703 0.703 -0.297 -0.297 0.703 ...
 #&gt;  $ chrom            : chr &quot;chr8&quot;
@@ -327,20 +327,20 @@ div.csl-indent {
 #&gt;  $ Y                : num [1:574, 1:2] 1.0446 -1.3656 -0.0235 -0.4344 0.4681 ...
 #&gt;  $ allele_freq      : num [1:1002, 1] 0.1483 0.0209 0.1368 0.2134 0.5627 ...
 #&gt;  $ V                : num [1:2, 1:2] 1.344 -0.0336 -0.0336 1.2541</code></pre>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="fine-mapping-with-susie.html#cb233-1" tabindex="-1"></a><span class="co"># This simulated data-set has two replicates. Let&#39;s focus on the first replicate:</span></span>
-<span id="cb233-2"><a href="fine-mapping-with-susie.html#cb233-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> dat<span class="sc">$</span>Y[, <span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="fine-mapping-with-susie.html#cb237-1" tabindex="-1"></a><span class="co"># This simulated data-set has two replicates. Let&#39;s focus on the first replicate:</span></span>
+<span id="cb237-2"><a href="fine-mapping-with-susie.html#cb237-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> dat<span class="sc">$</span>Y[, <span class="dv">1</span>]</span></code></pre></div>
 </div>
 <div id="fit-susie-to-the-data" class="section level3 hasAnchor" number="9.2.2">
 <h3><span class="header-section-number">9.2.2</span> Fit SuSiE to the data<a href="fine-mapping-with-susie.html#fit-susie-to-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Also perform univariate regression so that PIPs can be compared with p-values</p>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="fine-mapping-with-susie.html#cb234-1" tabindex="-1"></a><span class="co"># Fit SuSiE with L=5 (maximum number of causal variants per replicate)</span></span>
-<span id="cb234-2"><a href="fine-mapping-with-susie.html#cb234-2" tabindex="-1"></a>fitted <span class="ot">&lt;-</span> <span class="fu">susie</span>(dat<span class="sc">$</span>X, y, <span class="at">L =</span> <span class="dv">5</span>,</span>
-<span id="cb234-3"><a href="fine-mapping-with-susie.html#cb234-3" tabindex="-1"></a>                <span class="at">estimate_residual_variance =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb234-4"><a href="fine-mapping-with-susie.html#cb234-4" tabindex="-1"></a>                <span class="at">scaled_prior_variance =</span> <span class="fl">0.2</span>,</span>
-<span id="cb234-5"><a href="fine-mapping-with-susie.html#cb234-5" tabindex="-1"></a>                <span class="at">tol =</span> <span class="fl">1e-3</span>, <span class="at">track_fit =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb234-6"><a href="fine-mapping-with-susie.html#cb234-6" tabindex="-1"></a>                <span class="at">compute_univariate_zscore =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb234-7"><a href="fine-mapping-with-susie.html#cb234-7" tabindex="-1"></a>                <span class="at">coverage =</span> <span class="fl">0.95</span>, <span class="at">min_abs_corr =</span> <span class="fl">0.1</span>)</span>
-<span id="cb234-8"><a href="fine-mapping-with-susie.html#cb234-8" tabindex="-1"></a><span class="fu">str</span>(fitted, <span class="at">max.level =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="fine-mapping-with-susie.html#cb238-1" tabindex="-1"></a><span class="co"># Fit SuSiE with L=5 (maximum number of causal variants per replicate)</span></span>
+<span id="cb238-2"><a href="fine-mapping-with-susie.html#cb238-2" tabindex="-1"></a>fitted <span class="ot">&lt;-</span> <span class="fu">susie</span>(dat<span class="sc">$</span>X, y, <span class="at">L =</span> <span class="dv">5</span>,</span>
+<span id="cb238-3"><a href="fine-mapping-with-susie.html#cb238-3" tabindex="-1"></a>                <span class="at">estimate_residual_variance =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb238-4"><a href="fine-mapping-with-susie.html#cb238-4" tabindex="-1"></a>                <span class="at">scaled_prior_variance =</span> <span class="fl">0.2</span>,</span>
+<span id="cb238-5"><a href="fine-mapping-with-susie.html#cb238-5" tabindex="-1"></a>                <span class="at">tol =</span> <span class="fl">1e-3</span>, <span class="at">track_fit =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb238-6"><a href="fine-mapping-with-susie.html#cb238-6" tabindex="-1"></a>                <span class="at">compute_univariate_zscore =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb238-7"><a href="fine-mapping-with-susie.html#cb238-7" tabindex="-1"></a>                <span class="at">coverage =</span> <span class="fl">0.95</span>, <span class="at">min_abs_corr =</span> <span class="fl">0.1</span>)</span>
+<span id="cb238-8"><a href="fine-mapping-with-susie.html#cb238-8" tabindex="-1"></a><span class="fu">str</span>(fitted, <span class="at">max.level =</span> <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>#&gt; List of 21
 #&gt;  $ alpha                 : num [1:5, 1:1002] 9.98e-04 8.96e-32 9.32e-19 9.98e-04 9.98e-04 ...
 #&gt;  $ mu                    : num [1:5, 1:1002] 0 -0.0221 -0.0514 0 0 ...
@@ -364,15 +364,15 @@ div.csl-indent {
 #&gt;  $ z                     : num [1:1002] -0.8091 1.1147 -0.5836 -0.0842 -2.1866 ...
 #&gt;  $ X_column_scale_factors: num [1:1002] 0.486 0.2 0.494 0.603 0.708 ...
 #&gt;  - attr(*, &quot;class&quot;)= chr &quot;susie&quot;</code></pre>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="fine-mapping-with-susie.html#cb236-1" tabindex="-1"></a><span class="co"># Let&#39;s have a look at the first iteration (by setting max_iter=1 this will give us the first iteration of fitted)</span></span>
-<span id="cb236-2"><a href="fine-mapping-with-susie.html#cb236-2" tabindex="-1"></a>fitted.one.iter <span class="ot">&lt;-</span> <span class="fu">susie</span>(dat<span class="sc">$</span>X, y, <span class="at">L =</span> <span class="dv">5</span>, <span class="at">max_iter =</span> <span class="dv">1</span>,</span>
-<span id="cb236-3"><a href="fine-mapping-with-susie.html#cb236-3" tabindex="-1"></a>                         <span class="at">estimate_residual_variance =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb236-4"><a href="fine-mapping-with-susie.html#cb236-4" tabindex="-1"></a>                         <span class="at">scaled_prior_variance =</span> <span class="fl">0.2</span>,</span>
-<span id="cb236-5"><a href="fine-mapping-with-susie.html#cb236-5" tabindex="-1"></a>                         <span class="at">tol =</span> <span class="fl">1e-3</span>,</span>
-<span id="cb236-6"><a href="fine-mapping-with-susie.html#cb236-6" tabindex="-1"></a>                         <span class="at">coverage =</span> <span class="fl">0.95</span>, <span class="at">min_abs_corr =</span> <span class="fl">0.1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="fine-mapping-with-susie.html#cb240-1" tabindex="-1"></a><span class="co"># Let&#39;s have a look at the first iteration (by setting max_iter=1 this will give us the first iteration of fitted)</span></span>
+<span id="cb240-2"><a href="fine-mapping-with-susie.html#cb240-2" tabindex="-1"></a>fitted.one.iter <span class="ot">&lt;-</span> <span class="fu">susie</span>(dat<span class="sc">$</span>X, y, <span class="at">L =</span> <span class="dv">5</span>, <span class="at">max_iter =</span> <span class="dv">1</span>,</span>
+<span id="cb240-3"><a href="fine-mapping-with-susie.html#cb240-3" tabindex="-1"></a>                         <span class="at">estimate_residual_variance =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb240-4"><a href="fine-mapping-with-susie.html#cb240-4" tabindex="-1"></a>                         <span class="at">scaled_prior_variance =</span> <span class="fl">0.2</span>,</span>
+<span id="cb240-5"><a href="fine-mapping-with-susie.html#cb240-5" tabindex="-1"></a>                         <span class="at">tol =</span> <span class="fl">1e-3</span>,</span>
+<span id="cb240-6"><a href="fine-mapping-with-susie.html#cb240-6" tabindex="-1"></a>                         <span class="at">coverage =</span> <span class="fl">0.95</span>, <span class="at">min_abs_corr =</span> <span class="fl">0.1</span>)</span></code></pre></div>
 <pre><code>#&gt; Warning in susie(dat$X, y, L = 5, max_iter = 1, estimate_residual_variance
 #&gt; = TRUE, : IBSS algorithm did not converge in 1 iterations!</code></pre>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="fine-mapping-with-susie.html#cb238-1" tabindex="-1"></a><span class="fu">str</span>(fitted.one.iter)</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="fine-mapping-with-susie.html#cb242-1" tabindex="-1"></a><span class="fu">str</span>(fitted.one.iter)</span></code></pre></div>
 <pre><code>#&gt; List of 19
 #&gt;  $ alpha                 : num [1:5, 1:1002] 5.22e-18 1.61e-04 6.10e-04 7.44e-04 8.03e-04 ...
 #&gt;  $ mu                    : num [1:5, 1:1002] -0.03868 -0.02164 -0.01568 -0.01138 -0.00922 ...
@@ -407,33 +407,33 @@ div.csl-indent {
 <div id="plot-the-susie-results" class="section level3 hasAnchor" number="9.2.3">
 <h3><span class="header-section-number">9.2.3</span> Plot the SuSiE results<a href="fine-mapping-with-susie.html#plot-the-susie-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Plot both PIPs from SuSiE as well as the p-values from the regressions.</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="fine-mapping-with-susie.html#cb240-1" tabindex="-1"></a>b <span class="ot">&lt;-</span> dat<span class="sc">$</span>true_coef[, <span class="dv">1</span>]</span>
-<span id="cb240-2"><a href="fine-mapping-with-susie.html#cb240-2" tabindex="-1"></a>b[<span class="fu">which</span>(b <span class="sc">!=</span> <span class="dv">0</span>)] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb240-3"><a href="fine-mapping-with-susie.html#cb240-3" tabindex="-1"></a></span>
-<span id="cb240-4"><a href="fine-mapping-with-susie.html#cb240-4" tabindex="-1"></a><span class="co"># Run this code all at once to get side-by-side plots</span></span>
-<span id="cb240-5"><a href="fine-mapping-with-susie.html#cb240-5" tabindex="-1"></a>par_saved <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex.axis =</span> <span class="fl">0.9</span>)</span>
-<span id="cb240-6"><a href="fine-mapping-with-susie.html#cb240-6" tabindex="-1"></a><span class="co"># Plot the marginal associations </span></span>
-<span id="cb240-7"><a href="fine-mapping-with-susie.html#cb240-7" tabindex="-1"></a><span class="fu">susie_plot</span>(fitted, <span class="at">y =</span> <span class="st">&quot;z&quot;</span>, <span class="at">b =</span> b, <span class="at">max_cs =</span> <span class="dv">1</span>, <span class="at">main =</span> <span class="st">&quot;Marginal associations&quot;</span>, </span>
-<span id="cb240-8"><a href="fine-mapping-with-susie.html#cb240-8" tabindex="-1"></a>           <span class="at">xlab =</span> <span class="st">&quot;variable (SNP)&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#767676&quot;</span>)</span>
-<span id="cb240-9"><a href="fine-mapping-with-susie.html#cb240-9" tabindex="-1"></a><span class="co"># Plot PIPs after the first iteration</span></span>
-<span id="cb240-10"><a href="fine-mapping-with-susie.html#cb240-10" tabindex="-1"></a><span class="fu">susie_plot</span>(fitted.one.iter, <span class="at">y =</span> <span class="st">&quot;PIP&quot;</span>, <span class="at">b =</span> b, <span class="at">max_cs =</span> <span class="fl">0.4</span>, </span>
-<span id="cb240-11"><a href="fine-mapping-with-susie.html#cb240-11" tabindex="-1"></a>           <span class="at">main =</span> <span class="st">&quot;IBSS after 1 iteration&quot;</span>, <span class="at">add_legend =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb240-12"><a href="fine-mapping-with-susie.html#cb240-12" tabindex="-1"></a>           <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlab =</span> <span class="st">&quot;variable (SNP)&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#767676&quot;</span>) </span>
-<span id="cb240-13"><a href="fine-mapping-with-susie.html#cb240-13" tabindex="-1"></a><span class="co"># Plot PIPs after convergence </span></span>
-<span id="cb240-14"><a href="fine-mapping-with-susie.html#cb240-14" tabindex="-1"></a><span class="fu">susie_plot</span>(fitted, <span class="at">y =</span> <span class="st">&quot;PIP&quot;</span>, <span class="at">b =</span> b, <span class="at">max_cs =</span> <span class="fl">0.4</span>, </span>
-<span id="cb240-15"><a href="fine-mapping-with-susie.html#cb240-15" tabindex="-1"></a>           <span class="at">main =</span> <span class="st">&quot;IBSS after 10 iterations&quot;</span>, <span class="at">add_legend =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb240-16"><a href="fine-mapping-with-susie.html#cb240-16" tabindex="-1"></a>           <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlab =</span> <span class="st">&quot;variable (SNP)&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#767676&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="fine-mapping-with-susie.html#cb244-1" tabindex="-1"></a>b <span class="ot">&lt;-</span> dat<span class="sc">$</span>true_coef[, <span class="dv">1</span>]</span>
+<span id="cb244-2"><a href="fine-mapping-with-susie.html#cb244-2" tabindex="-1"></a>b[<span class="fu">which</span>(b <span class="sc">!=</span> <span class="dv">0</span>)] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb244-3"><a href="fine-mapping-with-susie.html#cb244-3" tabindex="-1"></a></span>
+<span id="cb244-4"><a href="fine-mapping-with-susie.html#cb244-4" tabindex="-1"></a><span class="co"># Run this code all at once to get side-by-side plots</span></span>
+<span id="cb244-5"><a href="fine-mapping-with-susie.html#cb244-5" tabindex="-1"></a>par_saved <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">cex.axis =</span> <span class="fl">0.9</span>)</span>
+<span id="cb244-6"><a href="fine-mapping-with-susie.html#cb244-6" tabindex="-1"></a><span class="co"># Plot the marginal associations </span></span>
+<span id="cb244-7"><a href="fine-mapping-with-susie.html#cb244-7" tabindex="-1"></a><span class="fu">susie_plot</span>(fitted, <span class="at">y =</span> <span class="st">&quot;z&quot;</span>, <span class="at">b =</span> b, <span class="at">max_cs =</span> <span class="dv">1</span>, <span class="at">main =</span> <span class="st">&quot;Marginal associations&quot;</span>, </span>
+<span id="cb244-8"><a href="fine-mapping-with-susie.html#cb244-8" tabindex="-1"></a>           <span class="at">xlab =</span> <span class="st">&quot;variable (SNP)&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#767676&quot;</span>)</span>
+<span id="cb244-9"><a href="fine-mapping-with-susie.html#cb244-9" tabindex="-1"></a><span class="co"># Plot PIPs after the first iteration</span></span>
+<span id="cb244-10"><a href="fine-mapping-with-susie.html#cb244-10" tabindex="-1"></a><span class="fu">susie_plot</span>(fitted.one.iter, <span class="at">y =</span> <span class="st">&quot;PIP&quot;</span>, <span class="at">b =</span> b, <span class="at">max_cs =</span> <span class="fl">0.4</span>, </span>
+<span id="cb244-11"><a href="fine-mapping-with-susie.html#cb244-11" tabindex="-1"></a>           <span class="at">main =</span> <span class="st">&quot;IBSS after 1 iteration&quot;</span>, <span class="at">add_legend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb244-12"><a href="fine-mapping-with-susie.html#cb244-12" tabindex="-1"></a>           <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlab =</span> <span class="st">&quot;variable (SNP)&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#767676&quot;</span>) </span>
+<span id="cb244-13"><a href="fine-mapping-with-susie.html#cb244-13" tabindex="-1"></a><span class="co"># Plot PIPs after convergence </span></span>
+<span id="cb244-14"><a href="fine-mapping-with-susie.html#cb244-14" tabindex="-1"></a><span class="fu">susie_plot</span>(fitted, <span class="at">y =</span> <span class="st">&quot;PIP&quot;</span>, <span class="at">b =</span> b, <span class="at">max_cs =</span> <span class="fl">0.4</span>, </span>
+<span id="cb244-15"><a href="fine-mapping-with-susie.html#cb244-15" tabindex="-1"></a>           <span class="at">main =</span> <span class="st">&quot;IBSS after 10 iterations&quot;</span>, <span class="at">add_legend =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb244-16"><a href="fine-mapping-with-susie.html#cb244-16" tabindex="-1"></a>           <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">xlab =</span> <span class="st">&quot;variable (SNP)&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#767676&quot;</span>)</span></code></pre></div>
 <p><img src="finemapping_files/figure-html/unnamed-chunk-4-1.png" width="95%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="fine-mapping-with-susie.html#cb241-1" tabindex="-1"></a><span class="fu">par</span>(par_saved)  <span class="co"># back to as before</span></span></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="fine-mapping-with-susie.html#cb245-1" tabindex="-1"></a><span class="fu">par</span>(par_saved)  <span class="co"># back to as before</span></span></code></pre></div>
 <p>The “true” effects are highlighted in red. The strongest signal by p-value does not contain the causal variant, but is being tagged by two causal variants. The first iteration of SuSiE identifies the strongest signal by p-value, but by the 10th iteration the true causal variants are identified within two credible sets.</p>
 </div>
 <div id="lets-take-a-closer-look-at-which-variants-are-in-the-credible-sets" class="section level3 hasAnchor" number="9.2.4">
 <h3><span class="header-section-number">9.2.4</span> Let’s take a closer look at which variants are in the credible sets<a href="fine-mapping-with-susie.html#lets-take-a-closer-look-at-which-variants-are-in-the-credible-sets" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="fine-mapping-with-susie.html#cb242-1" tabindex="-1"></a>fitted.one.iter<span class="sc">$</span>sets<span class="sc">$</span>cs</span></code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="fine-mapping-with-susie.html#cb246-1" tabindex="-1"></a>fitted.one.iter<span class="sc">$</span>sets<span class="sc">$</span>cs</span></code></pre></div>
 <pre><code>#&gt; $L1
 #&gt;  [1] 765 767 770 774 776 778 780 782 783 788 790 791 792 814 817 824 827
 #&gt; [18] 834 837 838 847 849 868 869</code></pre>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="fine-mapping-with-susie.html#cb244-1" tabindex="-1"></a>fitted<span class="sc">$</span>sets<span class="sc">$</span>cs</span></code></pre></div>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="fine-mapping-with-susie.html#cb248-1" tabindex="-1"></a>fitted<span class="sc">$</span>sets<span class="sc">$</span>cs</span></code></pre></div>
 <pre><code>#&gt; $L2
 #&gt;  [1]  850  913  914  915  916  920  924  925  926  927  930  931  933  934
 #&gt; [15]  935  942  946  948  951  952  962  967  968  979  980  982  983  985
@@ -444,7 +444,7 @@ div.csl-indent {
 </div>
 <div id="how-correlated-are-the-variants-in-the-credible-sets" class="section level3 hasAnchor" number="9.2.5">
 <h3><span class="header-section-number">9.2.5</span> How correlated are the variants in the credible sets?<a href="fine-mapping-with-susie.html#how-correlated-are-the-variants-in-the-credible-sets" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="fine-mapping-with-susie.html#cb246-1" tabindex="-1"></a>fitted<span class="sc">$</span>sets<span class="sc">$</span>purity</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="fine-mapping-with-susie.html#cb250-1" tabindex="-1"></a>fitted<span class="sc">$</span>sets<span class="sc">$</span>purity</span></code></pre></div>
 <pre><code>#&gt;    min.abs.corr mean.abs.corr median.abs.corr
 #&gt; L2    0.9722386     0.9938064       0.9947184
 #&gt; L3    0.8534981     0.8775989       0.8848378</code></pre>
@@ -457,39 +457,39 @@ Let’s look at bioavailable testosterone in females from <span class="citation"
 <div id="import-gwas-data" class="section level3 hasAnchor" number="9.3.1">
 <h3><span class="header-section-number">9.3.1</span> Import GWAS data<a href="fine-mapping-with-susie.html#import-gwas-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here we use (a subset of) the GWAS summary statistics originally accessible from <a href="https://www.ebi.ac.uk/gwas/studies/GCST90012102">the GWAS Catalog</a> (accession number: GCST90012102).</p>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="fine-mapping-with-susie.html#cb248-1" tabindex="-1"></a><span class="co"># original data</span></span>
-<span id="cb248-2"><a href="fine-mapping-with-susie.html#cb248-2" tabindex="-1"></a><span class="co"># tgz &lt;- runonce::download_file(</span></span>
-<span id="cb248-3"><a href="fine-mapping-with-susie.html#cb248-3" tabindex="-1"></a><span class="co">#   &quot;https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST90012001-GCST90013000/GCST90012102/GCST90012102_buildGRCh37.tsv.gz&quot;,</span></span>
-<span id="cb248-4"><a href="fine-mapping-with-susie.html#cb248-4" tabindex="-1"></a><span class="co">#   dir = &quot;tmp-data&quot;)  # 419 MB</span></span>
-<span id="cb248-5"><a href="fine-mapping-with-susie.html#cb248-5" tabindex="-1"></a></span>
-<span id="cb248-6"><a href="fine-mapping-with-susie.html#cb248-6" tabindex="-1"></a><span class="co"># small subset, for the tutorial</span></span>
-<span id="cb248-7"><a href="fine-mapping-with-susie.html#cb248-7" tabindex="-1"></a>tgz <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb248-8"><a href="fine-mapping-with-susie.html#cb248-8" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/55262768&quot;</span>, </span>
-<span id="cb248-9"><a href="fine-mapping-with-susie.html#cb248-9" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;FT_sumstats_small.tsv.gz&quot;</span>)</span>
-<span id="cb248-10"><a href="fine-mapping-with-susie.html#cb248-10" tabindex="-1"></a></span>
-<span id="cb248-11"><a href="fine-mapping-with-susie.html#cb248-11" tabindex="-1"></a><span class="fu">readLines</span>(tgz, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="fine-mapping-with-susie.html#cb252-1" tabindex="-1"></a><span class="co"># original data</span></span>
+<span id="cb252-2"><a href="fine-mapping-with-susie.html#cb252-2" tabindex="-1"></a><span class="co"># tgz &lt;- runonce::download_file(</span></span>
+<span id="cb252-3"><a href="fine-mapping-with-susie.html#cb252-3" tabindex="-1"></a><span class="co">#   &quot;https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST90012001-GCST90013000/GCST90012102/GCST90012102_buildGRCh37.tsv.gz&quot;,</span></span>
+<span id="cb252-4"><a href="fine-mapping-with-susie.html#cb252-4" tabindex="-1"></a><span class="co">#   dir = &quot;tmp-data&quot;)  # 419 MB</span></span>
+<span id="cb252-5"><a href="fine-mapping-with-susie.html#cb252-5" tabindex="-1"></a></span>
+<span id="cb252-6"><a href="fine-mapping-with-susie.html#cb252-6" tabindex="-1"></a><span class="co"># small subset, for the tutorial</span></span>
+<span id="cb252-7"><a href="fine-mapping-with-susie.html#cb252-7" tabindex="-1"></a>tgz <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb252-8"><a href="fine-mapping-with-susie.html#cb252-8" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/55262768&quot;</span>, </span>
+<span id="cb252-9"><a href="fine-mapping-with-susie.html#cb252-9" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;FT_sumstats_small.tsv.gz&quot;</span>)</span>
+<span id="cb252-10"><a href="fine-mapping-with-susie.html#cb252-10" tabindex="-1"></a></span>
+<span id="cb252-11"><a href="fine-mapping-with-susie.html#cb252-11" tabindex="-1"></a><span class="fu">readLines</span>(tgz, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;variant_id\tchromosome\tbase_pair_location\teffect_allele\tother_allele\teffect_allele_frequency\timputation_quality\tbeta\tstandard_error\tp_value&quot;
 #&gt; [2] &quot;rs72858371\t1\t6409383\tT\tC\t0.986224\t0.977552\t-0.00615364\t0.0108886\t0.64&quot;                                                                     
 #&gt; [3] &quot;rs72633437\t1\t6409494\tC\tT\t0.906138\t0.988959\t0.00289667\t0.00434703\t0.39&quot;                                                                     
 #&gt; [4] &quot;rs151043271\t1\t6409495\tG\tA\t0.998537\t0.732147\t-0.0244749\t0.0386808\t0.4&quot;                                                                      
 #&gt; [5] &quot;rs58484986\t1\t6409653\tC\tG\t0.986228\t0.976894\t-0.00623617\t0.0108958\t0.63&quot;</code></pre>
 <p>And some reference panel (also subsetted for this tutorial) to compute LD from:</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="fine-mapping-with-susie.html#cb250-1" tabindex="-1"></a><span class="co"># original data</span></span>
-<span id="cb250-2"><a href="fine-mapping-with-susie.html#cb250-2" tabindex="-1"></a><span class="co"># gzip &lt;- runonce::download_file(</span></span>
-<span id="cb250-3"><a href="fine-mapping-with-susie.html#cb250-3" tabindex="-1"></a><span class="co">#   &quot;https://vu.data.surfsara.nl/index.php/s/VZNByNwpD8qqINe/download&quot;,</span></span>
-<span id="cb250-4"><a href="fine-mapping-with-susie.html#cb250-4" tabindex="-1"></a><span class="co">#   fname = &quot;g1000_eur.zip&quot;, dir = &quot;tmp-data&quot;)  # 488 MB</span></span>
-<span id="cb250-5"><a href="fine-mapping-with-susie.html#cb250-5" tabindex="-1"></a></span>
-<span id="cb250-6"><a href="fine-mapping-with-susie.html#cb250-6" tabindex="-1"></a><span class="co"># small subset, for the tutorial</span></span>
-<span id="cb250-7"><a href="fine-mapping-with-susie.html#cb250-7" tabindex="-1"></a>gzip <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb250-8"><a href="fine-mapping-with-susie.html#cb250-8" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/55263098&quot;</span>,</span>
-<span id="cb250-9"><a href="fine-mapping-with-susie.html#cb250-9" tabindex="-1"></a>  <span class="at">fname =</span> <span class="st">&quot;g1000_eur_small.zip&quot;</span>, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span>
-<span id="cb250-10"><a href="fine-mapping-with-susie.html#cb250-10" tabindex="-1"></a></span>
-<span id="cb250-11"><a href="fine-mapping-with-susie.html#cb250-11" tabindex="-1"></a><span class="fu">unzip</span>(gzip, <span class="at">exdir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">overwrite =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb250-12"><a href="fine-mapping-with-susie.html#cb250-12" tabindex="-1"></a>g1000_map <span class="ot">&lt;-</span> <span class="fu">fread2</span>(<span class="st">&quot;tmp-data/g1000_eur_small.bim&quot;</span>, <span class="at">select =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>),</span>
-<span id="cb250-13"><a href="fine-mapping-with-susie.html#cb250-13" tabindex="-1"></a>                    <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;rsid&quot;</span>, <span class="st">&quot;pos&quot;</span>, <span class="st">&quot;a1&quot;</span>, <span class="st">&quot;a0&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="fine-mapping-with-susie.html#cb251-1" tabindex="-1"></a><span class="co"># import GWAS summary statistics of bioavailable testosterone in females</span></span>
-<span id="cb251-2"><a href="fine-mapping-with-susie.html#cb251-2" tabindex="-1"></a>FT <span class="ot">&lt;-</span> <span class="fu">fread2</span>(tgz)</span>
-<span id="cb251-3"><a href="fine-mapping-with-susie.html#cb251-3" tabindex="-1"></a><span class="fu">head</span>(FT)</span></code></pre></div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="fine-mapping-with-susie.html#cb254-1" tabindex="-1"></a><span class="co"># original data</span></span>
+<span id="cb254-2"><a href="fine-mapping-with-susie.html#cb254-2" tabindex="-1"></a><span class="co"># gzip &lt;- runonce::download_file(</span></span>
+<span id="cb254-3"><a href="fine-mapping-with-susie.html#cb254-3" tabindex="-1"></a><span class="co">#   &quot;https://vu.data.surfsara.nl/index.php/s/VZNByNwpD8qqINe/download&quot;,</span></span>
+<span id="cb254-4"><a href="fine-mapping-with-susie.html#cb254-4" tabindex="-1"></a><span class="co">#   fname = &quot;g1000_eur.zip&quot;, dir = &quot;tmp-data&quot;)  # 488 MB</span></span>
+<span id="cb254-5"><a href="fine-mapping-with-susie.html#cb254-5" tabindex="-1"></a></span>
+<span id="cb254-6"><a href="fine-mapping-with-susie.html#cb254-6" tabindex="-1"></a><span class="co"># small subset, for the tutorial</span></span>
+<span id="cb254-7"><a href="fine-mapping-with-susie.html#cb254-7" tabindex="-1"></a>gzip <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb254-8"><a href="fine-mapping-with-susie.html#cb254-8" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/55263098&quot;</span>,</span>
+<span id="cb254-9"><a href="fine-mapping-with-susie.html#cb254-9" tabindex="-1"></a>  <span class="at">fname =</span> <span class="st">&quot;g1000_eur_small.zip&quot;</span>, <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>)</span>
+<span id="cb254-10"><a href="fine-mapping-with-susie.html#cb254-10" tabindex="-1"></a></span>
+<span id="cb254-11"><a href="fine-mapping-with-susie.html#cb254-11" tabindex="-1"></a><span class="fu">unzip</span>(gzip, <span class="at">exdir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">overwrite =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb254-12"><a href="fine-mapping-with-susie.html#cb254-12" tabindex="-1"></a>g1000_map <span class="ot">&lt;-</span> <span class="fu">fread2</span>(<span class="st">&quot;tmp-data/g1000_eur_small.bim&quot;</span>, <span class="at">select =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>),</span>
+<span id="cb254-13"><a href="fine-mapping-with-susie.html#cb254-13" tabindex="-1"></a>                    <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;rsid&quot;</span>, <span class="st">&quot;pos&quot;</span>, <span class="st">&quot;a1&quot;</span>, <span class="st">&quot;a0&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="fine-mapping-with-susie.html#cb255-1" tabindex="-1"></a><span class="co"># import GWAS summary statistics of bioavailable testosterone in females</span></span>
+<span id="cb255-2"><a href="fine-mapping-with-susie.html#cb255-2" tabindex="-1"></a>FT <span class="ot">&lt;-</span> <span class="fu">fread2</span>(tgz)</span>
+<span id="cb255-3"><a href="fine-mapping-with-susie.html#cb255-3" tabindex="-1"></a><span class="fu">head</span>(FT)</span></code></pre></div>
 <pre><code>#&gt;    variant_id chromosome base_pair_location effect_allele other_allele
 #&gt; 1  rs72858371          1            6409383             T            C
 #&gt; 2  rs72633437          1            6409494             C            T
@@ -509,14 +509,14 @@ Let’s look at bioavailable testosterone in females from <span class="citation"
 #&gt; 4    0.63
 #&gt; 5    0.63
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 1 rows ]</code></pre>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="fine-mapping-with-susie.html#cb253-1" tabindex="-1"></a>FT_cleaned <span class="ot">&lt;-</span> FT <span class="sc">%&gt;%</span></span>
-<span id="cb253-2"><a href="fine-mapping-with-susie.html#cb253-2" tabindex="-1"></a>  <span class="co"># QC on MAF &gt;= 0.01</span></span>
-<span id="cb253-3"><a href="fine-mapping-with-susie.html#cb253-3" tabindex="-1"></a>  <span class="fu">filter</span>(effect_allele_frequency <span class="sc">&gt;=</span> <span class="fl">0.01</span> <span class="sc">&amp;</span> effect_allele_frequency <span class="sc">&lt;=</span> <span class="fl">0.99</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb253-4"><a href="fine-mapping-with-susie.html#cb253-4" tabindex="-1"></a>  <span class="co"># rename some columns for compatibility with bigsnpr::snp_match()</span></span>
-<span id="cb253-5"><a href="fine-mapping-with-susie.html#cb253-5" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">chr =</span> chromosome, <span class="at">pos =</span> base_pair_location, </span>
-<span id="cb253-6"><a href="fine-mapping-with-susie.html#cb253-6" tabindex="-1"></a>         <span class="at">a1 =</span> effect_allele, <span class="at">a0 =</span> other_allele) <span class="sc">%&gt;%</span></span>
-<span id="cb253-7"><a href="fine-mapping-with-susie.html#cb253-7" tabindex="-1"></a>  <span class="co"># align alleles to reference panel</span></span>
-<span id="cb253-8"><a href="fine-mapping-with-susie.html#cb253-8" tabindex="-1"></a>  <span class="fu">snp_match</span>(g1000_map)  <span class="co"># match on chr/pos but can also match on chr/rsid</span></span></code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="fine-mapping-with-susie.html#cb257-1" tabindex="-1"></a>FT_cleaned <span class="ot">&lt;-</span> FT <span class="sc">%&gt;%</span></span>
+<span id="cb257-2"><a href="fine-mapping-with-susie.html#cb257-2" tabindex="-1"></a>  <span class="co"># QC on MAF &gt;= 0.01</span></span>
+<span id="cb257-3"><a href="fine-mapping-with-susie.html#cb257-3" tabindex="-1"></a>  <span class="fu">filter</span>(effect_allele_frequency <span class="sc">&gt;=</span> <span class="fl">0.01</span> <span class="sc">&amp;</span> effect_allele_frequency <span class="sc">&lt;=</span> <span class="fl">0.99</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb257-4"><a href="fine-mapping-with-susie.html#cb257-4" tabindex="-1"></a>  <span class="co"># rename some columns for compatibility with bigsnpr::snp_match()</span></span>
+<span id="cb257-5"><a href="fine-mapping-with-susie.html#cb257-5" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">chr =</span> chromosome, <span class="at">pos =</span> base_pair_location, </span>
+<span id="cb257-6"><a href="fine-mapping-with-susie.html#cb257-6" tabindex="-1"></a>         <span class="at">a1 =</span> effect_allele, <span class="at">a0 =</span> other_allele) <span class="sc">%&gt;%</span></span>
+<span id="cb257-7"><a href="fine-mapping-with-susie.html#cb257-7" tabindex="-1"></a>  <span class="co"># align alleles to reference panel</span></span>
+<span id="cb257-8"><a href="fine-mapping-with-susie.html#cb257-8" tabindex="-1"></a>  <span class="fu">snp_match</span>(g1000_map)  <span class="co"># match on chr/pos but can also match on chr/rsid</span></span></code></pre></div>
 <pre><code>#&gt; 25,328 variants to be matched.</code></pre>
 <pre><code>#&gt; 3,099 ambiguous SNPs have been removed.</code></pre>
 <pre><code>#&gt; 18,293 variants have been matched; 0 were flipped and 14,274 were reversed.</code></pre>
@@ -528,23 +528,23 @@ Let’s look at bioavailable testosterone in females from <span class="citation"
 <li><p>Locus 1: rs1989147.</p></li>
 <li><p>Locus 2: rs34954997, rs11879227, rs34255979. These variants in locus 2 are nearby so will be considered as one locus for the purpose of running SuSiE.</p></li>
 </ul>
-<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="fine-mapping-with-susie.html#cb257-1" tabindex="-1"></a><span class="co"># find coordinates</span></span>
-<span id="cb257-2"><a href="fine-mapping-with-susie.html#cb257-2" tabindex="-1"></a><span class="fu">filter</span>(FT_cleaned, rsid <span class="sc">==</span> <span class="st">&quot;rs1989147&quot;</span>)  <span class="co"># on chr1</span></span></code></pre></div>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="fine-mapping-with-susie.html#cb261-1" tabindex="-1"></a><span class="co"># find coordinates</span></span>
+<span id="cb261-2"><a href="fine-mapping-with-susie.html#cb261-2" tabindex="-1"></a><span class="fu">filter</span>(FT_cleaned, rsid <span class="sc">==</span> <span class="st">&quot;rs1989147&quot;</span>)  <span class="co"># on chr1</span></span></code></pre></div>
 <pre><code>#&gt;   chr     pos a0 a1 variant_id effect_allele_frequency imputation_quality
 #&gt; 1   1 7909373  C  T  rs1989147                0.806791            0.97999
 #&gt;         beta standard_error p_value _NUM_ID_.ss      rsid _NUM_ID_
 #&gt; 1 -0.0235512     0.00322554   7e-14        5329 rs1989147    12274</code></pre>
-<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="fine-mapping-with-susie.html#cb259-1" tabindex="-1"></a><span class="co"># Extract 1 Mb locus surrounding rs1989147</span></span>
-<span id="cb259-2"><a href="fine-mapping-with-susie.html#cb259-2" tabindex="-1"></a>locus1 <span class="ot">&lt;-</span> <span class="fu">filter</span>(FT_cleaned, chr <span class="sc">==</span> <span class="dv">1</span>, pos <span class="sc">&gt;</span> <span class="dv">7909373</span> <span class="sc">-</span> <span class="fl">5e5</span>, pos <span class="sc">&lt;</span> <span class="dv">7909373</span> <span class="sc">+</span> <span class="fl">5e5</span>)</span>
-<span id="cb259-3"><a href="fine-mapping-with-susie.html#cb259-3" tabindex="-1"></a></span>
-<span id="cb259-4"><a href="fine-mapping-with-susie.html#cb259-4" tabindex="-1"></a><span class="co"># Plot locus</span></span>
-<span id="cb259-5"><a href="fine-mapping-with-susie.html#cb259-5" tabindex="-1"></a><span class="fu">ggplot</span>(locus1, <span class="fu">aes</span>(<span class="at">x =</span> pos, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(p_value))) <span class="sc">+</span></span>
-<span id="cb259-6"><a href="fine-mapping-with-susie.html#cb259-6" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb259-7"><a href="fine-mapping-with-susie.html#cb259-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">size =</span> <span class="fl">1.3</span>) <span class="sc">+</span></span>
-<span id="cb259-8"><a href="fine-mapping-with-susie.html#cb259-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> pos, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(p_value)), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>,</span>
-<span id="cb259-9"><a href="fine-mapping-with-susie.html#cb259-9" tabindex="-1"></a>             <span class="at">data =</span> <span class="fu">filter</span>(locus1, rsid <span class="sc">==</span> <span class="st">&quot;rs1989147&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb259-10"><a href="fine-mapping-with-susie.html#cb259-10" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(rsid <span class="sc">==</span> <span class="st">&quot;rs1989147&quot;</span>, rsid, <span class="cn">NA</span>)), </span>
-<span id="cb259-11"><a href="fine-mapping-with-susie.html#cb259-11" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">4</span>, <span class="at">min.segment.length =</span> <span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="fine-mapping-with-susie.html#cb263-1" tabindex="-1"></a><span class="co"># Extract 1 Mb locus surrounding rs1989147</span></span>
+<span id="cb263-2"><a href="fine-mapping-with-susie.html#cb263-2" tabindex="-1"></a>locus1 <span class="ot">&lt;-</span> <span class="fu">filter</span>(FT_cleaned, chr <span class="sc">==</span> <span class="dv">1</span>, pos <span class="sc">&gt;</span> <span class="dv">7909373</span> <span class="sc">-</span> <span class="fl">5e5</span>, pos <span class="sc">&lt;</span> <span class="dv">7909373</span> <span class="sc">+</span> <span class="fl">5e5</span>)</span>
+<span id="cb263-3"><a href="fine-mapping-with-susie.html#cb263-3" tabindex="-1"></a></span>
+<span id="cb263-4"><a href="fine-mapping-with-susie.html#cb263-4" tabindex="-1"></a><span class="co"># Plot locus</span></span>
+<span id="cb263-5"><a href="fine-mapping-with-susie.html#cb263-5" tabindex="-1"></a><span class="fu">ggplot</span>(locus1, <span class="fu">aes</span>(<span class="at">x =</span> pos, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(p_value))) <span class="sc">+</span></span>
+<span id="cb263-6"><a href="fine-mapping-with-susie.html#cb263-6" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb263-7"><a href="fine-mapping-with-susie.html#cb263-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">size =</span> <span class="fl">1.3</span>) <span class="sc">+</span></span>
+<span id="cb263-8"><a href="fine-mapping-with-susie.html#cb263-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> pos, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(p_value)), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb263-9"><a href="fine-mapping-with-susie.html#cb263-9" tabindex="-1"></a>             <span class="at">data =</span> <span class="fu">filter</span>(locus1, rsid <span class="sc">==</span> <span class="st">&quot;rs1989147&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb263-10"><a href="fine-mapping-with-susie.html#cb263-10" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(rsid <span class="sc">==</span> <span class="st">&quot;rs1989147&quot;</span>, rsid, <span class="cn">NA</span>)), </span>
+<span id="cb263-11"><a href="fine-mapping-with-susie.html#cb263-11" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">4</span>, <span class="at">min.segment.length =</span> <span class="dv">0</span>)</span></code></pre></div>
 <pre><code>#&gt; Warning: Removed 2815 rows containing missing values or values outside the scale
 #&gt; range (`geom_label_repel()`).</code></pre>
 <p><img src="finemapping_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /></p>
@@ -553,25 +553,25 @@ Let’s look at bioavailable testosterone in females from <span class="citation"
 <h3><span class="header-section-number">9.3.3</span> Create an LD matrix<a href="fine-mapping-with-susie.html#ldplink" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As we are using GWAS summary statistics, we need information of the correlation between variants. Here we are using 1000 Genomes European for convenience. If you are performing this analysis yourself, it is advised to use a larger sample. For fine-mapping, it is often recommended to use in-sample LD (LD computed from the original GWAS data).
 Here we use PLINK, but remember that you can also use functions from bigsnpr for computing LD and actually also from bigstatsr when you need all correlation values for a set of variants (see <code>big_cor()</code>).</p>
-<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="fine-mapping-with-susie.html#cb261-1" tabindex="-1"></a><span class="co"># Export the SNPs in this locus</span></span>
-<span id="cb261-2"><a href="fine-mapping-with-susie.html#cb261-2" tabindex="-1"></a>locus1_snps_txt <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.txt&quot;</span>)</span>
-<span id="cb261-3"><a href="fine-mapping-with-susie.html#cb261-3" tabindex="-1"></a><span class="fu">write</span>(locus1<span class="sc">$</span>rsid, <span class="at">file =</span> locus1_snps_txt)</span>
-<span id="cb261-4"><a href="fine-mapping-with-susie.html#cb261-4" tabindex="-1"></a></span>
-<span id="cb261-5"><a href="fine-mapping-with-susie.html#cb261-5" tabindex="-1"></a><span class="co"># Compute correlation matrix (LD) with PLINK</span></span>
-<span id="cb261-6"><a href="fine-mapping-with-susie.html#cb261-6" tabindex="-1"></a>plink <span class="ot">&lt;-</span> <span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
-<span id="cb261-7"><a href="fine-mapping-with-susie.html#cb261-7" tabindex="-1"></a><span class="fu">system</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
-<span id="cb261-8"><a href="fine-mapping-with-susie.html#cb261-8" tabindex="-1"></a>  <span class="st">&quot;{plink} --bfile tmp-data/g1000_eur_small&quot;</span>,</span>
-<span id="cb261-9"><a href="fine-mapping-with-susie.html#cb261-9" tabindex="-1"></a>  <span class="st">&quot; --extract {locus1_snps_txt}&quot;</span>,</span>
-<span id="cb261-10"><a href="fine-mapping-with-susie.html#cb261-10" tabindex="-1"></a>  <span class="st">&quot; --keep-allele-order&quot;</span>,</span>
-<span id="cb261-11"><a href="fine-mapping-with-susie.html#cb261-11" tabindex="-1"></a>  <span class="st">&quot; --r square&quot;</span>,  <span class="co"># correlations as a square matrix, not squared correlations</span></span>
-<span id="cb261-12"><a href="fine-mapping-with-susie.html#cb261-12" tabindex="-1"></a>  <span class="st">&quot; --out tmp-data/ld_locus1&quot;</span></span>
-<span id="cb261-13"><a href="fine-mapping-with-susie.html#cb261-13" tabindex="-1"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="fine-mapping-with-susie.html#cb265-1" tabindex="-1"></a><span class="co"># Export the SNPs in this locus</span></span>
+<span id="cb265-2"><a href="fine-mapping-with-susie.html#cb265-2" tabindex="-1"></a>locus1_snps_txt <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.txt&quot;</span>)</span>
+<span id="cb265-3"><a href="fine-mapping-with-susie.html#cb265-3" tabindex="-1"></a><span class="fu">write</span>(locus1<span class="sc">$</span>rsid, <span class="at">file =</span> locus1_snps_txt)</span>
+<span id="cb265-4"><a href="fine-mapping-with-susie.html#cb265-4" tabindex="-1"></a></span>
+<span id="cb265-5"><a href="fine-mapping-with-susie.html#cb265-5" tabindex="-1"></a><span class="co"># Compute correlation matrix (LD) with PLINK</span></span>
+<span id="cb265-6"><a href="fine-mapping-with-susie.html#cb265-6" tabindex="-1"></a>plink <span class="ot">&lt;-</span> <span class="fu">download_plink</span>(<span class="st">&quot;tmp-data&quot;</span>)</span>
+<span id="cb265-7"><a href="fine-mapping-with-susie.html#cb265-7" tabindex="-1"></a><span class="fu">system</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
+<span id="cb265-8"><a href="fine-mapping-with-susie.html#cb265-8" tabindex="-1"></a>  <span class="st">&quot;{plink} --bfile tmp-data/g1000_eur_small&quot;</span>,</span>
+<span id="cb265-9"><a href="fine-mapping-with-susie.html#cb265-9" tabindex="-1"></a>  <span class="st">&quot; --extract {locus1_snps_txt}&quot;</span>,</span>
+<span id="cb265-10"><a href="fine-mapping-with-susie.html#cb265-10" tabindex="-1"></a>  <span class="st">&quot; --keep-allele-order&quot;</span>,</span>
+<span id="cb265-11"><a href="fine-mapping-with-susie.html#cb265-11" tabindex="-1"></a>  <span class="st">&quot; --r square&quot;</span>,  <span class="co"># correlations as a square matrix, not squared correlations</span></span>
+<span id="cb265-12"><a href="fine-mapping-with-susie.html#cb265-12" tabindex="-1"></a>  <span class="st">&quot; --out tmp-data/ld_locus1&quot;</span></span>
+<span id="cb265-13"><a href="fine-mapping-with-susie.html#cb265-13" tabindex="-1"></a>))</span></code></pre></div>
 <pre><code>#&gt; PLINK v1.9.0-b.7.7 64-bit (22 Oct 2024)            cog-genomics.org/plink/1.9/
 #&gt; (C) 2005-2024 Shaun Purcell, Christopher Chang   GNU General Public License v3
 #&gt; Logging to tmp-data/ld_locus1.log.
 #&gt; Options in effect:
 #&gt;   --bfile tmp-data/g1000_eur_small
-#&gt;   --extract C:\Users\au639593\AppData\Local\Temp\RtmpuIikEr\file69a03c0935b4.txt
+#&gt;   --extract C:\Users\au639593\AppData\Local\Temp\RtmpkVJT1D\file5900445d3cfb.txt
 #&gt;   --keep-allele-order
 #&gt;   --out tmp-data/ld_locus1
 #&gt;   --r square
@@ -587,20 +587,20 @@ Here we use PLINK, but remember that you can also use functions from bigsnpr for
 #&gt; 2816 variants and 503 people pass filters and QC.
 #&gt; Note: No phenotypes present.
 #&gt; --r square to tmp-data/ld_locus1.ld ... 0% [processing]writing]             done.</code></pre>
-<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="fine-mapping-with-susie.html#cb263-1" tabindex="-1"></a><span class="co"># Read in LD matrix</span></span>
-<span id="cb263-2"><a href="fine-mapping-with-susie.html#cb263-2" tabindex="-1"></a>ld_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">fread2</span>(<span class="st">&quot;tmp-data/ld_locus1.ld&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="fine-mapping-with-susie.html#cb267-1" tabindex="-1"></a><span class="co"># Read in LD matrix</span></span>
+<span id="cb267-2"><a href="fine-mapping-with-susie.html#cb267-2" tabindex="-1"></a>ld_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">fread2</span>(<span class="st">&quot;tmp-data/ld_locus1.ld&quot;</span>))</span></code></pre></div>
 </div>
 <div id="read-in-data-and-fit-susie" class="section level3 hasAnchor" number="9.3.4">
 <h3><span class="header-section-number">9.3.4</span> Read in data and fit SuSiE<a href="fine-mapping-with-susie.html#read-in-data-and-fit-susie" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>susie_rss()</code> is the function to fit SuSiE using summary statistics. Earlier we used <code>susie()</code> function which requires individual level data.</p>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="fine-mapping-with-susie.html#cb264-1" tabindex="-1"></a><span class="co"># Fit SuSiE using sample size from publication (n=188507)</span></span>
-<span id="cb264-2"><a href="fine-mapping-with-susie.html#cb264-2" tabindex="-1"></a>fitted_rss_1 <span class="ot">=</span> <span class="fu">susie_rss</span>(<span class="at">bhat =</span> locus1<span class="sc">$</span>beta, <span class="at">shat =</span> locus1<span class="sc">$</span>standard_error, </span>
-<span id="cb264-3"><a href="fine-mapping-with-susie.html#cb264-3" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">188507</span>, <span class="at">R =</span> ld_mat)</span></code></pre></div>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="fine-mapping-with-susie.html#cb268-1" tabindex="-1"></a><span class="co"># Fit SuSiE using sample size from publication (n=188507)</span></span>
+<span id="cb268-2"><a href="fine-mapping-with-susie.html#cb268-2" tabindex="-1"></a>fitted_rss_1 <span class="ot">=</span> <span class="fu">susie_rss</span>(<span class="at">bhat =</span> locus1<span class="sc">$</span>beta, <span class="at">shat =</span> locus1<span class="sc">$</span>standard_error, </span>
+<span id="cb268-3"><a href="fine-mapping-with-susie.html#cb268-3" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">188507</span>, <span class="at">R =</span> ld_mat)</span></code></pre></div>
 </div>
 <div id="examine-results" class="section level3 hasAnchor" number="9.3.5">
 <h3><span class="header-section-number">9.3.5</span> Examine results<a href="fine-mapping-with-susie.html#examine-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="fine-mapping-with-susie.html#cb265-1" tabindex="-1"></a><span class="co"># Examine results</span></span>
-<span id="cb265-2"><a href="fine-mapping-with-susie.html#cb265-2" tabindex="-1"></a><span class="fu">summary</span>(fitted_rss_1)</span></code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="fine-mapping-with-susie.html#cb269-1" tabindex="-1"></a><span class="co"># Examine results</span></span>
+<span id="cb269-2"><a href="fine-mapping-with-susie.html#cb269-2" tabindex="-1"></a><span class="fu">summary</span>(fitted_rss_1)</span></code></pre></div>
 <pre><code>#&gt; 
 #&gt; Variables in credible sets:
 #&gt; 
@@ -629,16 +629,16 @@ Here we use PLINK, but remember that you can also use functions from bigsnpr for
 #&gt;   1   7.455457 0.9186663 0.8268138
 #&gt;                                                                                                  variable
 #&gt;  1256,1257,1267,1270,1272,1280,1288,1314,1316,1331,1334,1339,1347,1364,1367,1378,1391,1401,1417,1420,1456</code></pre>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="fine-mapping-with-susie.html#cb267-1" tabindex="-1"></a>locus1_susie <span class="ot">&lt;-</span> <span class="fu">arrange</span>(<span class="fu">summary</span>(fitted_rss_1)<span class="sc">$</span>vars, variable)</span>
-<span id="cb267-2"><a href="fine-mapping-with-susie.html#cb267-2" tabindex="-1"></a>locus1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(locus1, locus1_susie[<span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb267-3"><a href="fine-mapping-with-susie.html#cb267-3" tabindex="-1"></a></span>
-<span id="cb267-4"><a href="fine-mapping-with-susie.html#cb267-4" tabindex="-1"></a><span class="co"># Plot</span></span>
-<span id="cb267-5"><a href="fine-mapping-with-susie.html#cb267-5" tabindex="-1"></a><span class="fu">ggplot</span>(locus1, <span class="fu">aes</span>(<span class="at">x =</span> pos, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(p_value))) <span class="sc">+</span></span>
-<span id="cb267-6"><a href="fine-mapping-with-susie.html#cb267-6" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb267-7"><a href="fine-mapping-with-susie.html#cb267-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">size =</span> <span class="fl">1.3</span>) <span class="sc">+</span></span>
-<span id="cb267-8"><a href="fine-mapping-with-susie.html#cb267-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">data =</span> <span class="fu">filter</span>(locus1, cs <span class="sc">==</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb267-9"><a href="fine-mapping-with-susie.html#cb267-9" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> rsid), <span class="at">size =</span> <span class="dv">2</span>, <span class="at">max.overlaps =</span> <span class="dv">45</span>,</span>
-<span id="cb267-10"><a href="fine-mapping-with-susie.html#cb267-10" tabindex="-1"></a>                   <span class="at">data =</span> <span class="fu">filter</span>(locus1, cs <span class="sc">==</span> <span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="fine-mapping-with-susie.html#cb271-1" tabindex="-1"></a>locus1_susie <span class="ot">&lt;-</span> <span class="fu">arrange</span>(<span class="fu">summary</span>(fitted_rss_1)<span class="sc">$</span>vars, variable)</span>
+<span id="cb271-2"><a href="fine-mapping-with-susie.html#cb271-2" tabindex="-1"></a>locus1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(locus1, locus1_susie[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb271-3"><a href="fine-mapping-with-susie.html#cb271-3" tabindex="-1"></a></span>
+<span id="cb271-4"><a href="fine-mapping-with-susie.html#cb271-4" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb271-5"><a href="fine-mapping-with-susie.html#cb271-5" tabindex="-1"></a><span class="fu">ggplot</span>(locus1, <span class="fu">aes</span>(<span class="at">x =</span> pos, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(p_value))) <span class="sc">+</span></span>
+<span id="cb271-6"><a href="fine-mapping-with-susie.html#cb271-6" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb271-7"><a href="fine-mapping-with-susie.html#cb271-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">size =</span> <span class="fl">1.3</span>) <span class="sc">+</span></span>
+<span id="cb271-8"><a href="fine-mapping-with-susie.html#cb271-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">data =</span> <span class="fu">filter</span>(locus1, cs <span class="sc">==</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb271-9"><a href="fine-mapping-with-susie.html#cb271-9" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> rsid), <span class="at">size =</span> <span class="dv">2</span>, <span class="at">max.overlaps =</span> <span class="dv">45</span>,</span>
+<span id="cb271-10"><a href="fine-mapping-with-susie.html#cb271-10" tabindex="-1"></a>                   <span class="at">data =</span> <span class="fu">filter</span>(locus1, cs <span class="sc">==</span> <span class="dv">1</span>))</span></code></pre></div>
 <p><img src="finemapping_files/figure-html/unnamed-chunk-13-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <div class="infobox exo">
 <p>How do the PIPs compare to the p-values? Generate a plot to show this.</p>
@@ -646,7 +646,7 @@ Here we use PLINK, but remember that you can also use functions from bigsnpr for
 </div>
 <div id="locus-2" class="section level3 hasAnchor" number="9.3.6">
 <h3><span class="header-section-number">9.3.6</span> Locus 2<a href="fine-mapping-with-susie.html#locus-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="fine-mapping-with-susie.html#cb268-1" tabindex="-1"></a>locus2 <span class="ot">&lt;-</span> <span class="fu">filter</span>(FT_cleaned, chr <span class="sc">==</span> <span class="dv">19</span>, pos <span class="sc">&gt;</span> <span class="dv">45417638</span> <span class="sc">-</span> <span class="fl">5e5</span>, pos <span class="sc">&lt;</span> <span class="dv">46384830</span> <span class="sc">+</span> <span class="fl">5e5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="fine-mapping-with-susie.html#cb272-1" tabindex="-1"></a>locus2 <span class="ot">&lt;-</span> <span class="fu">filter</span>(FT_cleaned, chr <span class="sc">==</span> <span class="dv">19</span>, pos <span class="sc">&gt;</span> <span class="dv">45417638</span> <span class="sc">-</span> <span class="fl">5e5</span>, pos <span class="sc">&lt;</span> <span class="dv">46384830</span> <span class="sc">+</span> <span class="fl">5e5</span>)</span></code></pre></div>
 <div class="infobox exo">
 <p>Now perform similar analyses on locus2.</p>
 </div>

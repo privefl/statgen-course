@@ -20,11 +20,7 @@ Collaboration among researchers in large consortia has facilitated meta-analyses
 
 ## Format
 
-This an example of GWAS summary statistics (a subset of it at least). 
-
-:::: {.infobox .caution}
-Fields included in GWAS summary statistics and their specific names in the header of the file can change very much from one file to the other; this is why tools like MungeSumstats have been developed [@murphy2021mungesumstats].
-::::
+This an example of GWAS summary statistics (a subset of it at least):
 
 ```{r}
 tgz <- runonce::download_file(
@@ -33,6 +29,10 @@ tgz <- runonce::download_file(
 
 writeLines(readLines(tgz, n = 6))
 ```
+
+:::: {.infobox .caution}
+Fields included in GWAS summary statistics and their specific names in the header of the file can change very much from one file to the other; this is why tools like MungeSumstats have been developed [@murphy2021mungesumstats].
+::::
 
 They often include
 
@@ -53,10 +53,6 @@ but they more rarely include
 - $f_j$ &mdash; the allele frequency of variant $j$,
 
 - $\text{INFO}_j$ &mdash; the imputation INFO score (imputation quality) of variant $j$
-
-:::: {.infobox .question}
-Why would different variants have different GWAS sample sizes? 
-::::
 
 :::: {.infobox .exo}
 Read-in these GWAS summary statistics and derive the p-values again, using the other columns. Recall that the Z-score squared is $\chi^2$-distributed with one degree of freedom.
@@ -106,6 +102,10 @@ The QC I recommend to perform consist in **comparing standard deviations** of ge
 
 ---
 
+:::: {.infobox .question}
+Why would different variants have different GWAS sample sizes? 
+::::
+
 With this QC, you can detect differences in per-variant GWAS sample sizes
 
 ```{r, echo=FALSE, out.width="72%"}
@@ -122,13 +122,18 @@ You can detect bias in total effective GWAS sample size
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/cad_quick_qc.png?raw=true")
 ```
 
-$N_\text{eff} = \frac{4}{1 / N_\text{ca} + 1 / N_\text{co}}$
+:::: {.infobox .question}
+Here I used $N_\text{eff} = \frac{4}{1 / N_\text{ca} + 1 / N_\text{co}}$ in \@ref(eq:sdlog), where $N_\text{ca}$ is the total number of cases and $N_\text{co}$ is the total number of controls.
+
+What is the problem with this approach when you have a meta-analysis?    
+(have a look at the following table with sample sizes for all studies comprising the meta-analysis)
+::::
 
 ```{r, echo=FALSE, out.width="30%"}
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/cad_neff_perstudy.png?raw=true")
 ```
 
-For example, overestimating the sample size leads to underestimating the SNP heritability in many methods such as LD score regression [@grotzinger2023pervasive].
+For example, overestimating the sample size leads to underestimating the SNP-heritability in many methods such as LD score regression [@grotzinger2023pervasive].
 
 ---
 
@@ -138,9 +143,13 @@ You can detect and QC low imputation INFO scores, & other issues
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/brca_onco_qc.png?raw=true")
 ```
 
+:::: {.infobox .question}
+Any idea what's going on for outliers in the second figure?
+::::
+
 ---
 
-Beware that multi-ancestry INFO scores are overestimated (e.g. in the UK Biobank)
+Beware that multi-ancestry INFO scores are overestimated (e.g. in the UK Biobank), because the formula used to derive INFO scores assumes an homogeneous population.
 
 ```{r, echo=FALSE, out.width="65%"}
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/overestim-info.png?raw=true")
@@ -203,7 +212,7 @@ ggplot(dplyr::slice_sample(data.frame(sd_af, sd_ss, nb_na), n = 100e3)) +
 
 We will practice more QC on GWAS summary statistics in \@ref(exo-ldpred2).
 
-I provide some example R script in [the LDpred2 tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html) that implements this QC. You can also find some other scripts with examples how to prepare several GWAS summary statistics [here](https://github.com/privefl/paper-misspec/tree/main/code).
+I provide some [example R script](https://github.com/privefl/paper-infer/blob/main/code/example-with-provided-LD.R) in [the LDpred2 tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html) that implements this QC. You can also find some other scripts with examples how to prepare several GWAS summary statistics [here](https://github.com/privefl/paper-misspec/tree/main/code).
 
 I am currently working on implementing a method that performs a complementary QC, as well as the imputation of GWAS summary statistics (i.e. GWAS results for more variants).
 
@@ -213,7 +222,7 @@ I am currently working on implementing a method that performs a complementary QC
 In \@ref(ancestry), we've seen how to infer ancestry for individual-level data using reference data provided in @prive2021using; we can also use this to infer the ancestry composition of a GWAS dataset using only allele frequencies from the GWAS summary statistics. The tutorial accompanying @prive2021using is [here](https://privefl.github.io/bigsnpr/articles/ancestry.html).
 
 :::: {.infobox .exo}
-Reuse some of the code from \@ref(ancestry) and allele frequencies (that you should compute) to get the ancestry composition of this dataset using function `snp_ancestry_summary()`.
+Reuse some of the code from \@ref(ancestry) (and/or from the tutorial) and allele frequencies (that you should compute) to get the ancestry composition of this dataset using function `snp_ancestry_summary()`.
 ::::
 
 <details>
@@ -281,11 +290,12 @@ res
 ```
 
 ```{r}
+# combine some close groups
 group <- colnames(all_freq)[-(1:5)]
 group[group %in% c("Scandinavia", "United Kingdom", "Ireland")]   <- "Europe (North West)"
 group[group %in% c("Europe (South East)", "Europe (North East)")] <- "Europe (East)"
-grp_fct <- factor(group, unique(group))
 
+grp_fct <- factor(group, unique(group))  # use factors to keep order
 final_res <- tapply(res, grp_fct, sum)
 round(100 * final_res, 1)
 ```

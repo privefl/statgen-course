@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-24" />
+<meta name="date" content="2025-06-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -420,15 +420,15 @@ Figure 8.3: Partial correlations and 95% CIs in the UK test set versus in a test
 <div id="preparing-the-data" class="section level3 hasAnchor" number="8.5.1">
 <h3><span class="header-section-number">8.5.1</span> Preparing the data<a href="polygenic-risk-scores-pgs-or-prs.html#preparing-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let’s first read the data produced in <a href="preprocessing.html#exo-preprocessing">3.3</a>:</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb174-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
-<span id="cb174-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb174-2" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
-<span id="cb174-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb174-3" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
-<span id="cb174-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb174-4" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb178-1" tabindex="-1"></a><span class="fu">library</span>(bigsnpr)</span>
+<span id="cb178-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb178-2" tabindex="-1"></a>obj.bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(<span class="st">&quot;tmp-data/GWAS_data_sorted_QC.rds&quot;</span>)</span>
+<span id="cb178-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb178-3" tabindex="-1"></a>G <span class="ot">&lt;-</span> obj.bigsnp<span class="sc">$</span>genotypes</span>
+<span id="cb178-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb178-4" tabindex="-1"></a>NCORES <span class="ot">&lt;-</span> <span class="fu">nb_cores</span>()</span></code></pre></div>
 <p>Let’s use some GWAS summary statistics for CAD that I derived from the UK Biobank <span class="citation">(<a href="#ref-bycroft2018uk">Bycroft et al., 2018</a>)</span>:</p>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb175-1" tabindex="-1"></a>gz <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb175-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb175-2" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38077323&quot;</span>,</span>
-<span id="cb175-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb175-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;sumstats_CAD_tuto.csv.gz&quot;</span>)</span>
-<span id="cb175-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb175-4" tabindex="-1"></a><span class="fu">readLines</span>(gz, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb179-1" tabindex="-1"></a>gz <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb179-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb179-2" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38077323&quot;</span>,</span>
+<span id="cb179-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb179-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;sumstats_CAD_tuto.csv.gz&quot;</span>)</span>
+<span id="cb179-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb179-4" tabindex="-1"></a><span class="fu">readLines</span>(gz, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;chr,pos,rsid,allele1,allele2,freq,info,beta,se&quot;                                                   
 #&gt; [2] &quot;1,721290,rs12565286,C,G,0.035889027911808,0.941918079726998,0.0361758959140647,0.0290865883937757&quot;
 #&gt; [3] &quot;1,752566,rs3094315,A,G,0.840799909379283,0.997586884856296,-0.0340838522604864,0.0144572980122262&quot;
@@ -442,19 +442,19 @@ Figure 8.3: Partial correlations and 95% CIs in the UK test set versus in a test
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb177-1" tabindex="-1"></a>sumstats <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
-<span id="cb177-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb177-2" tabindex="-1"></a>  gz,</span>
-<span id="cb177-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb177-3" tabindex="-1"></a>  <span class="at">select    =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pos&quot;</span>, <span class="st">&quot;allele2&quot;</span>, <span class="st">&quot;allele1&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;se&quot;</span>, <span class="st">&quot;freq&quot;</span>, <span class="st">&quot;info&quot;</span>),</span>
-<span id="cb177-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb177-4" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pos&quot;</span>, <span class="st">&quot;a0&quot;</span>, <span class="st">&quot;a1&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;beta_se&quot;</span>, <span class="st">&quot;freq&quot;</span>, <span class="st">&quot;info&quot;</span>))</span>
-<span id="cb177-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb177-5" tabindex="-1"></a></span>
-<span id="cb177-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb177-6" tabindex="-1"></a><span class="co"># GWAS effective sample size for binary traits (4 / (1 / n_case + 1 / n_control))</span></span>
-<span id="cb177-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb177-7" tabindex="-1"></a><span class="co"># For quantitative traits, just use the total sample size for `n_eff`.</span></span>
-<span id="cb177-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb177-8" tabindex="-1"></a>(Neff <span class="ot">&lt;-</span> <span class="dv">4</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">/</span> <span class="dv">20791</span> <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">323124</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb181-1" tabindex="-1"></a>sumstats <span class="ot">&lt;-</span> bigreadr<span class="sc">::</span><span class="fu">fread2</span>(</span>
+<span id="cb181-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb181-2" tabindex="-1"></a>  gz,</span>
+<span id="cb181-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb181-3" tabindex="-1"></a>  <span class="at">select    =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pos&quot;</span>, <span class="st">&quot;allele2&quot;</span>, <span class="st">&quot;allele1&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;se&quot;</span>, <span class="st">&quot;freq&quot;</span>, <span class="st">&quot;info&quot;</span>),</span>
+<span id="cb181-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb181-4" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;chr&quot;</span>, <span class="st">&quot;pos&quot;</span>, <span class="st">&quot;a0&quot;</span>, <span class="st">&quot;a1&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;beta_se&quot;</span>, <span class="st">&quot;freq&quot;</span>, <span class="st">&quot;info&quot;</span>))</span>
+<span id="cb181-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb181-5" tabindex="-1"></a></span>
+<span id="cb181-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb181-6" tabindex="-1"></a><span class="co"># GWAS effective sample size for binary traits (4 / (1 / n_case + 1 / n_control))</span></span>
+<span id="cb181-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb181-7" tabindex="-1"></a><span class="co"># For quantitative traits, just use the total sample size for `n_eff`.</span></span>
+<span id="cb181-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb181-8" tabindex="-1"></a>(Neff <span class="ot">&lt;-</span> <span class="dv">4</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">/</span> <span class="dv">20791</span> <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">323124</span>))</span></code></pre></div>
 <pre><code>#&gt; [1] 78136.41</code></pre>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb179-1" tabindex="-1"></a><span class="fu">quantile</span>(<span class="dv">8</span> <span class="sc">/</span> sumstats<span class="sc">$</span>beta_se<span class="sc">^</span><span class="dv">2</span>, <span class="fl">0.999</span>)  <span class="co"># one estimation</span></span></code></pre></div>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb183-1" tabindex="-1"></a><span class="fu">quantile</span>(<span class="dv">8</span> <span class="sc">/</span> sumstats<span class="sc">$</span>beta_se<span class="sc">^</span><span class="dv">2</span>, <span class="fl">0.999</span>)  <span class="co"># one estimation</span></span></code></pre></div>
 <pre><code>#&gt;    99.9% 
 #&gt; 73780.49</code></pre>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb181-1" tabindex="-1"></a>sumstats<span class="sc">$</span>n_eff <span class="ot">&lt;-</span> Neff</span></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb185-1" tabindex="-1"></a>sumstats<span class="sc">$</span>n_eff <span class="ot">&lt;-</span> Neff</span></code></pre></div>
 </details>
 <hr />
 <p>Note that we recommend to use imputed HapMap3(+) variants when available, for which you can download some precomputed LD reference for European individuals based on the UK Biobank.
@@ -469,14 +469,14 @@ Try to use an LD reference with at least 2000 individuals (we have only 1401 in 
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb182-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb182-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb182-2" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">transmute</span>(obj.bigsnp<span class="sc">$</span>map,</span>
-<span id="cb182-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb182-3" tabindex="-1"></a>                 <span class="at">chr =</span> chromosome, <span class="at">pos =</span> physical.pos,</span>
-<span id="cb182-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb182-4" tabindex="-1"></a>                 <span class="at">a0 =</span> allele2, <span class="at">a1 =</span> allele1)</span>
-<span id="cb182-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb182-5" tabindex="-1"></a>info_snp <span class="ot">&lt;-</span> <span class="fu">snp_match</span>(sumstats, map, <span class="at">return_flip_and_rev =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb182-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb182-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">_REV_</span><span class="st">`</span>, <span class="dv">1</span> <span class="sc">-</span> freq, freq),</span>
-<span id="cb182-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb182-7" tabindex="-1"></a>         <span class="st">`</span><span class="at">_REV_</span><span class="st">`</span> <span class="ot">=</span> <span class="cn">NULL</span>, <span class="st">`</span><span class="at">_FLIP_</span><span class="st">`</span><span class="ot">=</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb182-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb182-8" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb186-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-2" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">transmute</span>(obj.bigsnp<span class="sc">$</span>map,</span>
+<span id="cb186-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-3" tabindex="-1"></a>                 <span class="at">chr =</span> chromosome, <span class="at">pos =</span> physical.pos,</span>
+<span id="cb186-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-4" tabindex="-1"></a>                 <span class="at">a0 =</span> allele2, <span class="at">a1 =</span> allele1)</span>
+<span id="cb186-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-5" tabindex="-1"></a>info_snp <span class="ot">&lt;-</span> <span class="fu">snp_match</span>(sumstats, map, <span class="at">return_flip_and_rev =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb186-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">_REV_</span><span class="st">`</span>, <span class="dv">1</span> <span class="sc">-</span> freq, freq),</span>
+<span id="cb186-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-7" tabindex="-1"></a>         <span class="st">`</span><span class="at">_REV_</span><span class="st">`</span> <span class="ot">=</span> <span class="cn">NULL</span>, <span class="st">`</span><span class="at">_FLIP_</span><span class="st">`</span><span class="ot">=</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb186-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-8" tabindex="-1"></a>  <span class="fu">print</span>()</span></code></pre></div>
 <pre><code>#&gt;   chr    pos a0 a1         beta    beta_se       freq      info    n_eff
 #&gt; 1   1 752566  T  C  0.034083852 0.01445730 0.15920009 0.9975869 78136.41
 #&gt; 2   1 785989  G  A  0.018289010 0.01549153 0.13007399 0.9913233 78136.41
@@ -498,96 +498,96 @@ Click to see solution
 Click to see solution
 </summary>
 <p>Check the summary statistics; some quality control may be needed:</p>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb184-1" tabindex="-1"></a><span class="fu">hist</span>(info_snp<span class="sc">$</span>n_eff)    <span class="co"># all the same values, otherwise filter at 70% of max</span></span></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-1" tabindex="-1"></a><span class="fu">hist</span>(info_snp<span class="sc">$</span>n_eff)    <span class="co"># all the same values, otherwise filter at 70% of max</span></span></code></pre></div>
 <p><img src="PGS_files/figure-html/unnamed-chunk-13-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb185-1" tabindex="-1"></a><span class="fu">hist</span>(info_snp<span class="sc">$</span>info)     <span class="co"># very good imputation; filter e.g. at 0.7 or 0.8</span></span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-1" tabindex="-1"></a><span class="fu">hist</span>(info_snp<span class="sc">$</span>info)     <span class="co"># very good imputation; filter e.g. at 0.7 or 0.8</span></span></code></pre></div>
 <p><img src="PGS_files/figure-html/unnamed-chunk-13-2.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb186-1" tabindex="-1"></a><span class="fu">summary</span>(info_snp<span class="sc">$</span>freq)  <span class="co"># can filter for MAF &gt; 0.01 (i.e. AF &gt; 0.01 &amp; AF &lt; 0.99)</span></span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-1" tabindex="-1"></a><span class="fu">summary</span>(info_snp<span class="sc">$</span>freq)  <span class="co"># can filter for MAF &gt; 0.01 (i.e. AF &gt; 0.01 &amp; AF &lt; 0.99)</span></span></code></pre></div>
 <pre><code>#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
 #&gt; 0.0000027 0.1100250 0.2261357 0.2365588 0.3580946 0.9998703</code></pre>
 <p>Then we can perform some quality control on the summary statistics by checking whether standard deviations (of genotypes) inferred from the external GWAS summary statistics are consistent with the ones in the internal data we have:</p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-1" tabindex="-1"></a>af_ref <span class="ot">&lt;-</span> <span class="fu">big_colstats</span>(G, <span class="at">ind.col =</span> info_snp<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)<span class="sc">$</span>sum <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> <span class="fu">nrow</span>(G))</span>
-<span id="cb188-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-2" tabindex="-1"></a>sd_ref <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> af_ref <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> af_ref))</span>
-<span id="cb188-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-3" tabindex="-1"></a>sd_ss <span class="ot">&lt;-</span> <span class="fu">with</span>(info_snp, <span class="dv">2</span> <span class="sc">/</span> <span class="fu">sqrt</span>(n_eff <span class="sc">*</span> beta_se<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> beta<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb188-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-4" tabindex="-1"></a>is_bad <span class="ot">&lt;-</span></span>
-<span id="cb188-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-5" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> (<span class="fl">0.5</span> <span class="sc">*</span> sd_ref) <span class="sc">|</span> sd_ss <span class="sc">&gt;</span> (sd_ref <span class="sc">+</span> <span class="fl">0.1</span>) <span class="sc">|</span></span>
-<span id="cb188-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-6" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">|</span> sd_ref <span class="sc">&lt;</span> <span class="fl">0.05</span>  <span class="co"># basically filtering small MAF</span></span>
-<span id="cb188-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-7" tabindex="-1"></a></span>
-<span id="cb188-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-8" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb188-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-9" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_ref, sd_ss, is_bad), <span class="at">n =</span> <span class="fl">100e3</span>)) <span class="sc">+</span></span>
-<span id="cb188-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-10" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_ref, sd_ss, <span class="at">color =</span> is_bad), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb188-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-11" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb188-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-12" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb188-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-13" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb188-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-14" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations in the reference set&quot;</span>,</span>
-<span id="cb188-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-15" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>,</span>
-<span id="cb188-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb188-16" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;To remove?&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-1" tabindex="-1"></a>af_ref <span class="ot">&lt;-</span> <span class="fu">big_colstats</span>(G, <span class="at">ind.col =</span> info_snp<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>, <span class="at">ncores =</span> NCORES)<span class="sc">$</span>sum <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> <span class="fu">nrow</span>(G))</span>
+<span id="cb192-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-2" tabindex="-1"></a>sd_ref <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> af_ref <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> af_ref))</span>
+<span id="cb192-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-3" tabindex="-1"></a>sd_ss <span class="ot">&lt;-</span> <span class="fu">with</span>(info_snp, <span class="dv">2</span> <span class="sc">/</span> <span class="fu">sqrt</span>(n_eff <span class="sc">*</span> beta_se<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> beta<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb192-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-4" tabindex="-1"></a>is_bad <span class="ot">&lt;-</span></span>
+<span id="cb192-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-5" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> (<span class="fl">0.5</span> <span class="sc">*</span> sd_ref) <span class="sc">|</span> sd_ss <span class="sc">&gt;</span> (sd_ref <span class="sc">+</span> <span class="fl">0.1</span>) <span class="sc">|</span></span>
+<span id="cb192-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-6" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">|</span> sd_ref <span class="sc">&lt;</span> <span class="fl">0.05</span>  <span class="co"># basically filtering small MAF</span></span>
+<span id="cb192-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-7" tabindex="-1"></a></span>
+<span id="cb192-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-8" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb192-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-9" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_ref, sd_ss, is_bad), <span class="at">n =</span> <span class="fl">100e3</span>)) <span class="sc">+</span></span>
+<span id="cb192-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-10" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_ref, sd_ss, <span class="at">color =</span> is_bad), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb192-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-11" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb192-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-12" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb192-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-13" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb192-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-14" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations in the reference set&quot;</span>,</span>
+<span id="cb192-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-15" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>,</span>
+<span id="cb192-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb192-16" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;To remove?&quot;</span>)</span></code></pre></div>
 <p><img src="PGS_files/figure-html/unnamed-chunk-14-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <div class="infobox caution">
 <p>When using quantitative traits (linear regression instead of logistic regression for the GWAS), you need to replace <code>2</code> by <code>sd(y)</code> when computing <code>sd_ss</code> (equations <a href="gwas-summary-statistics.html#eq:sdlog">(6.2)</a> and <a href="gwas-summary-statistics.html#eq:sdlin">(6.1)</a>).</p>
 </div>
 <p>When allele frequencies are available in the GWAS summary statistics, you can use them (along with INFO scores) to get an even better match (equation <a href="gwas-summary-statistics.html#eq:sdaf">(6.3)</a>):</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-1" tabindex="-1"></a>sd_af <span class="ot">&lt;-</span> <span class="fu">with</span>(info_snp, <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> freq <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> freq) <span class="sc">*</span> info))</span>
-<span id="cb189-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-2" tabindex="-1"></a></span>
-<span id="cb189-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-3" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_af, sd_ss), <span class="at">n =</span> <span class="fl">100e3</span>)) <span class="sc">+</span></span>
-<span id="cb189-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_af, sd_ss), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb189-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-5" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb189-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-6" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb189-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations derived from allele frequencies&quot;</span>,</span>
-<span id="cb189-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb189-8" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-1" tabindex="-1"></a>sd_af <span class="ot">&lt;-</span> <span class="fu">with</span>(info_snp, <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> freq <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> freq) <span class="sc">*</span> info))</span>
+<span id="cb193-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-2" tabindex="-1"></a></span>
+<span id="cb193-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-3" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">slice_sample</span>(<span class="fu">data.frame</span>(sd_af, sd_ss), <span class="at">n =</span> <span class="fl">100e3</span>)) <span class="sc">+</span></span>
+<span id="cb193-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(sd_af, sd_ss), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb193-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-5" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>(<span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb193-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-6" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb193-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Standard deviations derived from allele frequencies&quot;</span>,</span>
+<span id="cb193-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-8" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Standard deviations derived from the summary statistics&quot;</span>)</span></code></pre></div>
 <p><img src="PGS_files/figure-html/unnamed-chunk-15-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>You can still use the reference panel to do some quality control by comparing allele frequencies, which is useful for detecting allelic errors (inversion of alleles so that the effect size should have the opposite sign) and the other issues detected before:</p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-1" tabindex="-1"></a>af_diff <span class="ot">&lt;-</span> af_ref <span class="sc">-</span> info_snp<span class="sc">$</span>freq</span>
-<span id="cb190-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb190-2" tabindex="-1"></a><span class="fu">hist</span>(af_diff, <span class="st">&quot;FD&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-1" tabindex="-1"></a>af_diff <span class="ot">&lt;-</span> af_ref <span class="sc">-</span> info_snp<span class="sc">$</span>freq</span>
+<span id="cb194-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-2" tabindex="-1"></a><span class="fu">hist</span>(af_diff, <span class="st">&quot;FD&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>))</span></code></pre></div>
 <p><img src="PGS_files/figure-html/unnamed-chunk-16-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Then you can filter</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb191-1" tabindex="-1"></a>is_bad2 <span class="ot">&lt;-</span></span>
-<span id="cb191-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb191-2" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> (<span class="fl">0.7</span> <span class="sc">*</span> sd_af) <span class="sc">|</span> sd_ss <span class="sc">&gt;</span> (sd_af <span class="sc">+</span> <span class="fl">0.1</span>) <span class="sc">|</span></span>
-<span id="cb191-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb191-3" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">|</span> sd_af <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">|</span></span>
-<span id="cb191-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb191-4" tabindex="-1"></a>  info_snp<span class="sc">$</span>info <span class="sc">&lt;</span> <span class="fl">0.7</span> <span class="sc">|</span> <span class="fu">abs</span>(af_diff) <span class="sc">&gt;</span> <span class="fl">0.07</span> <span class="co"># based on visual inspection</span></span>
-<span id="cb191-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb191-5" tabindex="-1"></a><span class="fu">mean</span>(is_bad2)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb195-1" tabindex="-1"></a>is_bad2 <span class="ot">&lt;-</span></span>
+<span id="cb195-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb195-2" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> (<span class="fl">0.7</span> <span class="sc">*</span> sd_af) <span class="sc">|</span> sd_ss <span class="sc">&gt;</span> (sd_af <span class="sc">+</span> <span class="fl">0.1</span>) <span class="sc">|</span></span>
+<span id="cb195-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb195-3" tabindex="-1"></a>  sd_ss <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">|</span> sd_af <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">|</span></span>
+<span id="cb195-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb195-4" tabindex="-1"></a>  info_snp<span class="sc">$</span>info <span class="sc">&lt;</span> <span class="fl">0.7</span> <span class="sc">|</span> <span class="fu">abs</span>(af_diff) <span class="sc">&gt;</span> <span class="fl">0.07</span> <span class="co"># based on visual inspection</span></span>
+<span id="cb195-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb195-5" tabindex="-1"></a><span class="fu">mean</span>(is_bad2)</span></code></pre></div>
 <pre><code>#&gt; [1] 0.002410276</code></pre>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb193-1" tabindex="-1"></a>df_beta <span class="ot">&lt;-</span> info_snp[<span class="sc">!</span>is_bad2, ]</span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb197-1" tabindex="-1"></a>df_beta <span class="ot">&lt;-</span> info_snp[<span class="sc">!</span>is_bad2, ]</span></code></pre></div>
 </details>
 <hr />
 <p>Then, we compute the correlation for each chromosome (note that we are using only 4 chromosomes here, for faster running of this tutorial):</p>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-1" tabindex="-1"></a><span class="co"># Precomputed genetic positions (in cM) to avoid downloading large files in this tuto</span></span>
-<span id="cb194-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-2" tabindex="-1"></a>gen_pos <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
-<span id="cb194-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-3" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38247288&quot;</span>,</span>
-<span id="cb194-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-4" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;gen_pos_tuto.rds&quot;</span>))</span>
-<span id="cb194-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-5" tabindex="-1"></a></span>
-<span id="cb194-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-6" tabindex="-1"></a>df_beta <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(df_beta, chr <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)  <span class="co"># TO REMOVE (for speed here)</span></span>
-<span id="cb194-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-7" tabindex="-1"></a></span>
-<span id="cb194-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-8" tabindex="-1"></a><span class="cf">for</span> (chr <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {  <span class="co"># REPLACE BY 1:22</span></span>
-<span id="cb194-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-9" tabindex="-1"></a></span>
-<span id="cb194-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-10" tabindex="-1"></a>  <span class="fu">print</span>(chr)</span>
-<span id="cb194-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-11" tabindex="-1"></a></span>
-<span id="cb194-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-12" tabindex="-1"></a>  corr0 <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>({</span>
-<span id="cb194-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-13" tabindex="-1"></a></span>
-<span id="cb194-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-14" tabindex="-1"></a>    <span class="co"># indices in &#39;sumstats&#39;</span></span>
-<span id="cb194-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-15" tabindex="-1"></a>    ind.chr <span class="ot">&lt;-</span> <span class="fu">which</span>(df_beta<span class="sc">$</span>chr <span class="sc">==</span> chr)</span>
-<span id="cb194-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-16" tabindex="-1"></a>    <span class="co"># indices in &#39;G&#39;</span></span>
-<span id="cb194-17"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-17" tabindex="-1"></a>    ind.chr2 <span class="ot">&lt;-</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>[ind.chr]</span>
-<span id="cb194-18"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-18" tabindex="-1"></a></span>
-<span id="cb194-19"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-19" tabindex="-1"></a>    <span class="co"># genetic positions (in cM)</span></span>
-<span id="cb194-20"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-20" tabindex="-1"></a>    <span class="co"># POS2 &lt;- snp_asGeneticPos(map$chr[ind.chr2], map$pos[ind.chr2], dir = &quot;tmp-data&quot;)</span></span>
-<span id="cb194-21"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-21" tabindex="-1"></a>    POS2 <span class="ot">&lt;-</span> gen_pos[ind.chr2]  <span class="co"># PRECOMPUTED HERE; USE snp_asGeneticPos() IN REAL CODE</span></span>
-<span id="cb194-22"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-22" tabindex="-1"></a></span>
-<span id="cb194-23"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-23" tabindex="-1"></a>    <span class="co"># compute the banded correlation matrix in sparse matrix format</span></span>
-<span id="cb194-24"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-24" tabindex="-1"></a>    <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind.chr2, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>, <span class="at">infos.pos =</span> POS2,</span>
-<span id="cb194-25"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-25" tabindex="-1"></a>            <span class="at">ncores =</span> NCORES)</span>
-<span id="cb194-26"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-26" tabindex="-1"></a></span>
-<span id="cb194-27"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-27" tabindex="-1"></a>  }, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&quot;tmp-data/corr_chr&quot;</span>, chr, <span class="st">&quot;.rds&quot;</span>))</span>
-<span id="cb194-28"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-28" tabindex="-1"></a></span>
-<span id="cb194-29"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-29" tabindex="-1"></a>  <span class="co"># transform to SFBM (on-disk format) on the fly</span></span>
-<span id="cb194-30"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-30" tabindex="-1"></a>  <span class="cf">if</span> (chr <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb194-31"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-31" tabindex="-1"></a>    ld <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">colSums</span>(corr0<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb194-32"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-32" tabindex="-1"></a>    corr <span class="ot">&lt;-</span> <span class="fu">as_SFBM</span>(corr0, <span class="st">&quot;tmp-data/corr&quot;</span>, <span class="at">compact =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb194-33"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-33" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb194-34"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-34" tabindex="-1"></a>    ld <span class="ot">&lt;-</span> <span class="fu">c</span>(ld, Matrix<span class="sc">::</span><span class="fu">colSums</span>(corr0<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb194-35"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-35" tabindex="-1"></a>    corr<span class="sc">$</span><span class="fu">add_columns</span>(corr0, <span class="fu">nrow</span>(corr))</span>
-<span id="cb194-36"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-36" tabindex="-1"></a>  }</span>
-<span id="cb194-37"><a href="polygenic-risk-scores-pgs-or-prs.html#cb194-37" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-1" tabindex="-1"></a><span class="co"># Precomputed genetic positions (in cM) to avoid downloading large files in this tuto</span></span>
+<span id="cb198-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-2" tabindex="-1"></a>gen_pos <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(runonce<span class="sc">::</span><span class="fu">download_file</span>(</span>
+<span id="cb198-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-3" tabindex="-1"></a>  <span class="st">&quot;https://figshare.com/ndownloader/files/38247288&quot;</span>,</span>
+<span id="cb198-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-4" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">&quot;tmp-data&quot;</span>, <span class="at">fname =</span> <span class="st">&quot;gen_pos_tuto.rds&quot;</span>))</span>
+<span id="cb198-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-5" tabindex="-1"></a></span>
+<span id="cb198-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-6" tabindex="-1"></a>df_beta <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(df_beta, chr <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)  <span class="co"># TO REMOVE (for speed here)</span></span>
+<span id="cb198-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-7" tabindex="-1"></a></span>
+<span id="cb198-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-8" tabindex="-1"></a><span class="cf">for</span> (chr <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {  <span class="co"># REPLACE BY 1:22</span></span>
+<span id="cb198-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-9" tabindex="-1"></a></span>
+<span id="cb198-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-10" tabindex="-1"></a>  <span class="fu">print</span>(chr)</span>
+<span id="cb198-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-11" tabindex="-1"></a></span>
+<span id="cb198-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-12" tabindex="-1"></a>  corr0 <span class="ot">&lt;-</span> runonce<span class="sc">::</span><span class="fu">save_run</span>({</span>
+<span id="cb198-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-13" tabindex="-1"></a></span>
+<span id="cb198-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-14" tabindex="-1"></a>    <span class="co"># indices in &#39;sumstats&#39;</span></span>
+<span id="cb198-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-15" tabindex="-1"></a>    ind.chr <span class="ot">&lt;-</span> <span class="fu">which</span>(df_beta<span class="sc">$</span>chr <span class="sc">==</span> chr)</span>
+<span id="cb198-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-16" tabindex="-1"></a>    <span class="co"># indices in &#39;G&#39;</span></span>
+<span id="cb198-17"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-17" tabindex="-1"></a>    ind.chr2 <span class="ot">&lt;-</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>[ind.chr]</span>
+<span id="cb198-18"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-18" tabindex="-1"></a></span>
+<span id="cb198-19"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-19" tabindex="-1"></a>    <span class="co"># genetic positions (in cM)</span></span>
+<span id="cb198-20"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-20" tabindex="-1"></a>    <span class="co"># POS2 &lt;- snp_asGeneticPos(map$chr[ind.chr2], map$pos[ind.chr2], dir = &quot;tmp-data&quot;)</span></span>
+<span id="cb198-21"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-21" tabindex="-1"></a>    POS2 <span class="ot">&lt;-</span> gen_pos[ind.chr2]  <span class="co"># PRECOMPUTED HERE; USE snp_asGeneticPos() IN REAL CODE</span></span>
+<span id="cb198-22"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-22" tabindex="-1"></a></span>
+<span id="cb198-23"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-23" tabindex="-1"></a>    <span class="co"># compute the banded correlation matrix in sparse matrix format</span></span>
+<span id="cb198-24"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-24" tabindex="-1"></a>    <span class="fu">snp_cor</span>(G, <span class="at">ind.col =</span> ind.chr2, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>, <span class="at">infos.pos =</span> POS2,</span>
+<span id="cb198-25"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-25" tabindex="-1"></a>            <span class="at">ncores =</span> NCORES)</span>
+<span id="cb198-26"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-26" tabindex="-1"></a></span>
+<span id="cb198-27"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-27" tabindex="-1"></a>  }, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&quot;tmp-data/corr_chr&quot;</span>, chr, <span class="st">&quot;.rds&quot;</span>))</span>
+<span id="cb198-28"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-28" tabindex="-1"></a></span>
+<span id="cb198-29"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-29" tabindex="-1"></a>  <span class="co"># transform to SFBM (on-disk format) on the fly</span></span>
+<span id="cb198-30"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-30" tabindex="-1"></a>  <span class="cf">if</span> (chr <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb198-31"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-31" tabindex="-1"></a>    ld <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">colSums</span>(corr0<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb198-32"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-32" tabindex="-1"></a>    corr <span class="ot">&lt;-</span> <span class="fu">as_SFBM</span>(corr0, <span class="st">&quot;tmp-data/corr&quot;</span>, <span class="at">compact =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb198-33"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-33" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb198-34"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-34" tabindex="-1"></a>    ld <span class="ot">&lt;-</span> <span class="fu">c</span>(ld, Matrix<span class="sc">::</span><span class="fu">colSums</span>(corr0<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb198-35"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-35" tabindex="-1"></a>    corr<span class="sc">$</span><span class="fu">add_columns</span>(corr0, <span class="fu">nrow</span>(corr))</span>
+<span id="cb198-36"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-36" tabindex="-1"></a>  }</span>
+<span id="cb198-37"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-37" tabindex="-1"></a>}</span></code></pre></div>
 <pre><code>#&gt; [1] 1
 #&gt;    user  system elapsed 
 #&gt;  110.20    0.71   28.93 
@@ -604,7 +604,7 @@ Click to see solution
 #&gt;    user  system elapsed 
 #&gt;  112.91    0.95   31.21 
 #&gt; Code finished running at 2025-06-13 14:39:04 CEST</code></pre>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb196-1" tabindex="-1"></a><span class="fu">file.size</span>(corr<span class="sc">$</span>sbk) <span class="sc">/</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">3</span>  <span class="co"># file size in GB</span></span></code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb200-1" tabindex="-1"></a><span class="fu">file.size</span>(corr<span class="sc">$</span>sbk) <span class="sc">/</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">3</span>  <span class="co"># file size in GB</span></span></code></pre></div>
 <pre><code>#&gt; [1] 0.5756225</code></pre>
 <div class="infobox caution">
 <p>Note that you will need at least the same memory as this file size (to keep it cached for faster processing) + some other memory for all the results returned by LDpred2. If you do not have enough memory, processing will be very slow (because you would read the data from disk all the time). If using HapMap3 variants, requesting 60 GB should be enough. For this small example, 8 GB of RAM on a laptop should be enough.</p>
@@ -621,33 +621,33 @@ Click to see solution
 Click to see solution
 </summary>
 <p>We can now run LD score regression:</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-1" tabindex="-1"></a>(ldsc <span class="ot">&lt;-</span> <span class="fu">with</span>(df_beta, <span class="fu">snp_ldsc</span>(ld, <span class="fu">length</span>(ld), <span class="at">chi2 =</span> (beta <span class="sc">/</span> beta_se)<span class="sc">^</span><span class="dv">2</span>,</span>
-<span id="cb198-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb198-2" tabindex="-1"></a>                                 <span class="at">sample_size =</span> n_eff, <span class="at">blocks =</span> <span class="cn">NULL</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb202-1" tabindex="-1"></a>(ldsc <span class="ot">&lt;-</span> <span class="fu">with</span>(df_beta, <span class="fu">snp_ldsc</span>(ld, <span class="fu">length</span>(ld), <span class="at">chi2 =</span> (beta <span class="sc">/</span> beta_se)<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb202-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb202-2" tabindex="-1"></a>                                 <span class="at">sample_size =</span> n_eff, <span class="at">blocks =</span> <span class="cn">NULL</span>)))</span></code></pre></div>
 <pre><code>#&gt;       int        h2 
 #&gt; 0.9795999 0.0528327</code></pre>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb200-1" tabindex="-1"></a>ldsc_h2_est <span class="ot">&lt;-</span> ldsc[[<span class="st">&quot;h2&quot;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb204-1" tabindex="-1"></a>ldsc_h2_est <span class="ot">&lt;-</span> ldsc[[<span class="st">&quot;h2&quot;</span>]]</span></code></pre></div>
 <p>We can now run LDpred2-inf very easily:</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-1" tabindex="-1"></a><span class="co"># LDpred2-inf</span></span>
-<span id="cb201-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-2" tabindex="-1"></a>beta_inf <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_inf</span>(corr, df_beta, ldsc_h2_est)</span>
-<span id="cb201-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-3" tabindex="-1"></a>pred_inf <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, beta_inf, <span class="at">ind.col =</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>)</span>
-<span id="cb201-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb201-4" tabindex="-1"></a><span class="fu">AUCBoot</span>(pred_inf, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb205-1" tabindex="-1"></a><span class="co"># LDpred2-inf</span></span>
+<span id="cb205-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb205-2" tabindex="-1"></a>beta_inf <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_inf</span>(corr, df_beta, ldsc_h2_est)</span>
+<span id="cb205-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb205-3" tabindex="-1"></a>pred_inf <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, beta_inf, <span class="at">ind.col =</span> df_beta<span class="sc">$</span><span class="st">`</span><span class="at">_NUM_ID_</span><span class="st">`</span>)</span>
+<span id="cb205-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb205-4" tabindex="-1"></a><span class="fu">AUCBoot</span>(pred_inf, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
 <pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
-#&gt; 0.55112798 0.51971784 0.58261434 0.01609914</code></pre>
+#&gt; 0.55108134 0.51973719 0.58245433 0.01607316</code></pre>
 <p>For LDpred2(-grid), this is the grid we recommend to use:</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb203-1" tabindex="-1"></a><span class="co"># LDpred2-grid</span></span>
-<span id="cb203-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb203-2" tabindex="-1"></a>(h2_seq <span class="ot">&lt;-</span> <span class="fu">round</span>(ldsc_h2_est <span class="sc">*</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>, <span class="dv">1</span>, <span class="fl">1.4</span>), <span class="dv">4</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb207-1" tabindex="-1"></a><span class="co"># LDpred2-grid</span></span>
+<span id="cb207-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb207-2" tabindex="-1"></a>(h2_seq <span class="ot">&lt;-</span> <span class="fu">round</span>(ldsc_h2_est <span class="sc">*</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>, <span class="dv">1</span>, <span class="fl">1.4</span>), <span class="dv">4</span>))</span></code></pre></div>
 <pre><code>#&gt; [1] 0.0158 0.0370 0.0528 0.0740</code></pre>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb205-1" tabindex="-1"></a>(p_seq <span class="ot">&lt;-</span> <span class="fu">signif</span>(<span class="fu">seq_log</span>(<span class="fl">1e-5</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">21</span>), <span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb209-1" tabindex="-1"></a>(p_seq <span class="ot">&lt;-</span> <span class="fu">signif</span>(<span class="fu">seq_log</span>(<span class="fl">1e-5</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">21</span>), <span class="dv">2</span>))</span></code></pre></div>
 <pre><code>#&gt;  [1] 1.0e-05 1.8e-05 3.2e-05 5.6e-05 1.0e-04 1.8e-04 3.2e-04 5.6e-04
 #&gt;  [9] 1.0e-03 1.8e-03 3.2e-03 5.6e-03 1.0e-02 1.8e-02 3.2e-02 5.6e-02
 #&gt; [17] 1.0e-01 1.8e-01 3.2e-01 5.6e-01 1.0e+00</code></pre>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb207-1" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">p =</span> p_seq, <span class="at">h2 =</span> h2_seq, <span class="at">sparse =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>))</span>
-<span id="cb207-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb207-2" tabindex="-1"></a><span class="fu">dim</span>(params)</span></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb211-1" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">p =</span> p_seq, <span class="at">h2 =</span> h2_seq, <span class="at">sparse =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>))</span>
+<span id="cb211-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb211-2" tabindex="-1"></a><span class="fu">dim</span>(params)</span></code></pre></div>
 <pre><code>#&gt; [1] 168   3</code></pre>
 <p>Here, we will be using this smaller grid instead (for speed in this tutorial):</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb209-1" tabindex="-1"></a><span class="co"># smaller grid for tutorial only (USE PREVIOUS ONE IN REAL CODE)</span></span>
-<span id="cb209-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb209-2" tabindex="-1"></a>(params <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">p =</span> <span class="fu">signif</span>(<span class="fu">seq_log</span>(<span class="fl">1e-4</span>, <span class="fl">0.5</span>, <span class="at">length.out =</span> <span class="dv">16</span>), <span class="dv">2</span>),</span>
-<span id="cb209-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb209-3" tabindex="-1"></a>                       <span class="at">h2 =</span> <span class="fu">round</span>(ldsc_h2_est, <span class="dv">4</span>), <span class="at">sparse =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-1" tabindex="-1"></a><span class="co"># smaller grid for tutorial only (USE PREVIOUS ONE IN REAL CODE)</span></span>
+<span id="cb213-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-2" tabindex="-1"></a>(params <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">p =</span> <span class="fu">signif</span>(<span class="fu">seq_log</span>(<span class="fl">1e-4</span>, <span class="fl">0.5</span>, <span class="at">length.out =</span> <span class="dv">16</span>), <span class="dv">2</span>),</span>
+<span id="cb213-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-3" tabindex="-1"></a>                       <span class="at">h2 =</span> <span class="fu">round</span>(ldsc_h2_est, <span class="dv">4</span>), <span class="at">sparse =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 <pre><code>#&gt;          p     h2 sparse
 #&gt; 1  0.00010 0.0528   TRUE
 #&gt; 2  0.00018 0.0528   TRUE
@@ -665,82 +665,82 @@ Click to see solution
 #&gt; 14 0.16000 0.0528   TRUE
 #&gt; 15 0.28000 0.0528   TRUE
 #&gt; 16 0.50000 0.0528   TRUE</code></pre>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb211-1" tabindex="-1"></a>beta_grid <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_grid</span>(corr, df_beta, params, <span class="at">ncores =</span> NCORES)</span>
-<span id="cb211-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb211-2" tabindex="-1"></a>params<span class="sc">$</span>sparsity <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(beta_grid <span class="sc">==</span> <span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-1" tabindex="-1"></a>beta_grid <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_grid</span>(corr, df_beta, params, <span class="at">ncores =</span> NCORES)</span>
+<span id="cb215-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-2" tabindex="-1"></a>params<span class="sc">$</span>sparsity <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(beta_grid <span class="sc">==</span> <span class="dv">0</span>)</span></code></pre></div>
 <p>Then, we can compute the corresponding PGS for all these models, and visualize their performance:</p>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-1" tabindex="-1"></a>pred_grid <span class="ot">&lt;-</span> <span class="fu">big_prodMat</span>(G, beta_grid, <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
-<span id="cb212-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-2" tabindex="-1"></a>                         <span class="at">ncores =</span> NCORES)</span>
-<span id="cb212-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-3" tabindex="-1"></a></span>
-<span id="cb212-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-4" tabindex="-1"></a>params<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_grid, <span class="dv">2</span>, <span class="cf">function</span>(.x) {</span>
-<span id="cb212-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-5" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(.x))) <span class="fu">return</span>(<span class="cn">NA</span>)  <span class="co"># models that diverged substantially</span></span>
-<span id="cb212-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-6" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">glm</span>(  <span class="co"># simply use `lm()` for quantitative traits</span></span>
-<span id="cb212-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-7" tabindex="-1"></a>    CAD <span class="sc">~</span> .x <span class="sc">+</span> sex <span class="sc">+</span> age, <span class="at">data =</span> obj.bigsnp<span class="sc">$</span>fam, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
-<span id="cb212-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-8" tabindex="-1"></a>  ))<span class="sc">$</span>coef[<span class="st">&quot;.x&quot;</span>, <span class="dv">3</span>]</span>
-<span id="cb212-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-9" tabindex="-1"></a>})</span>
-<span id="cb212-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-10" tabindex="-1"></a></span>
-<span id="cb212-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-11" tabindex="-1"></a><span class="fu">ggplot</span>(params, <span class="fu">aes</span>(<span class="at">x =</span> p, <span class="at">y =</span> score, <span class="at">color =</span> <span class="fu">as.factor</span>(h2))) <span class="sc">+</span></span>
-<span id="cb212-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-12" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>() <span class="sc">+</span></span>
-<span id="cb212-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-13" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb212-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-14" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb212-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-15" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">0</span>), <span class="at">minor_breaks =</span> params<span class="sc">$</span>p) <span class="sc">+</span></span>
-<span id="cb212-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-16" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> sparse, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
-<span id="cb212-17"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;GLM Z-Score&quot;</span>, <span class="at">color =</span> <span class="st">&quot;h2&quot;</span>) <span class="sc">+</span></span>
-<span id="cb212-18"><a href="polygenic-risk-scores-pgs-or-prs.html#cb212-18" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>, <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">&quot;lines&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-1" tabindex="-1"></a>pred_grid <span class="ot">&lt;-</span> <span class="fu">big_prodMat</span>(G, beta_grid, <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb216-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-2" tabindex="-1"></a>                         <span class="at">ncores =</span> NCORES)</span>
+<span id="cb216-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-3" tabindex="-1"></a></span>
+<span id="cb216-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-4" tabindex="-1"></a>params<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_grid, <span class="dv">2</span>, <span class="cf">function</span>(.x) {</span>
+<span id="cb216-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-5" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(.x))) <span class="fu">return</span>(<span class="cn">NA</span>)  <span class="co"># models that diverged substantially</span></span>
+<span id="cb216-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-6" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">glm</span>(  <span class="co"># simply use `lm()` for quantitative traits</span></span>
+<span id="cb216-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-7" tabindex="-1"></a>    CAD <span class="sc">~</span> .x <span class="sc">+</span> sex <span class="sc">+</span> age, <span class="at">data =</span> obj.bigsnp<span class="sc">$</span>fam, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
+<span id="cb216-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-8" tabindex="-1"></a>  ))<span class="sc">$</span>coef[<span class="st">&quot;.x&quot;</span>, <span class="dv">3</span>]</span>
+<span id="cb216-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-9" tabindex="-1"></a>})</span>
+<span id="cb216-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-10" tabindex="-1"></a></span>
+<span id="cb216-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-11" tabindex="-1"></a><span class="fu">ggplot</span>(params, <span class="fu">aes</span>(<span class="at">x =</span> p, <span class="at">y =</span> score, <span class="at">color =</span> <span class="fu">as.factor</span>(h2))) <span class="sc">+</span></span>
+<span id="cb216-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-12" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>() <span class="sc">+</span></span>
+<span id="cb216-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-13" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb216-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-14" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb216-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-15" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">0</span>), <span class="at">minor_breaks =</span> params<span class="sc">$</span>p) <span class="sc">+</span></span>
+<span id="cb216-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-16" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> sparse, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
+<span id="cb216-17"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;GLM Z-Score&quot;</span>, <span class="at">color =</span> <span class="st">&quot;h2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb216-18"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-18" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>, <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">&quot;lines&quot;</span>))</span></code></pre></div>
 <p><img src="PGS_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Then you can use the best-performing model here.
 Note that, in practice, you should use only individuals from the validation set to compute the <code>$score</code> and then evaluate the best model for the individuals in the test set (unrelated to those in the validation set).</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb213-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-2" tabindex="-1"></a>best_beta_grid <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
-<span id="cb213-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb213-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-4" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(score)) <span class="sc">%&gt;%</span></span>
-<span id="cb213-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-5" tabindex="-1"></a>  <span class="fu">print</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb213-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-6" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb213-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-7" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span></span>
-<span id="cb213-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb213-8" tabindex="-1"></a>  beta_grid[, .]</span></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb217-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb217-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb217-2" tabindex="-1"></a>best_beta_grid <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
+<span id="cb217-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb217-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb217-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb217-4" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(score)) <span class="sc">%&gt;%</span></span>
+<span id="cb217-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb217-5" tabindex="-1"></a>  <span class="fu">print</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb217-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb217-6" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb217-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb217-7" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span></span>
+<span id="cb217-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb217-8" tabindex="-1"></a>  beta_grid[, .]</span></code></pre></div>
 <pre><code>#&gt;         p     h2 sparse  sparsity    score id
-#&gt; 1 0.00300 0.0528   TRUE 0.7669454 4.073435  7
-#&gt; 2 0.00530 0.0528   TRUE 0.6870214 4.066340  8
-#&gt; 3 0.00170 0.0528   TRUE 0.8329253 3.975578  6
-#&gt; 4 0.00940 0.0528   TRUE 0.5938975 3.954671  9
-#&gt; 5 0.00097 0.0528   TRUE 0.8802804 3.883444  5
-#&gt; 6 0.00018 0.0528   TRUE 0.9549558 3.853236  2
-#&gt; 7 0.00055 0.0528   TRUE 0.9140146 3.841741  4
-#&gt; 8 0.00010 0.0528   TRUE 0.9668240 3.834951  1
+#&gt; 1 0.00530 0.0528   TRUE 0.6834375 4.012018  8
+#&gt; 2 0.00170 0.0528   TRUE 0.8332289 3.986324  6
+#&gt; 3 0.00940 0.0528   TRUE 0.5947886 3.964953  9
+#&gt; 4 0.00300 0.0528   TRUE 0.7661131 3.872542  7
+#&gt; 5 0.00055 0.0528   TRUE 0.9138384 3.843291  4
+#&gt; 6 0.00018 0.0528   TRUE 0.9545544 3.840509  2
+#&gt; 7 0.00097 0.0528   TRUE 0.8796146 3.799297  5
+#&gt; 8 0.01700 0.0528   TRUE 0.5079709 3.793435 10
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 8 rows ]</code></pre>
 <div class="infobox question">
 <p>What is the best model with less than 5% of variants used?</p>
 </div>
 <p>To run LDpred2-auto, you can use:</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-1" tabindex="-1"></a><span class="co"># LDpred2-auto</span></span>
-<span id="cb215-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-2" tabindex="-1"></a>multi_auto <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_auto</span>(</span>
-<span id="cb215-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-3" tabindex="-1"></a>  corr, df_beta, <span class="at">h2_init =</span> ldsc_h2_est,</span>
-<span id="cb215-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-4" tabindex="-1"></a>  <span class="at">vec_p_init =</span> <span class="fu">seq_log</span>(<span class="fl">1e-4</span>, <span class="fl">0.2</span>, <span class="dv">30</span>),</span>
-<span id="cb215-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-5" tabindex="-1"></a>  <span class="at">burn_in =</span> <span class="dv">100</span>, <span class="at">num_iter =</span> <span class="dv">100</span>,         <span class="co"># TO REMOVE, for speed here</span></span>
-<span id="cb215-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-6" tabindex="-1"></a>  <span class="at">allow_jump_sign =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb215-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-7" tabindex="-1"></a>  <span class="at">use_MLE =</span> <span class="cn">FALSE</span>,         <span class="co"># USE `TRUE` ONLY FOR GWAS WITH LARGE N AND M</span></span>
-<span id="cb215-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-8" tabindex="-1"></a>  <span class="at">shrink_corr =</span> <span class="fl">0.95</span>,</span>
-<span id="cb215-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb215-9" tabindex="-1"></a>  <span class="at">ncores =</span> NCORES)</span></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-1" tabindex="-1"></a><span class="co"># LDpred2-auto</span></span>
+<span id="cb219-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-2" tabindex="-1"></a>multi_auto <span class="ot">&lt;-</span> <span class="fu">snp_ldpred2_auto</span>(</span>
+<span id="cb219-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-3" tabindex="-1"></a>  corr, df_beta, <span class="at">h2_init =</span> ldsc_h2_est,</span>
+<span id="cb219-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-4" tabindex="-1"></a>  <span class="at">vec_p_init =</span> <span class="fu">seq_log</span>(<span class="fl">1e-4</span>, <span class="fl">0.2</span>, <span class="dv">30</span>),</span>
+<span id="cb219-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-5" tabindex="-1"></a>  <span class="at">burn_in =</span> <span class="dv">100</span>, <span class="at">num_iter =</span> <span class="dv">100</span>,         <span class="co"># TO REMOVE, for speed here</span></span>
+<span id="cb219-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-6" tabindex="-1"></a>  <span class="at">allow_jump_sign =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb219-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-7" tabindex="-1"></a>  <span class="at">use_MLE =</span> <span class="cn">FALSE</span>,         <span class="co"># USE `TRUE` ONLY FOR GWAS WITH LARGE N AND M</span></span>
+<span id="cb219-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-8" tabindex="-1"></a>  <span class="at">shrink_corr =</span> <span class="fl">0.95</span>,</span>
+<span id="cb219-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb219-9" tabindex="-1"></a>  <span class="at">ncores =</span> NCORES)</span></code></pre></div>
 <p>Perform some quality control on the chains:</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-1" tabindex="-1"></a><span class="co"># `range` should be between 0 and 2</span></span>
-<span id="cb216-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb216-2" tabindex="-1"></a>(range <span class="ot">&lt;-</span> <span class="fu">sapply</span>(multi_auto, <span class="cf">function</span>(auto) <span class="fu">diff</span>(<span class="fu">range</span>(auto<span class="sc">$</span>corr_est))))</span></code></pre></div>
-<pre><code>#&gt;  [1] 0.05501942 0.05395435 0.05502665 0.05444818 0.05338656 0.05495704
-#&gt;  [7] 0.05428575 0.05441671 0.05248530 0.05457395 0.05414086 0.05406517
-#&gt; [13] 0.05616797 0.05549356 0.05468764 0.05344135 0.05422363 0.05296104
-#&gt; [19] 0.05428828 0.05436523 0.05520824 0.05451705 0.05447146 0.05331835
-#&gt; [25] 0.05409724 0.05603949 0.05339519 0.05075908 0.05531482 0.05438347</code></pre>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb218-1" tabindex="-1"></a>(keep <span class="ot">&lt;-</span> <span class="fu">which</span>(range <span class="sc">&gt;</span> (<span class="fl">0.95</span> <span class="sc">*</span> <span class="fu">quantile</span>(range, <span class="fl">0.95</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))))</span></code></pre></div>
-<pre><code>#&gt;  [1]  1  2  3  4  5  6  7  8 10 11 12 13 14 15 16 17 19 20 21 22 23 24 25
-#&gt; [24] 26 27 29 30</code></pre>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb220-1" tabindex="-1"></a><span class="co"># `range` should be between 0 and 2</span></span>
+<span id="cb220-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb220-2" tabindex="-1"></a>(range <span class="ot">&lt;-</span> <span class="fu">sapply</span>(multi_auto, <span class="cf">function</span>(auto) <span class="fu">diff</span>(<span class="fu">range</span>(auto<span class="sc">$</span>corr_est))))</span></code></pre></div>
+<pre><code>#&gt;  [1] 0.05388392 0.05396959 0.05600037 0.05312617 0.05555959 0.05251260
+#&gt;  [7] 0.05413056 0.05518345 0.05374788 0.05559386 0.05369287 0.05322742
+#&gt; [13] 0.05469718 0.05292386 0.05426795 0.05389058 0.05495694 0.05382318
+#&gt; [19] 0.05617970 0.05425156 0.05410856 0.05316122 0.05454997 0.05320646
+#&gt; [25] 0.05325838 0.05533852 0.05407215 0.05401787 0.05119137 0.05496764</code></pre>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb222-1" tabindex="-1"></a>(keep <span class="ot">&lt;-</span> <span class="fu">which</span>(range <span class="sc">&gt;</span> (<span class="fl">0.95</span> <span class="sc">*</span> <span class="fu">quantile</span>(range, <span class="fl">0.95</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))))</span></code></pre></div>
+<pre><code>#&gt;  [1]  1  2  3  4  5  7  8  9 10 11 12 13 15 16 17 18 19 20 21 22 23 24 25
+#&gt; [24] 26 27 28 30</code></pre>
 <p>To get the final effects / predictions, <strong>you should only use chains that pass this filtering</strong>:</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb220-1" tabindex="-1"></a>final_beta_auto <span class="ot">&lt;-</span></span>
-<span id="cb220-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb220-2" tabindex="-1"></a>  <span class="fu">rowMeans</span>(<span class="fu">sapply</span>(multi_auto[keep], <span class="cf">function</span>(auto) auto<span class="sc">$</span>beta_est))</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-1" tabindex="-1"></a>final_beta_auto <span class="ot">&lt;-</span></span>
+<span id="cb224-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-2" tabindex="-1"></a>  <span class="fu">rowMeans</span>(<span class="fu">sapply</span>(multi_auto[keep], <span class="cf">function</span>(auto) auto<span class="sc">$</span>beta_est))</span></code></pre></div>
 <p>We can finally test the final prediction</p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb221-1" tabindex="-1"></a>final_pred_auto <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, final_beta_auto,</span>
-<span id="cb221-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb221-2" tabindex="-1"></a>                               <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
-<span id="cb221-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb221-3" tabindex="-1"></a>                               <span class="at">ncores =</span> NCORES)</span>
-<span id="cb221-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb221-4" tabindex="-1"></a><span class="fu">AUCBoot</span>(final_pred_auto, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb225-1" tabindex="-1"></a>final_pred_auto <span class="ot">&lt;-</span> <span class="fu">big_prodVec</span>(G, final_beta_auto,</span>
+<span id="cb225-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb225-2" tabindex="-1"></a>                               <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb225-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb225-3" tabindex="-1"></a>                               <span class="at">ncores =</span> NCORES)</span>
+<span id="cb225-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb225-4" tabindex="-1"></a><span class="fu">AUCBoot</span>(final_pred_auto, obj.bigsnp<span class="sc">$</span>fam<span class="sc">$</span>CAD)</span></code></pre></div>
 <pre><code>#&gt;       Mean       2.5%      97.5%         Sd 
-#&gt; 0.56456154 0.53263432 0.59690319 0.01625989</code></pre>
+#&gt; 0.56385328 0.53193326 0.59571502 0.01633664</code></pre>
 </details>
 </div>
 <div id="lassosum2-grid-of-models" class="section level3 hasAnchor" number="8.5.3">
@@ -755,27 +755,27 @@ Note that parameter ‘s’ from lassosum has been replaced by a new parameter �
 <summary>
 Click to see solution
 </summary>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb223-1" tabindex="-1"></a>beta_lassosum2 <span class="ot">&lt;-</span> <span class="fu">snp_lassosum2</span>(</span>
-<span id="cb223-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb223-2" tabindex="-1"></a>  corr, df_beta, <span class="at">ncores =</span> NCORES,</span>
-<span id="cb223-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb223-3" tabindex="-1"></a>  <span class="at">nlambda =</span> <span class="dv">10</span>, <span class="at">maxiter =</span> <span class="dv">50</span>)      <span class="co"># TO REMOVE, for speed here</span></span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-1" tabindex="-1"></a>beta_lassosum2 <span class="ot">&lt;-</span> <span class="fu">snp_lassosum2</span>(</span>
+<span id="cb227-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-2" tabindex="-1"></a>  corr, df_beta, <span class="at">ncores =</span> NCORES,</span>
+<span id="cb227-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-3" tabindex="-1"></a>  <span class="at">nlambda =</span> <span class="dv">10</span>, <span class="at">maxiter =</span> <span class="dv">50</span>)      <span class="co"># TO REMOVE, for speed here</span></span></code></pre></div>
 <p>As with LDpred2-grid, we can compute the corresponding PGS for all these models, and visualize their performance:</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-1" tabindex="-1"></a>pred_grid2 <span class="ot">&lt;-</span> <span class="fu">big_prodMat</span>(G, beta_lassosum2, <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
-<span id="cb224-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-2" tabindex="-1"></a>                          <span class="at">ncores =</span> NCORES)</span>
-<span id="cb224-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-3" tabindex="-1"></a></span>
-<span id="cb224-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-4" tabindex="-1"></a>params2 <span class="ot">&lt;-</span> <span class="fu">attr</span>(beta_lassosum2, <span class="st">&quot;grid_param&quot;</span>)</span>
-<span id="cb224-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-5" tabindex="-1"></a>params2<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_grid2, <span class="dv">2</span>, <span class="cf">function</span>(.x) {</span>
-<span id="cb224-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-6" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(.x))) <span class="fu">return</span>(<span class="cn">NA</span>)  <span class="co"># models that diverged substantially</span></span>
-<span id="cb224-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-7" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">glm</span>(  <span class="co"># simply use `lm()` for quantitative traits</span></span>
-<span id="cb224-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-8" tabindex="-1"></a>    CAD <span class="sc">~</span> .x <span class="sc">+</span> sex <span class="sc">+</span> age, <span class="at">data =</span> obj.bigsnp<span class="sc">$</span>fam, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
-<span id="cb224-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-9" tabindex="-1"></a>  ))<span class="sc">$</span>coef[<span class="st">&quot;.x&quot;</span>, <span class="dv">3</span>]</span>
-<span id="cb224-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-10" tabindex="-1"></a>})</span>
-<span id="cb224-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-11" tabindex="-1"></a></span>
-<span id="cb224-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-12" tabindex="-1"></a><span class="fu">ggplot</span>(params2, <span class="fu">aes</span>(<span class="at">x =</span> lambda, <span class="at">y =</span> score, <span class="at">color =</span> <span class="fu">as.factor</span>(delta))) <span class="sc">+</span></span>
-<span id="cb224-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-13" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>() <span class="sc">+</span></span>
-<span id="cb224-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-14" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb224-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-15" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb224-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-16" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb224-17"><a href="polygenic-risk-scores-pgs-or-prs.html#cb224-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;GLM Z-Score&quot;</span>, <span class="at">color =</span> <span class="st">&quot;delta&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-1" tabindex="-1"></a>pred_grid2 <span class="ot">&lt;-</span> <span class="fu">big_prodMat</span>(G, beta_lassosum2, <span class="at">ind.col =</span> df_beta[[<span class="st">&quot;_NUM_ID_&quot;</span>]],</span>
+<span id="cb228-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-2" tabindex="-1"></a>                          <span class="at">ncores =</span> NCORES)</span>
+<span id="cb228-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-3" tabindex="-1"></a></span>
+<span id="cb228-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-4" tabindex="-1"></a>params2 <span class="ot">&lt;-</span> <span class="fu">attr</span>(beta_lassosum2, <span class="st">&quot;grid_param&quot;</span>)</span>
+<span id="cb228-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-5" tabindex="-1"></a>params2<span class="sc">$</span>score <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_grid2, <span class="dv">2</span>, <span class="cf">function</span>(.x) {</span>
+<span id="cb228-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-6" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(.x))) <span class="fu">return</span>(<span class="cn">NA</span>)  <span class="co"># models that diverged substantially</span></span>
+<span id="cb228-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-7" tabindex="-1"></a>  <span class="fu">summary</span>(<span class="fu">glm</span>(  <span class="co"># simply use `lm()` for quantitative traits</span></span>
+<span id="cb228-8"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-8" tabindex="-1"></a>    CAD <span class="sc">~</span> .x <span class="sc">+</span> sex <span class="sc">+</span> age, <span class="at">data =</span> obj.bigsnp<span class="sc">$</span>fam, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
+<span id="cb228-9"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-9" tabindex="-1"></a>  ))<span class="sc">$</span>coef[<span class="st">&quot;.x&quot;</span>, <span class="dv">3</span>]</span>
+<span id="cb228-10"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-10" tabindex="-1"></a>})</span>
+<span id="cb228-11"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-11" tabindex="-1"></a></span>
+<span id="cb228-12"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-12" tabindex="-1"></a><span class="fu">ggplot</span>(params2, <span class="fu">aes</span>(<span class="at">x =</span> lambda, <span class="at">y =</span> score, <span class="at">color =</span> <span class="fu">as.factor</span>(delta))) <span class="sc">+</span></span>
+<span id="cb228-13"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-13" tabindex="-1"></a>  <span class="fu">theme_bigstatsr</span>() <span class="sc">+</span></span>
+<span id="cb228-14"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-14" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb228-15"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-15" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb228-16"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-16" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb228-17"><a href="polygenic-risk-scores-pgs-or-prs.html#cb228-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;GLM Z-Score&quot;</span>, <span class="at">color =</span> <span class="st">&quot;delta&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; Warning: Removed 4 rows containing missing values or values outside the scale range
 #&gt; (`geom_point()`).</code></pre>
 <pre><code>#&gt; Warning: Removed 4 rows containing missing values or values outside the scale range
@@ -784,25 +784,25 @@ Click to see solution
 <div class="infobox question">
 <p>When are large <code>delta</code> values useful?</p>
 </div>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-1" tabindex="-1"></a>best_grid_lassosum2 <span class="ot">&lt;-</span> params2 <span class="sc">%&gt;%</span></span>
-<span id="cb227-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb227-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-3" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(score)) <span class="sc">%&gt;%</span></span>
-<span id="cb227-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-4" tabindex="-1"></a>  <span class="fu">print</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb227-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-5" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb227-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-6" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span></span>
-<span id="cb227-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb227-7" tabindex="-1"></a>  beta_lassosum2[, .]</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb231-1" tabindex="-1"></a>best_grid_lassosum2 <span class="ot">&lt;-</span> params2 <span class="sc">%&gt;%</span></span>
+<span id="cb231-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb231-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb231-3"><a href="polygenic-risk-scores-pgs-or-prs.html#cb231-3" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(score)) <span class="sc">%&gt;%</span></span>
+<span id="cb231-4"><a href="polygenic-risk-scores-pgs-or-prs.html#cb231-4" tabindex="-1"></a>  <span class="fu">print</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb231-5"><a href="polygenic-risk-scores-pgs-or-prs.html#cb231-5" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb231-6"><a href="polygenic-risk-scores-pgs-or-prs.html#cb231-6" tabindex="-1"></a>  <span class="fu">pull</span>(id) <span class="sc">%&gt;%</span></span>
+<span id="cb231-7"><a href="polygenic-risk-scores-pgs-or-prs.html#cb231-7" tabindex="-1"></a>  beta_lassosum2[, .]</span></code></pre></div>
 <pre><code>#&gt;       lambda delta num_iter time  sparsity    score id
-#&gt; 1 0.00996541 0.001       51 0.17 0.9937624 4.112203  3
-#&gt; 2 0.00996541 0.010       51 0.18 0.9936938 4.106545 13
-#&gt; 3 0.00996541 0.100       45 0.17 0.9930475 4.053764 23
-#&gt; 4 0.01579411 0.001       51 0.08 0.9997062 3.977849  2
-#&gt; 5 0.00996541 1.000       14 0.04 0.9902959 3.976200 33
+#&gt; 1 0.00996541 0.001       51 0.16 0.9937624 4.112203  3
+#&gt; 2 0.00996541 0.010       51 0.17 0.9936938 4.106545 13
+#&gt; 3 0.00996541 0.100       45 0.18 0.9930475 4.053764 23
+#&gt; 4 0.01579411 0.001       51 0.13 0.9997062 3.977849  2
+#&gt; 5 0.00996541 1.000       14 0.08 0.9902959 3.976200 33
 #&gt; 6 0.01579411 0.010       51 0.13 0.9997062 3.973049 12
-#&gt; 7 0.01579411 0.100       35 0.06 0.9996181 3.900467 22
+#&gt; 7 0.01579411 0.100       35 0.08 0.9996181 3.900467 22
 #&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 33 rows ]</code></pre>
 <p>We can choose the best-overall model from both LDpred2-grid and lassosum2:</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb229-1" tabindex="-1"></a>best_grid_overall <span class="ot">&lt;-</span> <span class="st">`</span><span class="at">if</span><span class="st">`</span>(<span class="fu">max</span>(params2<span class="sc">$</span>score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">&gt;</span> <span class="fu">max</span>(params<span class="sc">$</span>score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb229-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb229-2" tabindex="-1"></a>                          best_grid_lassosum2, best_beta_grid)</span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="polygenic-risk-scores-pgs-or-prs.html#cb233-1" tabindex="-1"></a>best_grid_overall <span class="ot">&lt;-</span> <span class="st">`</span><span class="at">if</span><span class="st">`</span>(<span class="fu">max</span>(params2<span class="sc">$</span>score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">&gt;</span> <span class="fu">max</span>(params<span class="sc">$</span>score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb233-2"><a href="polygenic-risk-scores-pgs-or-prs.html#cb233-2" tabindex="-1"></a>                          best_grid_lassosum2, best_beta_grid)</span></code></pre></div>
 </details>
 
 </div>

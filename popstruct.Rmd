@@ -21,7 +21,7 @@ In this formulation, the principal component (PC) scores are given by $U D = G V
 PCA on the genotype matrix can be used to capture population structure.
 However, PCA can actually capture different kinds of structure [@prive2020efficient]:
 
-- population structure (what we want),
+- population structure (what we want), e.g. to use PCs as covariates in GWAS to correct for population structure [@price2006principal],
 
 - Linkage Disequilibrium (LD) structure, when there are too many correlated variants (e.g. within long-range LD regions) and not enough population structure (see [this vignette](https://privefl.github.io/bigsnpr/articles/how-to-PCA.html)),
 
@@ -46,6 +46,7 @@ Let's reuse the data prepared in \@ref(exo-preprocessing).
 
 ```{r, warning=FALSE}
 library(ggplot2)
+source("https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R")
 library(bigsnpr)
 
 bigsnp <- snp_attach("tmp-data/GWAS_data_sorted_QC.rds")
@@ -67,8 +68,10 @@ svd <- runonce::save_run(
   big_randomSVD(G, fun.scaling = big_scale(), ncores = NCORES),
   file = "tmp-data/svd_with_ld.rds")
 plot(svd)  # scree plot -> singular values
-plot(svd, type = "scores")
+plot(svd, type = "scores")  # individuals in the PCA space
 plot(svd, type = "scores", scores = 3:4)
+# effects of variants along the genome 
+# (x-axis: variant index; y-axis: effect of variant in PC)
 plot(svd, type = "loadings", loadings = 1:10, coef = 0.4)
 ```
 
@@ -86,6 +89,14 @@ plot(svd, type = "scores", scores = 3:4) +
 
 PC4 is basically capturing variation in a block of LD (the peak you see for loadings of PC4) and is then very correlated to genetic variants in this region (especially `the_max`).
 
+```{r, out.width="60%"}
+PC4 <- predict(svd)[, 4]
+cor(PC4, G[, the_max])
+qplot(PC4, G[, the_max], alpha = I(0.1)) + 
+  theme_bw(14) + geom_smooth(method = "lm")
+```
+
+
 </details>
 
 ***
@@ -101,6 +112,7 @@ knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figu
 ```
 
 **Therefore I recommend using only the first 16 PCs provided by the UK Biobank [@prive2020efficient].** If you want to compute PCs yourself, I recommend using the autoSVD functions I developed that perform some pruning followed by an *automatic* detection and removal of long-range LD regions.
+In case of the UK Biobank, you would get 16 PCs when recomputing PCs yourself on the full dataset.
 
 
 ## Best practices for PCA of genetic data
@@ -179,10 +191,7 @@ ldist <- log(bigutilsr::dist_ogk(PC[, 1:6]))
 hist(ldist, "FD"); abline(v = 4.5, col = "red")
 ```
 
-```{r, message=FALSE}
-library(ggplot2)
-source("https://raw.githubusercontent.com/privefl/paper4-bedpca/master/code/plot_grid2.R")
-
+```{r}
 plot_grid2(plotlist = lapply(1:4, function(k) {
   k1 <- 2 * k - 1
   k2 <- 2 * k
@@ -294,7 +303,7 @@ Then, assign each individual to the closest `group`, if close enough (using `thr
 THR <- 0.002  # you can adjust this threshold
 thr_sq_dist <- max(dist(all_centers)^2) * THR / 0.16
 
-# gather some groups
+# combine some close groups
 group <- colnames(all_freq)[-(1:5)]
 group[group %in% c("Scandinavia", "United Kingdom", "Ireland")]   <- "Europe (North West)"
 group[group %in% c("Europe (South East)", "Europe (North East)")] <- "Europe (East)"
