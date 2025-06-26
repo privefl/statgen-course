@@ -158,7 +158,9 @@ knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figu
 ---
 
 :::: {.infobox .exo}
-Use the following GWAS results for HDL and allele frequencies to estimate standard deviations and compare both estimates. How can you estimate `sd(y)`?
+Use the following GWAS results for HDL and allele frequencies to estimate standard deviations and compare both estimates. 
+
+How can you estimate `sd(y)`?
 ::::
 
 ```{r, message=FALSE}
@@ -185,7 +187,9 @@ sd_y <- with(gwas, quantile(sqrt(0.5 * (N * std.err^2 + estim^2)), 0.01))
 c(sd(y[ind.gwas]), sd_y)
 sd_ss <- sd_y / with(gwas, sqrt(N * std.err^2 + estim^2))
 sd_af <- sqrt(2 * af * (1 - af))
+```
 
+```{r, warning=FALSE}
 library(ggplot2)
 ggplot(dplyr::slice_sample(data.frame(sd_af, sd_ss), n = 100e3)) +
   geom_point(aes(sd_af, sd_ss), alpha = 0.5) +
@@ -223,6 +227,8 @@ In \@ref(ancestry), we've seen how to infer ancestry for individual-level data u
 
 :::: {.infobox .exo}
 Reuse some of the code from \@ref(ancestry) (and/or from the tutorial) and allele frequencies (that you should compute) to get the ancestry composition of this dataset using function `snp_ancestry_summary()`.
+
+What do you need to do for allele frequencies after matching variants?
 ::::
 
 <details>
@@ -233,7 +239,6 @@ library(bigsnpr)
 obj.bed <- bed("tmp-data/GWAS_data_sorted_QC.bed")
 NCORES <- nb_cores()
 ```
-
 
 ```{r}
 all_freq <- bigreadr::fread2(

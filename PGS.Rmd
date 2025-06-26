@@ -7,7 +7,7 @@ editor_options:
 # Polygenic (risk) scores (PGS, or PRS)
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("scalability", "PLR", "substack", "suboptimal", "PRS", "kb" , "Rightarrow", "MAF", "PRSice", "SBayesR", "SBayesRC", "allelic", "chr", "HapMap", "pos", "se")
+WORDS_TO_IGNORE <- c("scalability", "PLR", "substack", "suboptimal", "PRS", "kb" , "Rightarrow", "MAF", "PRSice", "SBayesR", "SBayesRC", "allelic", "chr", "HapMap", "pos", "se", "monogenic")
 source("knitr-options.R")
 source("spelling-check.R")
 ```
@@ -23,8 +23,38 @@ Improving PGS methods is the main topic of my research work. These are the main 
 - lassosum2, with the same input data as LDpred2 (@prive2021identifying + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html#lassosum2-grid-of-models))
 
 :::: {.infobox .info}
-You can now use LDpred2-auto for inference of e.g. the SNP-heritability and polygenicity (@prive2022inferring + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html#inference-with-ldpred2-auto)).
+You can now use LDpred2-auto for inference of e.g. the SNP-heritability and polygenicity, i.e. the proportion of phenotypic variance that can be explained by the set of genetic variants considered and the proportion of causal variants in this set (@prive2022inferring + [tutorial](https://privefl.github.io/bigsnpr/articles/LDpred2.html#inference-with-ldpred2-auto)).
 ::::
+
+
+## One use of PRS
+
+For **common complex diseases** such as heart diseases, cancers, diabetes,
+
+- many **common genetic variants** are causal, but with a small effect    
+(they do have an impact on the probability of developing the disease, but often small)
+    
+    $\Rightarrow$ a common causal variant is not useful as a standalone risk factor
+
+    in contrast to rare mutations causing rare monogenic diseases
+
+With **polygenic risk scores (PRS)**,
+
+- many genetic variants are aggregated in a joint predictive model
+
+- by aggregating many small effects, the PRS can have a large effect 
+
+    $\Rightarrow$ the PRS is useful as a risk factor
+
+<br>
+
+Then PRS can be used in public health to improve disease risk stratification beyond traditional risk factors (age, smoking, pollution, low SES, diet, physical inactivity, family history, low-frequency large-effect genetic mutations, etc).
+
+PRS are complementary to these risk factors and improve prediction accuracy—for example, by identifying more individuals at high risk for a given disease. The clinical validity of PRS has been shown in many studies, but their clinical utility has been demonstrated in a clinical trial conducted in the UK for cardiovascular disease [@fuat2024polygenic].
+
+```{r, echo=FALSE, out.width="78%"}
+knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/PRS-risk2.png?raw=true")
+```
 
 
 ## PGS from individual-level data
@@ -103,7 +133,7 @@ My contributions in @prive2019making:
 
 - going further by *stacking* with a (penalized) linear combination of all C+T models (instead of just choosing the best model) $\Rightarrow$ *SCT* (Stacked C+T)
 
-This can lead to achieving much better predictive performance compared to some standard use of C+T. Over the past years, stacking has become a very popular methodology to improve PGS predictive performance, sometimes by combining many models from multiple methods. 
+This can lead to achieving much better predictive performance compared to some standard use of C+T (tuning $p_T$ only). Over the past years, stacking has become a very popular methodology to improve PGS predictive performance, sometimes by combining many models from multiple methods. 
 
 
 ### Other methods
@@ -130,7 +160,7 @@ My opinion on these methods:
 
 - PRS-CS uses a lot of regularization internally, which makes it very robust, but sometimes at the expense of lower predictive ability; it is also usually slower than the other methods mentioned before
 
-```{r, echo=FALSE, out.width="75%", fig.cap="Comparison of PGS methods from the LDpred2 paper. Since, developments have been made to ensure even better predictive performance of LDpred2 models."}
+```{r, echo=FALSE, out.width="75%", fig.cap="Comparison of PGS methods from @prive2020ldpred2. Since then, developments have been made to ensure even better predictive performance of LDpred2 models."}
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/ldpred2-comparison.jpeg?raw=true")
 ```
 

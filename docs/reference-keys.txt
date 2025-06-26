@@ -2,9 +2,9 @@ fig:overview-misspec
 eq:sdlin
 eq:sdlog
 eq:sdaf
-fig:unnamed-chunk-2
-fig:unnamed-chunk-5
+fig:unnamed-chunk-3
 fig:unnamed-chunk-6
+fig:unnamed-chunk-7
 course-information
 prerequisites
 schedule-of-smartbiomed-summer-school
@@ -46,6 +46,7 @@ linkage-disequilibrium-ld
 derivation-of-an-ld-matrix
 subtleties-about-ld-matrices
 polygenic-risk-scores-pgs-or-prs
+one-use-of-prs
 pgs-from-individual-level-data
 pgs-from-gwas-summary-statistics
 clumping-thresholding-ct-or-pt-restricting-predictors
