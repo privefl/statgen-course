@@ -6,6 +6,8 @@ editor_options:
 
 # Some other analyses
 
+Read more in [this PowerPoint presentation](other-files/Other_Post_GWAS_Analyses_SMARTBiomed 2025.pptx).
+
 Here we just mention some other types of analyses that haven't really been covered in the course, but that are useful to know that they exist. We simply mention a few tools; you can find a list with more [here](https://github.com/MichelNivard/awesome-complex-trait-genetics).
 
 - **Estimation of SNP-based heritability**: The proportion of phenotypic variance in a trait that can be explained by genetic variation captured by measured SNPs. A simple way to estimate it is with [LD Score regression (LDSC)](https://github.com/bulik/ldsc/wiki/Heritability-and-Genetic-Correlation) using GWAS summary statistics [@bulik2015ld]. R packages bigsnpr and GenomicSEM also provide some implementation of LDSC. There exist many other tools to estimate SNP-heritability, such as LDpred2-auto (mentioned before).

@@ -552,7 +552,6 @@ AUCBoot(final_pred_auto, obj.bigsnp$fam$CAD)
 ### lassosum2: grid of models
 
 lassosum2 is a re-implementation of the lassosum model [@mak2017polygenic] that now uses the exact same input parameters as LDpred2 (`corr` and `df_beta`). It can therefore be run next to LDpred2 and the best model can be chosen using the validation set.
-Note that parameter 's' from lassosum has been replaced by a new parameter 'delta' in lassosum2 to better reflect that the lassosum model also uses L2-regularization (therefore, elastic-net regularization).
 
 :::: {.infobox .exo}
 Run lassosum2 and test its predictive performance for `obj.bigsnp$fam$CAD`.

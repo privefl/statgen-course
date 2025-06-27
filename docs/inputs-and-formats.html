@@ -23,7 +23,7 @@
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
 
-<meta name="date" content="2025-06-26" />
+<meta name="date" content="2025-06-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -344,7 +344,7 @@ What do you get? Use <code>snp_attach()</code> to get the data into R and explor
 Click to see solution
 </summary>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="inputs-and-formats.html#cb6-1" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBed2</span>(bedfile, <span class="at">backingfile =</span> <span class="fu">tempfile</span>()))  <span class="co"># get path to new file</span></span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmpq0Elet\\file63a830542fff.rds&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpolG4d7\\file22085275bde.rds&quot;</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="inputs-and-formats.html#cb8-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)  <span class="co"># can then read in the bigSNP object in any R session</span></span>
 <span id="cb8-2"><a href="inputs-and-formats.html#cb8-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 517 rows and 4542 columns.</code></pre>
@@ -443,7 +443,7 @@ Click to see solution
 <pre><code>#&gt;  [1] &quot;01_1001_A_G&quot; &quot;01_2000_A_G&quot; &quot;01_2001_A_G&quot; &quot;01_3000_A_G&quot; &quot;01_3001_A_G&quot;
 #&gt;  [6] &quot;01_4000_A_G&quot; &quot;01_4001_A_G&quot; &quot;01_5000_A_G&quot; &quot;01_5001_A_G&quot; &quot;01_6000_A_G&quot;</code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="inputs-and-formats.html#cb27-1" tabindex="-1"></a>(rds <span class="ot">&lt;-</span> <span class="fu">snp_readBGEN</span>(bgen, <span class="at">backingfile =</span> <span class="fu">tempfile</span>(), <span class="at">list_snp_id =</span> <span class="fu">list</span>(snp_id)))</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\Rtmpq0Elet\\file63a83b51174a.rds&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;C:\\Users\\au639593\\AppData\\Local\\Temp\\RtmpolG4d7\\file22085d4e3bc0.rds&quot;</code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="inputs-and-formats.html#cb29-1" tabindex="-1"></a>bigsnp <span class="ot">&lt;-</span> <span class="fu">snp_attach</span>(rds)</span>
 <span id="cb29-2"><a href="inputs-and-formats.html#cb29-2" tabindex="-1"></a>(G <span class="ot">&lt;-</span> bigsnp<span class="sc">$</span>genotypes)</span></code></pre></div>
 <pre><code>#&gt; A Filebacked Big Matrix of type &#39;code 256&#39; with 500 rows and 10 columns.</code></pre>
