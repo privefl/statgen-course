@@ -10,15 +10,15 @@
 
   <meta property="og:title" content="Chapter 3 Preprocessing | Statistical Human Genetics course using R" />
   <meta property="og:type" content="book" />
-  
-  
+
+
   <meta name="github-repo" content="privefl/statgen-course" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 3 Preprocessing | Statistical Human Genetics course using R" />
-  
-  
-  
+
+
+
 
 <meta name="author" content="Florian Privé &amp; Isabelle McGrath" />
 
@@ -28,8 +28,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
+
+
 <link rel="prev" href="inputs-and-formats.html"/>
 <link rel="next" href="population-structure.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -120,7 +120,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
-  
+
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
 <style type="text/css">
@@ -309,7 +309,7 @@ div.csl-indent {
 <h2><span class="header-section-number">3.2</span> Imputation<a href="preprocessing.html#imputation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Note that most functions from bigstatsr and bigsnpr do NOT handle missing values, except for some of the <code>bed_</code> functions.</p>
 <p>Simple imputation (e.g. by the mean) of a ‘double’ FBM can be performed by blocks using e.g. the code from <a href="https://privefl.github.io/bigstatsr/articles/big-apply.html">this vignette</a>.</p>
-<p>In bigsnpr, to perform simple imputation of genotyped data, you can use <code>snp_fastImputeSimple()</code>. You can also use the (much) slower <code>snp_fastImpute()</code> that uses XGBoost models to impute genotyped data <span class="citation">(<a href="#ref-prive2017efficient">Privé et al., 2018</a>)</span>.
+<p>In bigsnpr, to perform simple imputation of genotyped data (of <em>typed</em> variants), you can use <code>snp_fastImputeSimple()</code>. You can also use the (much) slower <code>snp_fastImpute()</code> that uses XGBoost models to impute genotyped data <span class="citation">(<a href="#ref-prive2017efficient">Privé et al., 2018</a>)</span>.
 If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as shown in <a href="inputs-and-formats.html#getting-bigsnp">2.5</a>.</p>
 </div>
 <div id="exo-preprocessing" class="section level2 hasAnchor" number="3.3">
@@ -334,7 +334,7 @@ If you have access to imputed data from large external reference panels, it is e
 #&gt;   --bfile tmp-data/GWAS_data
 #&gt;   --make-bed
 #&gt;   --out tmp-data/GWAS_data_sorted
-#&gt; 
+#&gt;
 #&gt; 32574 MB RAM detected; reserving 16287 MB for main workspace.
 #&gt; 500000 variants loaded from .bim file.
 #&gt; 1401 people (937 males, 464 females) loaded from .fam.
@@ -373,7 +373,7 @@ Click to see solution
 #&gt;   --make-bed
 #&gt;   --mind 0.1
 #&gt;   --out tmp-data/GWAS_data_sorted_QC
-#&gt; 
+#&gt;
 #&gt; 32574 MB RAM detected; reserving 16287 MB for main workspace.
 #&gt; 500000 variants loaded from .bim file.
 #&gt; 1401 people (937 males, 464 females) loaded from .fam.

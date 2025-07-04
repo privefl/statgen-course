@@ -44,7 +44,7 @@ Note that most functions from bigstatsr and bigsnpr do NOT handle missing values
 
 Simple imputation (e.g. by the mean) of a 'double' FBM can be performed by blocks using e.g. the code from [this vignette](https://privefl.github.io/bigstatsr/articles/big-apply.html).
 
-In bigsnpr, to perform simple imputation of genotyped data, you can use `snp_fastImputeSimple()`. You can also use the (much) slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient].
+In bigsnpr, to perform simple imputation of genotyped data (of *typed* variants), you can use `snp_fastImputeSimple()`. You can also use the (much) slower `snp_fastImpute()` that uses XGBoost models to impute genotyped data [@prive2017efficient].
 If you have access to imputed data from large external reference panels, it is even better, and you can read this data as dosages in a bigSNP as shown in \@ref(getting-bigsnp).
 
 
