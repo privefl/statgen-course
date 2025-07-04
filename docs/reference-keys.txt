@@ -3,6 +3,7 @@ eq:sdlin
 eq:sdlog
 eq:sdaf
 fig:unnamed-chunk-3
+fig:unnamed-chunk-4
 fig:unnamed-chunk-6
 fig:unnamed-chunk-7
 course-information
@@ -12,6 +13,7 @@ main-author
 contact
 license
 inputs-and-formats
+imputed-data
 formats-of-genetic-data
 main-motivation-for-developing-r-packages-bigstatsr-and-bigsnpr
 the-bigsnp-format-from-bigsnpr
@@ -23,6 +25,7 @@ split-parapply-combine-strategy
 similar-accessor-as-rcpp-matrices
 some-summary-functions-are-already-implemented
 exercise
+matching-genetic-variants-between-datasets
 preprocessing
 PLINK
 imputation

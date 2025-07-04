@@ -160,7 +160,7 @@ My opinion on these methods:
 
 - PRS-CS uses a lot of regularization internally, which makes it very robust, but sometimes at the expense of lower predictive ability; it is also usually slower than the other methods mentioned before
 
-```{r, echo=FALSE, out.width="75%", fig.cap="Comparison of PGS methods from @prive2020ldpred2. Since then, developments have been made to ensure even better predictive performance of LDpred2 models."}
+```{r, echo=FALSE, out.width="75%", fig.cap="Comparison of PGS methods from @prive2020ldpred2. External comparisons have also been performed [@kulm2020systematic; @pain2021evaluation]. Since then, developments have been made to ensure even better predictive performance of LDpred2 models."}
 knitr::include_graphics("https://github.com/privefl/thesis-docs/blob/master/figures/ldpred2-comparison.jpeg?raw=true")
 ```
 

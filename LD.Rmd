@@ -14,7 +14,7 @@ source("spelling-check.R")
 
 Most methods that rely on GWAS summary statistics also rely on an LD matrix (correlation matrix between genetic variants). It is used in algorithms to transform GWAS marginal (i.e. independent) effects into joint effects. 
 
-Indeed, if we take the simple example of a linear regression $y = X \beta + \epsilon$, the joint effects are estimated by $\hat\beta = (X^T X)^{-1} X^T y$, where $X^T y$ are the marginal effects and $X^T X$ is the covariance matrix (up to some scaling). Both $X^T y$ and $X^T X$ are summary statistics.
+Indeed, if we take the simple example of a multiple linear regression $y = X \beta + \epsilon$, the joint effects are estimated by $\hat\beta = (X^T X)^{-1} X^T y$, where $X^T y$ are the marginal effects and $X^T X$ is the covariance matrix (up to some scaling). Both $X^T y$ and $X^T X$ are summary statistics.
 
 The GWAS data from which the GWAS summary statistics were derived is often not accessible, so that the LD matrix is usually derived from another dataset. 
 **This reference dataset needs to be as close as possible as the GWAS data (in terms of genetic ancestry) to provide a close estimation of LD.**

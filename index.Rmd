@@ -22,8 +22,6 @@ source("knitr-options.R")
 source("spelling-check.R")
 ```
 
-**REMIND ME TO RECORD**
-
 ## Prerequisites
 
 - Have at least a basic knowledge of R,

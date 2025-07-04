@@ -7,7 +7,7 @@ editor_options:
 # Inputs and formats
 
 ```{r setup, include=FALSE}
-WORDS_TO_IGNORE <- c("nd", "epigenetic", "omics", "reimplementing", "transcriptomic", "bgen", "bgi", "Rcpp")
+WORDS_TO_IGNORE <- c("nd", "epigenetic", "omics", "reimplementing", "transcriptomic", "bgen", "bgi", "Rcpp", "HRC", "Minimac", "polymorphism", "SHAPEIT", "TOPMed", "untyped", "VCF")
 source("knitr-options.R")
 source("spelling-check.R")
 rm(X); gc(); file.remove(c("tmp-data/test.bk", "tmp-data/test.rds"))
@@ -15,11 +15,18 @@ rm(X); gc(); file.remove(c("tmp-data/test.bk", "tmp-data/test.rds"))
 
 Genetic data is represented as sequences of pairs of alleles (one from both parents). In the following figure, the reference alleles are shown in black, and the alternative alleles—arising from mutations—are shown in blue. 
 Here, three DNA positions show alternative alleles; these are called genetic variants. And we refer to them as common variants because the alternative allele is frequent enough in the population.
+A particularly common type of genetic variant is the single nucleotide polymorphism (SNP), which involves a substitution of a single base at a specific genomic position.
 We can encode this data into a numeric genotype matrix G by counting the number of alternative alleles per individual at each variant.
 
 ```{r, echo=FALSE, out.width="65%"}
 knitr::include_graphics("images/overview_geneticvariants.png")
 ```
+
+## Imputed data
+
+Genotype imputation is a widely used statistical technique that infers *untyped* genetic variants (possibly, dozens of millions) by leveraging known haplotype structures from external reference panels [@marchini2010genotype]. It increases variant density, improves power for association testing, and facilitates meta-analysis across studies genotyped on different arrays. Imputation is typically performed after genotype quality control and phasing, using reference panels such as the 1000 Genomes Project, the Haplotype Reference Consortium (HRC), or TOPMed, depending on the ancestral composition and genotyping density of the study cohort.
+
+Several online imputation services are available, notably the Michigan Imputation Server [@das2016next] and the Sanger Imputation Service, which provide streamlined pipelines for phasing (e.g., with SHAPEIT or Eagle) and imputation (e.g., using Minimac or IMPUTE). These platforms accept standard VCF inputs, automatically match strand orientation, and return imputed genotypes with associated quality metrics such as the INFO score. It is crucial to select a reference panel that closely matches the ancestry of the study population, as mismatches can reduce imputation accuracy and introduce bias in downstream analyses.
 
 ## Formats of genetic data
 
@@ -320,3 +327,43 @@ bedfile <- "tmp-data/GWAS_data.bed"
 :::: {.infobox .exo}
 Map this data with `bed()` and start exploring it a bit, e.g. what summaries you could compute, what functions you could use.
 ::::
+
+
+## Matching genetic variants between datasets
+
+This is some operation we will have to perform several times in this course.
+
+When matching genetic variants across datasets—such as between GWAS summary statistics and a reference panel—it is essential to ensure that alleles are correctly aligned. Two common issues can lead to misalignment:
+
+- Strand flips occur when alleles are reported on opposite DNA strands. For example, a SNP recorded as A/G in one dataset may appear as T/C in another. These are complements (A↔T, G↔C), and although they refer to the same variant, their labels differ due to strand orientation. If strand flips are not corrected, allele matching will fail.
+
+- Allele reversals happen when the effect and non-effect (or reference and alternate) alleles are swapped. For instance, if one dataset reports A/G and another G/A, the alleles are technically the same, but the interpretation of the effect direction (e.g., positive or negative beta) will be reversed. This can introduce sign errors in association results or polygenic scores.
+
+These issues are especially problematic for palindromic SNPs such as A/T or C/G, where the alleles are self-complementary. In such cases, even checking for strand flips or reversals is insufficient without additional information, such as allele frequencies, since both datasets may report A/T with no way to determine whether they refer to the same strand or orientation.
+
+:::: {.infobox .exo}
+Look carefully at the following results from `snp_match()` to understand what is going on.
+::::
+
+```{r}
+sumstats <- data.frame(
+  chr = 1,
+  pos = c(86303, 86331, 162463, 752566, 755890, 758144),
+  a0 = c("T", "G", "C", "A", "T", "G"),
+  a1 = c("G", "A", "T", "G", "A", "A"),
+  beta = c(-1.868, 0.250, -0.671, 2.112, 0.239, 1.272),
+  p = c(0.860, 0.346, 0.900, 0.456, 0.776, 0.383)
+)
+
+info_snp <- data.frame(
+  id = c("rs2949417", "rs115209712", "rs143399298", "rs3094315", "rs3115858"),
+  chr = 1,
+  pos = c(86303, 86331, 162463, 752566, 755890),
+  a0 = c("T", "A", "G", "A", "T"),
+  a1 = c("G", "G", "A", "G", "A")
+)
+
+snp_match(sumstats, info_snp, return_flip_and_rev = TRUE)
+snp_match(sumstats, info_snp, strand_flip = FALSE)
+```
+
